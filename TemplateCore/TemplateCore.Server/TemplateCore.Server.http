@@ -1,0 +1,6 @@
+@TemplateCore.Server_HostAddress = http://localhost:5245
+
+GET {{TemplateCore.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

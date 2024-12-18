@@ -1,46 +1,96 @@
 <template>
-    <v-card>
-      <v-tabs
-        v-model="tab"
-        align-tabs="center"
-        color="deep-purple-accent-4"
-      >
-        <v-tab :value="1">Landscape</v-tab>
-        <v-tab :value="2">City</v-tab>
-        <v-tab :value="3">Abstract</v-tab>
-      </v-tabs>
-  
-      <v-tabs-window v-model="tab">
-        <v-tabs-window-item
-          v-for="n in 3"
-          :key="n"
-          :value="n"
-        >
-          <v-container fluid>
-            <v-row>
-              <v-col
-                v-for="i in 6"
-                :key="i"
-                cols="12"
-                md="4"
-              >
-                <v-img
-                  :lazy-src="`https://picsum.photos/10/6?image=${i * n * 5 + 10}`"
-                  :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                  height="205"
-                  cover
-                ></v-img>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tabs-window-item>
-      </v-tabs-window>
-    </v-card>
-  </template>
-  <script>
-    export default {
-      data: () => ({
-        tab: null,
-      }),
-    }
-  </script>
+  <div>
+    <v-sheet
+      class="d-flex"
+      height="54"
+      tile
+    >
+      <v-select
+        v-model="type"
+        :items="types"
+        class="ma-2"
+        label="View Mode"
+        variant="outlined"
+        dense
+        hide-details
+      ></v-select>
+      <v-select
+        v-model="weekday"
+        :items="weekdays"
+        class="ma-2"
+        label="weekdays"
+        variant="outlined"
+        dense
+        hide-details
+      ></v-select>
+    </v-sheet>
+    <v-sheet>
+      <v-calendar
+        ref="calendar"
+        v-model="value"
+        :events="events"
+        :view-mode="type"
+        :weekdays="weekday"
+      ></v-calendar>
+    </v-sheet>
+  </div>
+</template>
+<script>
+  import { useDate } from 'vuetify'
+
+  export default {
+    data: () => ({
+      type: 'month',
+      types: ['month', 'week', 'day'],
+      weekday: [0, 1, 2, 3, 4, 5, 6],
+      weekdays: [
+        { title: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
+        { title: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
+        { title: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
+        { title: 'Mon, Wed, Fri', value: [1, 3, 5] },
+      ],
+      value: [new Date()],
+      events: [],
+      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+      titles: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+    }),
+    mounted () {
+      const adapter = useDate()
+      this.getEvents({ start: adapter.startOfDay(adapter.startOfMonth(new Date())), end: adapter.endOfDay(adapter.endOfMonth(new Date())) })
+    },
+    methods: {
+      getEvents ({ start, end }) {
+        const events = []
+
+        const min = start
+        const max = end
+        const days = (max.getTime() - min.getTime()) / 86400000
+        const eventCount = this.rnd(days, days + 20)
+
+        for (let i = 0; i < eventCount; i++) {
+          const allDay = this.rnd(0, 3) === 0
+          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
+          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+          const second = new Date(first.getTime() + secondTimestamp)
+
+          events.push({
+            title: this.titles[this.rnd(0, this.titles.length - 1)],
+            start: first,
+            end: second,
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            allDay: !allDay,
+          })
+        }
+
+        this.events = events
+      },
+      getEventColor (event) {
+        return event.color
+      },
+      rnd (a, b) {
+        return Math.floor((b - a + 1) * Math.random()) + a
+      },
+    },
+  }
+</script>

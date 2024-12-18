@@ -1,7 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "F:\\GIT Public\\TemplateCore\\",
-  "Documents": [],
+  "WorkspaceRootPath": "F:\\GIT Public\\TemplateCoreV1\\TemplateCore\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DC49B87F-756C-4909-923A-B5B9A474FF1B}|TemplateCore.Server\\TemplateCore.Server.csproj|f:\\git public\\templatecorev1\\templatecore\\templatecore.server\\templatecore.server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{DC49B87F-756C-4909-923A-B5B9A474FF1B}|TemplateCore.Server\\TemplateCore.Server.csproj|solutionrelative:templatecore.server\\templatecore.server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,6 +35,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TemplateCore.Server",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCoreV1\\TemplateCore\\TemplateCore.Server\\TemplateCore.Server.csproj",
+              "RelativeDocumentMoniker": "TemplateCore.Server\\TemplateCore.Server.csproj",
+              "ToolTip": "F:\\GIT Public\\TemplateCoreV1\\TemplateCore\\TemplateCore.Server\\TemplateCore.Server.csproj",
+              "RelativeToolTip": "TemplateCore.Server\\TemplateCore.Server.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-18T02:51:24.49Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -10,6 +10,8 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     MainHome: typeof import('./components/Main/MainHome.vue')['default']
     MainPage: typeof import('./components/Main/MainPage.vue')['default']
+    MainPageHome: typeof import('./router/MainHome/MainHomePage.vue')['default']
+    NavagitionPage: typeof import('./router/MainHome/NavagitionPage.vue')['default']
     Navigation: typeof import('./components/Main/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -6,14 +6,31 @@
 
 // Composables
 import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
+import MainPage from '../router/MainHome/MainHomePage.vue'
 
-
+const routess = [
+  {
+    path: '/',
+    name: 'Trang chủ',
+    component: () => MainPage
+  },
+  {
+    path: '/main',
+    name: 'Main',
+    component: () => MainPage,
+    children: [
+      {
+        path: 'home',
+        name: 'MainHome',
+        component: import('../router/MainHome/NavagitionPage.vue'), // Component con cho /main/home
+      },
+    ]
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
+  routes: routess,//setupLayouts(routes),
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

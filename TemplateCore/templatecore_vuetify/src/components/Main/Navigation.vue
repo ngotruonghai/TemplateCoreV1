@@ -3,10 +3,10 @@ export default {
     data: () => ({
         open: [''],
         admins: [
-            ['Quản lý user đăng nhập', 'mdi-account-multiple-outline'],
-            ['Cấu hình 1', 'mdi-cog-outline'],
-            ['Cấu hình 2', 'mdi-cog-outline'],
-            ['Cấu hình 3', 'mdi-cog-outline'],
+            ['Quản lý user đăng nhập', 'mdi-account-multiple-outline', ''],
+            ['Cấu hình 1', 'mdi-cog-outline', '/main/home'],
+            ['Cấu hình 2', 'mdi-cog-outline', '/main/config2'],
+            ['Cấu hình 3', 'mdi-cog-outline', '/main/config3'],
         ],
         cruds: [
             ['Create', 'mdi-plus-outline'],
@@ -15,8 +15,18 @@ export default {
             ['Delete', 'mdi-delete'],
         ],
     }),
-}
+    methods: {
+        navigateTo(route) {
+            if (route) {
+                this.$router.push(route); // Điều hướng đến route
+            } else {
+                //alert('Route không tồn tại'); // Hiển thị cảnh báo nếu không có route
+            }
+        },
+    },
+};
 </script>
+
 <template>
     <v-card class="mx-auto" width="">
         <v-list v-model:opened="open">
@@ -26,9 +36,11 @@ export default {
                     <v-list-item v-bind="props" title="Cấu hình" prepend-icon="mdi-cog"></v-list-item>
                 </template>
 
-                <v-list-item v-for="([title, icon], i) in admins" :key="i" :prepend-icon="icon"
+                <v-list-item v-for="([title, icon, route], i) in admins" :key="i" :prepend-icon="icon"
                     color="#009ACD"
-                    :value="title" class="small-text">{{ title }}</v-list-item>
+                    :value="title" class="small-text"> 
+                <div v-on:click="navigateTo(route)">{{ title }}</div>
+                </v-list-item>
             </v-list-group>
         </v-list>
     </v-card>

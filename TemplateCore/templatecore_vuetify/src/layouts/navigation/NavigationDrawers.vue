@@ -38,4 +38,5 @@ export default {
 .small-text {
     font-size: 13px;
 }
+
 </style>

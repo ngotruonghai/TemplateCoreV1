@@ -1,7 +1,9 @@
 <template>
-  <test />
+  <MainHome/>
 </template>
 
 <script lang="ts" setup>
+
+
   //
 </script>

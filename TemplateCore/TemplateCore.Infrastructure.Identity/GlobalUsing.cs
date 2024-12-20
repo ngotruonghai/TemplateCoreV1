@@ -1,0 +1,13 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using System.Threading.Tasks;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using TemplateCore.Infrastructure.Identity.Models;
+global using Microsoft.Extensions.DependencyInjection;
+global using TemplateCore.Infrastructure.Identity.Contexts;
+global using TemplateCore.Infrastructure.Shared.Environments;
+global using Microsoft.EntityFrameworkCore;
+global using System.Reflection;

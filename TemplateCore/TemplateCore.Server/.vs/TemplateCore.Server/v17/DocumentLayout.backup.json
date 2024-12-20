@@ -1,0 +1,221 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\extensions\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:extensions\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\contexts\\identitycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\initializer\\applicationinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:initializer\\applicationinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1E5D505-41AE-4DAD-B514-E5CAF74CC003}|..\\TemplateCore.Infrastructure.Shared\\TemplateCore.Infrastructure.Shared.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.shared\\environments\\idatabasesettingsprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1E5D505-41AE-4DAD-B514-E5CAF74CC003}|..\\TemplateCore.Infrastructure.Shared\\TemplateCore.Infrastructure.Shared.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.shared\\respositories\\databasesettingsprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CC872BC-0390-43F1-BA85-4706C6CAA046}|..\\TemplateCore.Domain\\TemplateCore.Domain.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.domain\\globalusing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServiceExtensions.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Extensions\\ServiceExtensions.cs",
+              "RelativeDocumentMoniker": "Extensions\\ServiceExtensions.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Extensions\\ServiceExtensions.cs",
+              "RelativeToolTip": "Extensions\\ServiceExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T07:59:37.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ServiceExtensions.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T07:50:29.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationInitializer.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Initializer\\ApplicationInitializer.cs",
+              "RelativeDocumentMoniker": "Initializer\\ApplicationInitializer.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Initializer\\ApplicationInitializer.cs",
+              "RelativeToolTip": "Initializer\\ApplicationInitializer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T07:39:10.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "appsettings.Development.json",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\appsettings.Development.json",
+              "RelativeToolTip": "appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-20T07:26:50.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-20T07:26:47.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABYAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T07:06:50.911Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T06:29:19.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IdentityContext.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T06:29:03.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DatabaseSettingsProvider.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Shared\\Respositories\\DatabaseSettingsProvider.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Shared\\Respositories\\DatabaseSettingsProvider.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Shared\\Respositories\\DatabaseSettingsProvider.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Shared\\Respositories\\DatabaseSettingsProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T04:35:43.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IDatabaseSettingsProvider.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Shared\\Environments\\IDatabaseSettingsProvider.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Shared\\Environments\\IDatabaseSettingsProvider.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Shared\\Environments\\IDatabaseSettingsProvider.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Shared\\Environments\\IDatabaseSettingsProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T04:34:36.233Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "GlobalUsing.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Domain\\GlobalUsing.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Domain\\GlobalUsing.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Domain\\GlobalUsing.cs",
+              "RelativeToolTip": "..\\TemplateCore.Domain\\GlobalUsing.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T04:21:46.097Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

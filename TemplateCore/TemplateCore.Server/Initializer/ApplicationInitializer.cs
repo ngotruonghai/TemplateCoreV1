@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TemplateCore.Infrastructure.Identity.Contexts;
+using TemplateCore.Infrastructure.Identity.Models;
 
 namespace TemplateCore.Server.Initializer
 {
@@ -32,6 +34,13 @@ namespace TemplateCore.Server.Initializer
             {
                 var identityDbContext = _serviceProvider.GetRequiredService<IdentityContext>();
                 identityDbContext.Database.Migrate();
+
+                var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                await Infrastructure.Identity.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
+                await Infrastructure.Identity.Seeds.DefaultSuperAdmin.SeedAsync(userManager, roleManager);
+                await Infrastructure.Identity.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
             }
             catch (Exception ex)
             {

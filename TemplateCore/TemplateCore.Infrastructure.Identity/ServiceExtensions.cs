@@ -8,6 +8,7 @@ using TemplateCore.Domain.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using TemplateCore.Infrastructure.Identity.Repositories;
 using static TemplateCore.Application.Features.Account.Commands.AccountCommand;
+using TemplateCore.Application.Services;
 
 namespace TemplateCore.Infrastructure.Identity
 {
@@ -38,6 +39,7 @@ namespace TemplateCore.Infrastructure.Identity
             #region Services
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
             services.AddTransient<IAccountService, AccountServiceRepository>();
+            services.AddTransient<IAuthenticatedUserService, AuthenticatedUserService>();
             #endregion
 
             services.AddAuthentication(options =>

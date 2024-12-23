@@ -5,5 +5,5 @@ global using System.Linq;
 global using System.Text;
 global using TemplateCore.Application.DTOs.Account;
 global using TemplateCore.Application.Wrappers;
-global using TemplateCore.Application.Interfaces;
+global using TemplateCore.Application.Services;
 global using MediatR;

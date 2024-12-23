@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TemplateCore.Application.DTOs.Account;
 using TemplateCore.Application.Features.Account.Commands;
 
@@ -25,6 +26,13 @@ namespace TemplateCore.Server.Controllers
                 Email = authenticationRequest.Email,
                 ipAddress = GenerateIPAddress()
             }));
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUserAsync()
+        {
+            return Ok("123");
         }
 
         #region function

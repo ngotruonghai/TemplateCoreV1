@@ -1,4 +1,6 @@
-﻿namespace TemplateCore.Application.Features.Account.Commands
+﻿using TemplateCore.Application.Services;
+
+namespace TemplateCore.Application.Features.Account.Commands
 {
     public class AccountCommand : IRequest<Response<object>>
     {

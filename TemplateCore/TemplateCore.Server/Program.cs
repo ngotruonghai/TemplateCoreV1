@@ -1,11 +1,6 @@
-
-using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using TemplateCore.Application.Interfaces;
 using TemplateCore.Infrastructure.Identity;
-using TemplateCore.Infrastructure.Identity.Contexts;
-using TemplateCore.Infrastructure.Identity.Models;
 using TemplateCore.Server.Extensions;
 using TemplateCore.Server.Initializer;
 
@@ -20,10 +15,7 @@ namespace TemplateCore.Server
             var _config = builder.Configuration;
             var _env = builder.Environment;
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             _services.AddEnvironmentVariablesExtension();
@@ -32,7 +24,6 @@ namespace TemplateCore.Server
 
             _services.AddSwaggerGen(c =>
             {
-                //c.IncludeXmlComments(string.Format(@"TemplateCore.WebApp.Server.xml"));
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -110,6 +101,11 @@ namespace TemplateCore.Server
             app.UseErrorHandlingMiddleware();
 
             app.MapControllers();
+
+            app.UseCors(policy =>policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
 
             app.Run();
         }

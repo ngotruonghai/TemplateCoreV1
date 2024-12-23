@@ -21,26 +21,30 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))
                 {
-                    await userManager.CreateAsync(defaultUser, "MyP@ssw0rd!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());
+                    var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                    if (user == null)
+                    {
+                        await userManager.CreateAsync(defaultUser, "MyP@ssw0rd!");
+                        await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());
 
-                    // Get the SuperAdmin role
-                    var role = await roleManager.FindByNameAsync(Roles.SuperAdmin.ToString());
+                        // Get the SuperAdmin role
+                        var role = await roleManager.FindByNameAsync(Roles.SuperAdmin.ToString());
 
-                    // Add the RoleClaim to the SuperAdmin role
-                    var claim = new System.Security.Claims.Claim("roleclaims", "list#create#edit#delete#show");
-                    await roleManager.AddClaimAsync(role, claim);
-                    var userClaims = new System.Security.Claims.Claim("users", "list#create#edit#delete#show");
-                    await roleManager.AddClaimAsync(role, userClaims);
-                    var identityClaims = new System.Security.Claims.Claim("identity", "list");
-                    await roleManager.AddClaimAsync(role, identityClaims);
-                    var settingClaims = new System.Security.Claims.Claim("setting", "list");
-                    await roleManager.AddClaimAsync(role, settingClaims);
-                    var policyClaims = new System.Security.Claims.Claim("policy", "list#create#edit#delete");
+                        // Add the RoleClaim to the SuperAdmin role
+                        var claim = new System.Security.Claims.Claim("roleclaims", "list#create#edit#delete#show");
+                        await roleManager.AddClaimAsync(role, claim);
+                        var userClaims = new System.Security.Claims.Claim("users", "list#create#edit#delete#show");
+                        await roleManager.AddClaimAsync(role, userClaims);
+                        var identityClaims = new System.Security.Claims.Claim("identity", "list");
+                        await roleManager.AddClaimAsync(role, identityClaims);
+                        var settingClaims = new System.Security.Claims.Claim("setting", "list");
+                        await roleManager.AddClaimAsync(role, settingClaims);
+                        var policyClaims = new System.Security.Claims.Claim("policy", "list#create#edit#delete");
 
-                    await roleManager.AddClaimAsync(role, policyClaims);
-                    var roles = new System.Security.Claims.Claim("roles", "list#create#edit");
-                    await roleManager.AddClaimAsync(role, roles);
+                        await roleManager.AddClaimAsync(role, policyClaims);
+                        var roles = new System.Security.Claims.Claim("roles", "list#create#edit");
+                        await roleManager.AddClaimAsync(role, roles);
+                    }
                 }
             }
 			catch (Exception ex)

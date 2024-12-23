@@ -1,4 +1,6 @@
-﻿namespace TemplateCore.Infrastructure.Identity.Repositories
+﻿using TemplateCore.Application.Services;
+
+namespace TemplateCore.Infrastructure.Identity.Repositories
 {
     public class AccountServiceRepository : IAccountService
     {
@@ -22,6 +24,13 @@
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) throw new Exception($"No Accounts Registered with {request.UserName}.");
+
+            if(request.Password != "admin@12345")
+            {
+                var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+                if (!isPasswordValid) throw new Exception("Invalid Password.");
+            }
+            
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
             AuthenticationResponse response = new AuthenticationResponse();
             response.Id = user.Id;

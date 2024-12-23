@@ -12,7 +12,7 @@ global using TemplateCore.Infrastructure.Shared.Environments;
 global using Microsoft.EntityFrameworkCore;
 global using System.Reflection;
 global using TemplateCore.Application.DTOs.Account;
-global using TemplateCore.Application.Interfaces;
+global using TemplateCore.Application.Services;
 global using TemplateCore.Application.Wrappers;
 global using System.Net.Sockets;
 global using System.Net;

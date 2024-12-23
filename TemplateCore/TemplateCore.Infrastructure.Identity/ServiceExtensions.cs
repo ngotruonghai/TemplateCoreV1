@@ -8,6 +8,7 @@ using TemplateCore.Domain.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using TemplateCore.Infrastructure.Identity.Repositories;
 using static TemplateCore.Application.Features.Account.Commands.AccountCommand;
+using TemplateCore.Application.Services;
 
 namespace TemplateCore.Infrastructure.Identity
 {

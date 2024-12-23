@@ -1,0 +1,10 @@
+﻿/.vs
+**/bin/
+**/obj/
+**/node_modules/
+/.vscode
+**/appsettings.Development.json
+/TemplateCore/TemplateCore.Server/.vs/TemplateCore.Server/FileContentIndex
+/TemplateCore/TemplateCore.Server/.vs/TemplateCore.Server/v17/.suo
+/TemplateCore/TemplateCore.Server/.vs/TemplateCore.Server/v17/DocumentLayout.json
+/TemplateCore/TemplateCore.Server/.vs/TemplateCore.Server/v17/DocumentLayout.backup.json

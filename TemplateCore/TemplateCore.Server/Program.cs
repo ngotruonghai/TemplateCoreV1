@@ -41,15 +41,6 @@ namespace TemplateCore.Server
             _services.AddSqlServerIdentityInfrastructure(typeof(Program).Assembly.FullName);
             _services.AddIdentityLayer();
             _services.AddIdentityRepositories(_config);
-            _services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-            }).AddEntityFrameworkStores<IdentityContext>()
-  .AddDefaultTokenProviders();
 
             #endregion
 

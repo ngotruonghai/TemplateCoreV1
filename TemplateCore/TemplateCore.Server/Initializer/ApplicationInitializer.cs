@@ -40,7 +40,7 @@ namespace TemplateCore.Server.Initializer
 
                 await Infrastructure.Identity.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
                 await Infrastructure.Identity.Seeds.DefaultSuperAdmin.SeedAsync(userManager, roleManager);
-                await Infrastructure.Identity.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
+                //await Infrastructure.Identity.Seeds.DefaultBasicUser.SeedAsync(userManager, roleManager);
             }
             catch (Exception ex)
             {

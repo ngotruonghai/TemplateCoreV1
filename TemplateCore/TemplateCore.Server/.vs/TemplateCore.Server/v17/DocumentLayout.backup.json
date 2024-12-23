@@ -3,7 +3,7 @@
   "WorkspaceRootPath": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultsuperadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultbasicuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.server\\initializer\\applicationinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -14,16 +14,19 @@
       "RelativeMoniker": "D:0:0:{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31}|TemplateCore.Server.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultbasicuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultsuperadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\contexts\\identitycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{944C2639-B7D7-4926-A998-73E7647E9910}|..\\TemplateCore.Infrastructure.Identity\\TemplateCore.Infrastructure.Identity.csproj|f:\\git public\\templatecore_v1\\templatecore\\templatecore.infrastructure.identity\\seeds\\defaultroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,7 +36,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Document",
@@ -43,7 +46,7 @@
               "RelativeDocumentMoniker": "Initializer\\ApplicationInitializer.cs",
               "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Initializer\\ApplicationInitializer.cs",
               "RelativeToolTip": "Initializer\\ApplicationInitializer.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAtwCkAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAnwCoAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-20T09:58:11.272Z",
               "IsPinned": true,
@@ -71,20 +74,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "IdentityContext.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Contexts\\IdentityContext.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-23T02:36:10.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-23T02:34:37.034Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "DefaultSuperAdmin.cs",
               "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultSuperAdmin.cs",
               "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultSuperAdmin.cs",
               "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultSuperAdmin.cs",
               "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultSuperAdmin.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABMAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-20T10:14:26.592Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "DefaultRoles.cs",
               "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultRoles.cs",
               "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultRoles.cs",
@@ -92,31 +121,17 @@
               "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultRoles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-20T10:14:22.888Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T10:14:22.888Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ApplicationUser.cs",
-              "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
-              "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
-              "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
-              "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Models\\ApplicationUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-20T10:09:22.522Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "DefaultBasicUser.cs",
               "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultBasicUser.cs",
               "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultBasicUser.cs",
               "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultBasicUser.cs",
               "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\Seeds\\DefaultBasicUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBUAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-20T10:02:20.356Z",
               "EditorCaption": ""
@@ -129,14 +144,14 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Server\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAgwDMAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwDcAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-20T09:34:55.216Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "ServiceExtensions.cs",
               "DocumentMoniker": "F:\\GIT Public\\TemplateCore_V1\\TemplateCore\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
               "RelativeDocumentMoniker": "..\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
@@ -144,8 +159,7 @@
               "RelativeToolTip": "..\\TemplateCore.Infrastructure.Identity\\ServiceExtensions.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAqwC8AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-20T09:34:21.488Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-20T09:34:21.488Z"
             }
           ]
         }

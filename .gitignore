@@ -1,4 +1,4 @@
-﻿/.vs
+﻿/TemplateCore/TemplateCore.Server/.vs
 **/bin/
 **/obj/
 **/node_modules/

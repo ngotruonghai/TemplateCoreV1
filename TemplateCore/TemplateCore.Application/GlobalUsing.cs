@@ -1,7 +1,9 @@
-﻿namespace TemplateCore.Application
-{
-    public class Class1
-    {
-
-    }
-}
+﻿global using System.Text.Json.Serialization;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using TemplateCore.Application.DTOs.Account;
+global using TemplateCore.Application.Wrappers;
+global using TemplateCore.Application.Interfaces;
+global using MediatR;

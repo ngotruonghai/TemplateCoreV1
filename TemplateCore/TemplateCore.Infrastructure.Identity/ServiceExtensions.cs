@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using TemplateCore.Application.Wrappers;
 using TemplateCore.Domain.Settings;
 using Microsoft.Extensions.DependencyInjection;
+using TemplateCore.Infrastructure.Identity.Repositories;
+using static TemplateCore.Application.Features.Account.Commands.AccountCommand;
 
 namespace TemplateCore.Infrastructure.Identity
 {
@@ -34,9 +36,9 @@ namespace TemplateCore.Infrastructure.Identity
             
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
             #region Services
-            //services.AddTransient<IAccountService, AccountService>();
-            #endregion
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+            services.AddTransient<IAccountService, AccountServiceRepository>();
+            #endregion
 
             services.AddAuthentication(options =>
             {
@@ -88,6 +90,9 @@ namespace TemplateCore.Infrastructure.Identity
 
         public static void AddIdentityLayer(this IServiceCollection services)
         {
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg =>
             {

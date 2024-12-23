@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using TemplateCore.Application.Interfaces;
 using TemplateCore.Infrastructure.Identity;
 using TemplateCore.Infrastructure.Identity.Contexts;
 using TemplateCore.Infrastructure.Identity.Models;
@@ -77,9 +78,10 @@ namespace TemplateCore.Server
             #endregion
 
             #region Add Identity
+
             _services.AddSqlServerIdentityInfrastructure(typeof(Program).Assembly.FullName);
-            _services.AddIdentityLayer();
             _services.AddIdentityRepositories(_config);
+            _services.AddIdentityLayer();
             #endregion
 
 
@@ -105,7 +107,7 @@ namespace TemplateCore.Server
 
             app.UseAuthorization();
 
-
+            app.UseErrorHandlingMiddleware();
 
             app.MapControllers();
 

@@ -10,6 +10,11 @@
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="SimpleResults.FluentValidation" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Account\Queries\" />
   </ItemGroup>
 
 </Project>

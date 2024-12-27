@@ -31,7 +31,7 @@ namespace TemplateCore.Application.Wrappers
             Message = message;
         }
         public bool Succeeded { get; set; }
-        public int Code { get; set; }
+        public int Code { get; set; } = 1;
         public string Message { get; set; }
         public List<string> Errors { get; set; }
         public T Data { get; set; }

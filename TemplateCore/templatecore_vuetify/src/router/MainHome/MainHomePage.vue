@@ -16,6 +16,9 @@
   
     </v-layout>
   </template>
-  <script setup>
-  
+  <script lang="ts" setup>
+
+  onBeforeMount(() => {
+
+  });
   </script>

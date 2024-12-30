@@ -1,9 +1,3 @@
-<script>
-export default {
-  
-};
-</script>
-
 <template>
     <v-container class="">
         <v-row class="mb-6" no-gutters>
@@ -32,5 +26,6 @@ export default {
         </v-row>
     </v-container>
 </template>
+
 
 <style></style>

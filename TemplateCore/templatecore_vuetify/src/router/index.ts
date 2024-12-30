@@ -7,13 +7,13 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import MainPage from '../router/MainHome/MainHomePage.vue'
-import Login from '../router/Login/loginPage.vue'
+import LoginPage from '../router/Login/loginPage.vue'
 
 const routess = [
   {
     path: '/',
     name: 'Trang chủ',
-    component: () => Login
+    component: () => MainPage
   },
   {
     path: '/main',
@@ -26,6 +26,11 @@ const routess = [
         component: import('../router/MainHome/NavagitionPage.vue'), // Component con cho /main/home
       },
     ]
+  },
+  {
+    path: '/login',
+    name: 'Đăng nhập',
+    component: () => LoginPage
   },
 ];
 

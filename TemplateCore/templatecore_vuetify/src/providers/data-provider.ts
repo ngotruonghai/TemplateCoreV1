@@ -1,5 +1,7 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, Method } from 'axios';
+import { useRouter } from 'vue-router';
+
 
 // Lấy giá trị từ .env
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -7,6 +9,7 @@ const API_PATH = import.meta.env.VITE_API_PATH || '';
 
 // Tạo URL đầy đủ
 const FULL_API_URL = `${API_BASE_URL}${API_PATH}`;
+const router = useRouter();
 
 // Khởi tạo Axios instance
 const apiClient = axios.create({
@@ -29,9 +32,11 @@ export const callApi = async <T>(
       params: method === 'GET' ? data : undefined,
       ...config,
     });
+    //console.log(router.currentRoute.value.fullPath);
     return response.data as T;
   } catch (error: any) {
-    console.error(`API call error at ${endpoint}:`, error);
-    throw error; // Ném lỗi để xử lý bên ngoài
+    const errorStatus = error.response.status;
+    
+    return error.response.data;
   }
 };

@@ -7,9 +7,22 @@
 </template>
 
 <script lang="ts" setup>
-console.log("dsads");
-const apiBaseUrl = import.meta.env.VITE_API_URL;
+import { LocalStorageService } from '@/providers/LocalStorageServices';
+import { useRouter } from 'vue-router';
 
-console.log(`API Base URL: ${apiBaseUrl}`); // https://dev-api.example.com (hoặc production URL)
+const router = useRouter();
+
+onMounted(() => {
+  const token = LocalStorageService.GetToken();
+  const url = router.currentRoute.value.fullPath;
+
+  if(token == null){
+    router.push('/login');
+  }
+  else{
+    router.push(localStorage.getItem("Url")??"/");
+  }
+ 
+});
 
 </script>

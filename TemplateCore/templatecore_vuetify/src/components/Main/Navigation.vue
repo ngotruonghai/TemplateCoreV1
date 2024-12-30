@@ -1,4 +1,7 @@
 <script>
+import { useRouter, useRoute } from 'vue-router';
+
+
 export default {
     data: () => ({
         open: [''],
@@ -8,11 +11,8 @@ export default {
             ['Cấu hình 2', 'mdi-cog-outline', '/main/config2'],
             ['Cấu hình 3', 'mdi-cog-outline', '/main/config3'],
         ],
-        cruds: [
-            ['Create', 'mdi-plus-outline'],
-            ['Read', 'mdi-file-outline'],
-            ['Update', 'mdi-update'],
-            ['Delete', 'mdi-delete'],
+        CauHinhs: [
+            ['Đăng xuất', 'mdi-plus-outline', '/Login'],
         ],
     }),
     methods: {
@@ -36,17 +36,28 @@ export default {
                     <v-list-item v-bind="props" title="Cấu hình" prepend-icon="mdi-cog"></v-list-item>
                 </template>
 
-                <v-list-item v-for="([title, icon, route], i) in admins" :key="i" :prepend-icon="icon"
-                    color="#009ACD"
-                    :value="title" class="small-text"> 
-                <div v-on:click="navigateTo(route)">{{ title }}</div>
+                <v-list-item v-for="([title, icon, route], i) in admins" :key="i" :prepend-icon="icon" color="#009ACD"
+                    :value="title" class="small-text">
+                    <div v-on:click="navigateTo(route)">{{ title }}</div>
                 </v-list-item>
             </v-list-group>
+
+            <v-list-group value="CauHinh" no-action>
+                <template v-slot:activator="{ props }">
+                    <v-list-item v-bind="props" title="Cấu hình" prepend-icon="mdi-cog"></v-list-item>
+                </template>
+
+                <v-list-item v-for="([title, icon, route], i) in CauHinhs" :key="i" :prepend-icon="icon" color="#009ACD"
+                    :value="title" class="small-text">
+                    <div v-on:click="navigateTo(route)">{{ title }}</div>
+                </v-list-item>
+            </v-list-group>
+
+
         </v-list>
     </v-card>
 </template>
 <style scoped>
-
 .small-text {
     font-size: 13px;
 }

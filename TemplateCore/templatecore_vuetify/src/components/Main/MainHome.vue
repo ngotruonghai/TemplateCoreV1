@@ -11,7 +11,6 @@
     <v-app-bar title="test"></v-app-bar>
 
     <v-main class="d-flex" style="min-height: 800px;">
-      
       <router-view />
     </v-main>
 

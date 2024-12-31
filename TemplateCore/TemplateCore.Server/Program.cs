@@ -17,7 +17,7 @@ namespace TemplateCore.Server
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
             _services.AddEnvironmentVariablesExtension();
 
             #region Swagger

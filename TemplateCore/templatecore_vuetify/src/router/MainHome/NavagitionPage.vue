@@ -20,7 +20,7 @@
             </v-col>
             <v-col cols="4" offset="4">
                 <v-sheet class="pa-2 ma-2">
-                    .v-col-4 .offset-4
+                    .v-col-4 .offset-4 ss
                 </v-sheet>
             </v-col>
         </v-row>

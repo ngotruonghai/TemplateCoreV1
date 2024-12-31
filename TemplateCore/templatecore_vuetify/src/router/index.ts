@@ -1,10 +1,3 @@
-/**
- * router/index.ts
- *
- * Automatic routes for `./src/pages/*.vue`
- */
-
-// Composables
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import MainPage from '../router/MainHome/MainHomePage.vue'
 import LoginPage from '../router/Login/loginPage.vue'
@@ -16,14 +9,19 @@ const routess = [
     component: () => MainPage
   },
   {
-    path: '/main',
-    name: 'Main',
+    path: '/home',
+    name: 'Home',
     component: () => MainPage,
     children: [
       {
-        path: 'home',
-        name: 'MainHome',
-        component: import('../router/MainHome/NavagitionPage.vue'), // Component con cho /main/home
+        path: 'acount',
+        name: 'Acount',
+        component: import('../router/UserAcount/Acount.vue'), // Component con cho /main/home
+      },
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: import('../router/Dashboard/Dashboard.vue'), // Component con cho /main/home
       },
     ]
   },

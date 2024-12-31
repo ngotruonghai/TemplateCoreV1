@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TemplateCore.Application.DTOs.Account;
 using TemplateCore.Application.Features.Account.Commands;
+using TemplateCore.Application.Features.Account.Queries;
 
 namespace TemplateCore.Server.Controllers
 {
@@ -29,10 +30,10 @@ namespace TemplateCore.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("me")]
-        public async Task<IActionResult> GetCurrentUserAsync()
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUser()
         {
-            return Ok("123");
+            return Ok(await Mediator.Send(new GetAllAccountQuery()));
         }
 
         #region function

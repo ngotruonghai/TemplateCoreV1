@@ -1,32 +1,3 @@
-<script>
-import { useRouter, useRoute } from 'vue-router';
-
-
-export default {
-    data: () => ({
-        open: [''],
-        admins: [
-            ['Quản lý user đăng nhập', 'mdi-account-multiple-outline', ''],
-            ['Cấu hình 1', 'mdi-cog-outline', '/main/home'],
-            ['Cấu hình 2', 'mdi-cog-outline', '/main/config2'],
-            ['Cấu hình 3', 'mdi-cog-outline', '/main/config3'],
-        ],
-        CauHinhs: [
-            ['Đăng xuất', 'mdi-plus-outline', '/Login'],
-        ],
-    }),
-    methods: {
-        navigateTo(route) {
-            if (route) {
-                this.$router.push(route); // Điều hướng đến route
-            } else {
-                //alert('Route không tồn tại'); // Hiển thị cảnh báo nếu không có route
-            }
-        },
-    },
-};
-</script>
-
 <template>
     <v-card class="mx-auto" width="">
         <v-list v-model:opened="open">
@@ -57,6 +28,32 @@ export default {
         </v-list>
     </v-card>
 </template>
+<script lang="ts">
+import { useRouter, useRoute } from 'vue-router';
+export default {
+    data: () => ({
+        open: [''],
+        admins: [
+            ['Quản lý user đăng nhập', 'mdi-cog-outline', '/home/acount'],
+            ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
+        ],
+        CauHinhs: [
+            ['Đăng xuất', 'mdi-plus-outline', '/Login'],
+        ],
+    }),
+    methods: {
+        navigateTo(route:string) {
+            if (route) {
+                this.$router.push(route); // Điều hướng đến route
+            } else {
+                //alert('Route không tồn tại'); // Hiển thị cảnh báo nếu không có route
+            }
+        },
+    },
+    created() {
+    },
+};
+</script>
 <style scoped>
 .small-text {
     font-size: 13px;

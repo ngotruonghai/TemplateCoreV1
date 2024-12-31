@@ -46,6 +46,12 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             return new Response<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
         }
 
+        public async Task<IEnumerable<object>> GetAllAcount()
+        {
+            var user = await _userManager.Users.ToListAsync();
+            return user;
+        }
+
         #region Function
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {

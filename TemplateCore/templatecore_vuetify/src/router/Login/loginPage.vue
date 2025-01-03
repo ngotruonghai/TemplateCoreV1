@@ -215,10 +215,6 @@ export default defineComponent({
   }
 }
 
-#login {
-  background-color: #2e628d;
-  height: 100%;
-}
 
 .container {
   background: #f8f9fd;

@@ -3,7 +3,6 @@
     <v-navigation-drawer>
       <v-list>
         <v-list-item title="Template Core">
-          <div>dssd</div>
           <Navigation />
         </v-list-item>
       </v-list>

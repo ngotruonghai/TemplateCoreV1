@@ -1,10 +1,26 @@
-/**
- * src/styles/settings.scss
- *
- * Configures SASS variables and Vuetify overwrites
- */
+$main-color: #6eaeee;
 
-// https://vuetifyjs.com/features/sass-variables/`
-// @use 'vuetify/settings' with (
-//   $color-pack: false
-// );
+#login {
+    background-color: $main-color;
+    height: 100%;
+}
+
+#navigation {
+    background-color: $main-color;
+    color: white;
+}
+
+html,
+body {
+    overflow: auto;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge */
+}

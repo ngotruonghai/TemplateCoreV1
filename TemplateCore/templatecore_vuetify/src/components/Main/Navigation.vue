@@ -24,7 +24,7 @@
                     <v-list-item v-bind="props" title="Thông tin" prepend-icon="mdi-cog" style="font-size: 15px;"></v-list-item>
                 </template>
 
-                <v-list-item v-on:click="navigateTo(route,title)" v-for="([title, icon, route], i) in admins" :key="i" :prepend-icon="icon" color="#003366"
+                <v-list-item v-on:click="navigateTo(route,title)" v-for="([title, icon, route], i) in admins" :key="i" :prepend-icon="icon" 
                     :value="title" class="small-text">
                     <div>{{ title }}</div>
                 </v-list-item>
@@ -35,7 +35,7 @@
                     <v-list-item v-bind="props" title="Cấu hình" prepend-icon="mdi-cog" style="font-size: 15px;"></v-list-item>
                 </template>
 
-                <v-list-item v-on:click="navigateTo(route,title)" v-for="([title, icon, route], i) in CauHinhs" :key="i" :prepend-icon="icon" color="#009ACD"
+                <v-list-item v-on:click="navigateTo(route,title)" v-for="([title, icon, route], i) in CauHinhs" :key="i" :prepend-icon="icon"
                     :value="title" class="small-text">
                     <div>{{ title }}</div>
                 </v-list-item>

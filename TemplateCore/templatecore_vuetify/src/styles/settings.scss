@@ -1,14 +1,6 @@
-$main-color: #6eaeee;
-
-#login {
-    background-color: $main-color;
-    height: 100%;
-}
-
-#navigation {
-    background-color: $main-color;
-    color: white;
-}
+$main-color: #1e4388; // màu nền
+$chiil_color: #f0f8ff; // màu nên cho phần tử bên trong 
+$font_default: 'inherit !important';
 
 html,
 body {
@@ -24,3 +16,47 @@ body::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari, Edge */
 }
+#login {
+    background-color: $main-color;
+    height: 100%;
+}
+
+#navigation {
+    background-color: $main-color;
+    color: white;
+}
+
+.ChillColor {
+    background-color: $chiil_color;
+    height: 100%;
+}
+
+#TitleName {
+    background-color: $chiil_color;
+}
+
+.table {
+
+}
+.FontDefault{
+    font-size: 13px;
+    font-family: $font_default, Times, serif;
+}
+#TitleChillName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: $font_default, Times, serif;
+  }
+
+.v-data-table__th {
+    background-color: rgb(184, 183, 183) !important; /* Màu header */
+    color: white; /* Màu chữ */
+    font-size: 15px;
+    font-family: $font_default;
+  }

@@ -75,7 +75,9 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             var jwtSecurityToken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
-                claims: claims, expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                claims: claims,
+                //expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                expires: DateTime.UtcNow.AddSeconds(10),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }

@@ -23,10 +23,31 @@ const myCustomLightTheme: ThemeDefinition = {
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FB8C00',
+    tableHeader: '#FF5722', // Thêm biến màu header
   },
-}
+};
+
 
 export default createVuetify({
+  locale: {
+    locale: 'vi', // Đặt ngôn ngữ mặc định là tiếng Việt
+    messages: {
+      vi: {
+        dataFooter: {
+          itemsPerPageText: 'Số mục mỗi trang', // Đổi "Items per page"
+          itemsPerPageAll: 'Tất cả', // Đổi "All" hoặc "Off" thành "Tất cả" hoặc "Tắt"
+          pageText: '{0}-{1} tổng {2} trang', // Thay đổi văn bản phân trang nếu cần
+          noResultsText: 'Không có kết quả nào phù hợp', // Văn bản khi không có dữ liệu
+          nextPage: 'Trang tiếp',
+          prevPage: 'Trang trước',
+        },
+        dataIterator: {
+          noResultsText: 'Không tìm thấy dữ liệu', // Văn bản khi không tìm thấy kết quả
+          loadingText: 'Đang tải dữ liệu...', // Văn bản khi tải dữ liệu
+        },
+      },
+    },
+  },
   components: {
     VCalendar,
   },
@@ -38,4 +59,5 @@ export default createVuetify({
     },
     
   },
+  
 })

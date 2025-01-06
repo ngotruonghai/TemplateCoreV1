@@ -8,11 +8,11 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar title="" id="TitleName" app>
-      <div>
+    <!-- <v-app-bar title="" id="TitleName" app>
+      <div id="TitleChillName">
         {{ receivedData }}
       </div>
-    </v-app-bar>
+    </v-app-bar> -->
 
     <v-main style="height: 100%; overflow-y: auto;">
       <router-view />
@@ -30,16 +30,9 @@ const handleData = (data: string) => {
 onBeforeMount(() => {
 
 });
+
 </script>
 
 <style>
-#TitleName {
-  font-size: 18px;
-  /* Kích thước chữ */
-  padding: 10px 20px;
-  /* Khoảng cách bên trong */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 </style>

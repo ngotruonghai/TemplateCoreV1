@@ -6,8 +6,8 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-			try
-			{
+            try
+            {
                 //Seed Default User
                 var defaultUser = new ApplicationUser
                 {
@@ -17,8 +17,10 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     LastName = "superadmin",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
-                    MaNhanVien = "1",
+                    MaNhanVien = "EMP00001",
                     TypeUser = TypeAccount.UserHeThong,
+                    MaPhongBan = Guid.NewGuid().ToString(),
+                    PhoneNumber = "0968103653"
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))
                 {
@@ -48,10 +50,10 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     }
                 }
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 string mess = ex.Message;
-			}
+            }
         }
     }
 }

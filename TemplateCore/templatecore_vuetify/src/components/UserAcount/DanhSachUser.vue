@@ -32,6 +32,10 @@
         <div class="HeaderTable FontDefault">Email</div>
       </template>
 
+      <template v-slot:header.maNhanVien>
+        <div class="HeaderTable FontDefault">Mã nhân viên</div>
+      </template>
+
       <template v-slot:header.lockoutEnabled>
         <div class="HeaderTable FontDefault">Trạng thái</div>
       </template>
@@ -88,6 +92,7 @@ let dataResponse = ref([]); // Ban đầu để rỗng, sẽ được cập nh�
 let headers = [
   { text: 'STT', value: 'STT', width: '30px', class: 'table-header-left' },
   { text: 'Tên người dùng', value: 'userName' },
+  { text: 'Mã nhân viên', value: 'maNhanVien' },
   { text: 'Quyền', value: 'normalizedUserName' },
   { text: 'Email', value: 'email' },
   { text: 'Trạng thái hoạt động', value: 'lockoutEnabled' },

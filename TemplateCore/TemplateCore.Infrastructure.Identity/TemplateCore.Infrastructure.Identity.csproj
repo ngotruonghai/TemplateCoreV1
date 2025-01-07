@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TemplateCore.Infrastructure.Shared\TemplateCore.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Users\Queries\" />
+  </ItemGroup>
+
 </Project>

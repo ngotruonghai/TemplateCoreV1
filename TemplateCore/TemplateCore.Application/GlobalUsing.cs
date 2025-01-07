@@ -7,3 +7,4 @@ global using TemplateCore.Application.DTOs.Account;
 global using TemplateCore.Application.Wrappers;
 global using TemplateCore.Application.Services;
 global using MediatR;
+global using TemplateCore.Domain.Enums;

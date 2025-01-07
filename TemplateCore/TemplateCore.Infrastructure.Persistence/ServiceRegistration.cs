@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using TemplateCore.Domain.Entities;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 using TemplateCore.Infrastructure.Shared.Environments;
 
@@ -27,7 +30,6 @@ namespace TemplateCore.Infrastructure.Persistence
 
         public static void AddPersistenceRepositories(this IServiceCollection services)
         {
-           
         }
     }
 }

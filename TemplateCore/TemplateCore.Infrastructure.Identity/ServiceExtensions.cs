@@ -29,7 +29,7 @@ namespace TemplateCore.Infrastructure.Identity
         public static void AddIdentityRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();   
             #region Services
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
             services.AddTransient<IAccountService, AccountServiceRepository>();

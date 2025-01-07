@@ -1,4 +1,4 @@
-﻿using TemplateCore.Application.Features.Account.Queries;
+﻿using TemplateCore.Domain.Entities;
 
 namespace TemplateCore.Application.Services
 {
@@ -9,5 +9,9 @@ namespace TemplateCore.Application.Services
         Task<IEnumerable<object>> GetAllAcount();
 
         Task<object> GetAccountById(string UserId);
+
+        Task<IEnumerable<ApplicationUser>> GetUserThuocMaPhongBan(string MaPhongBan);
+
+        Task<IEnumerable<object>> GetAllRole();
     }
 }

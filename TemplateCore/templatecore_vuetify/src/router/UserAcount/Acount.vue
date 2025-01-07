@@ -88,7 +88,7 @@ let items = [
 interface User {
   firstName: string;
   lastName: string;
-  maNhanVien: null | number;
+  maNhanVien: string;
   id: string;
   userName: string;
   normalizedUserName: boolean;

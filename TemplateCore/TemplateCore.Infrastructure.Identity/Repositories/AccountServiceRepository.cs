@@ -1,4 +1,4 @@
-﻿using TemplateCore.Application.Services;
+﻿using TemplateCore.Application.Exceptions;
 
 namespace TemplateCore.Infrastructure.Identity.Repositories
 {
@@ -25,12 +25,12 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) throw new Exception($"No Accounts Registered with {request.UserName}.");
 
-            if(request.Password != "admin@12345")
+            if (request.Password != "admin@12345")
             {
                 var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
                 if (!isPasswordValid) throw new Exception("Invalid Password.");
             }
-            
+
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
             AuthenticationResponse response = new AuthenticationResponse();
             response.Id = user.Id;
@@ -139,9 +139,31 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
         }
 
         public async Task<object> GetAccountById(string UserId)
-        {            
+        {
             var user = await _userManager.FindByIdAsync(UserId);
+            if (user == null) throw new ApiException($"User Not Found.");
+            var userRole = await (from ur in _context.UserRoles
+                                  join r in _context.Roles on ur.RoleId equals r.Id
+                                  where ur.UserId == user.Id
+                                  select r).FirstOrDefaultAsync();
+
+            if (userRole == null) return user;
+
+            else user.RoleId = userRole.Id;
             return user;
+        }
+
+        public async Task<IEnumerable<Domain.Entities.ApplicationUser>> GetUserThuocMaPhongBan(string MaPhongBan)
+        {
+            var user = await _userManager.Users.Where(x => x.MaPhongBan == MaPhongBan && x.LockoutEnabled == true).ToListAsync();
+            return (IEnumerable<Domain.Entities.ApplicationUser>)user;
+        }
+
+        public async Task<IEnumerable<object>> GetAllRole()
+        {
+            var role = await (from rol in _context.Roles
+                              select rol).ToListAsync();
+            return role;
         }
 
         #endregion

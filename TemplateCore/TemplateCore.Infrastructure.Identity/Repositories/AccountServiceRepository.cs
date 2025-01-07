@@ -76,8 +76,8 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                //expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-                expires: DateTime.UtcNow.AddSeconds(10),
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                //expires: DateTime.UtcNow.AddSeconds(10),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }
@@ -136,6 +136,12 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
                 permissions = groupedResult
 
             };
+        }
+
+        public async Task<object> GetAccountById(string UserId)
+        {            
+            var user = await _userManager.FindByIdAsync(UserId);
+            return user;
         }
 
         #endregion

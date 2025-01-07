@@ -1,6 +1,7 @@
 $main-color: #1e4388; // màu nền
 $chiil_color: #f0f8ff; // màu nên cho phần tử bên trong 
 $font_default: 'inherit !important';
+$font_size :15px;
 
 html,
 body {
@@ -39,9 +40,15 @@ body::-webkit-scrollbar {
 
 }
 .FontDefault{
-    font-size: 13px;
+    font-size: $font_size;
     font-family: $font_default, Times, serif;
 }
+.HeaderTable{
+    text-align: left;
+    font-weight: bold;
+    font-size: $font_size;
+}
+/* Tile trong navagitaion */
 #TitleChillName {
     display: flex;
     align-items: center;
@@ -50,13 +57,50 @@ body::-webkit-scrollbar {
     width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
     font-family: $font_default, Times, serif;
   }
 
+/* Màu trong table header */
 .v-data-table__th {
-    background-color: rgb(184, 183, 183) !important; /* Màu header */
-    color: white; /* Màu chữ */
-    font-size: 15px;
-    font-family: $font_default;
+    background-color: rgb(236, 236, 236) !important; /* Màu header */
+    color: rgb(0, 0, 0); /* Màu chữ */
+    font-family: $font_default; 
   }
+  .v-data-table-column--align-start{
+    font-family:  $font_default;
+    font-size: $font_size;
+    text-align: left;
+  }
+  .v-data-table-footer__items-per-page{
+    font-family:  $font_default;
+    font-size: $font_size;
+  }
+  .v-data-table-footer__info{
+    font-family:  $font_default;
+    font-size: $font_size;
+  }
+  /* START input-container Text và input nằm dọc */
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0px; /* khoảng cách chữ và input */
+    font-size: 14px;
+    color: #333;
+}
+  input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    background-color: white;
+}
+
+input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+/* START input-container Text và input nằm dọc */
+

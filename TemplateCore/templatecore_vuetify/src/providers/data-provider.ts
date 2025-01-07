@@ -64,6 +64,12 @@ export const callAuthenticationAPI = async <T>(
     //console.log(router.currentRoute.value.fullPath);
     return response.data as T;
   } catch (error: any) {
-    return error.response.data;
+    let MessgaeError = error.code;
+    if(MessgaeError =="ERR_NETWORK"){
+       throw("Hết thời gian sử dụng, vui lòng đăng nhập lại");
+    }
+    else{
+      throw( error.response.data.Message);
+    }
   }
 };

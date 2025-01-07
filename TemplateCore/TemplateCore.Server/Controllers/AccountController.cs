@@ -36,6 +36,13 @@ namespace TemplateCore.Server.Controllers
             return Ok(await Mediator.Send(new GetAllAccountQuery()));
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            return Ok(await Mediator.Send(new GetAccountByIdQuery() { UserId = userId }));
+        }
+
         #region function
 
         private string GenerateIPAddress()

@@ -23,6 +23,12 @@ const routess = [
         name: 'Dashboard',
         component: import('../router/Dashboard/Dashboard.vue'), // Component con cho /main/home
       },
+      {
+        path:'userId/:id',
+        name:'UserId',
+        component: import('../router/UserAcount/UserInfor.vue'), // Component con cho /main/home
+        props: true
+      }
     ]
   },
   {

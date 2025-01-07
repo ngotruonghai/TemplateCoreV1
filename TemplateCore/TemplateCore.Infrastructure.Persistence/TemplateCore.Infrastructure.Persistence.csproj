@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Interceptor\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TemplateCore.Application\TemplateCore.Application.csproj" />
+    <ProjectReference Include="..\TemplateCore.Domain\TemplateCore.Domain.csproj" />
+    <ProjectReference Include="..\TemplateCore.Infrastructure.Shared\TemplateCore.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 $main-color: #1e4388; // màu nền
 $chiil_color: #f0f8ff; // màu nên cho phần tử bên trong 
-$font_default: 'inherit !important';
-$font_size :15px;
+$font_default: Arial, Helvetica, sans-serif;
+$font_size :13px;
 
 html,
 body {
@@ -41,7 +41,7 @@ body::-webkit-scrollbar {
 }
 .FontDefault{
     font-size: $font_size;
-    font-family: $font_default, Times, serif;
+    font-family: $font_default;
 }
 .HeaderTable{
     text-align: left;
@@ -58,7 +58,7 @@ body::-webkit-scrollbar {
     text-align: center;
     font-weight: bold;
     font-size: 30px;
-    font-family: $font_default, Times, serif;
+    font-family: $font_default;
   }
 
 /* Màu trong table header */
@@ -103,4 +103,35 @@ input:focus {
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 /* START input-container Text và input nằm dọc */
+.btnAdd {
+  background-color: #4285F4; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 10px;
+  font-size: $font_size;
+  font-family: $font_default;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.btnAdd:hover {
+  background-color: #4096ff; /* White background on hover */
+}
+.icon-border {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; /* Kích thước vuông */
+  height: 14px;
+  border: 1px solid white; /* Viền màu trắng */
+  border-radius: 4px; /* Bo góc (nếu cần vuông thì đặt 0) */
+  color: white; /* Màu của icon */
+  background-color: transparent; /* Nền bên trong icon */
+}
+
+/* Đặt kích thước của icon */
+.icon-border i {
+  font-size: 10px; /* Kích thước icon */
+}
 

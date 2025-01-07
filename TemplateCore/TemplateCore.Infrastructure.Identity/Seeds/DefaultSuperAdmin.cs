@@ -17,7 +17,8 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     LastName = "superadmin",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
-                    MaNhanVien = "1"
+                    MaNhanVien = "1",
+                    TypeUser = TypeAccount.UserHeThong,
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))
                 {

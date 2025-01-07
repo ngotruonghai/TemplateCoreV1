@@ -4,8 +4,5 @@ global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;
 global using System.ComponentModel.DataAnnotations.Schema;
-global using TemplateCore.Domain.Common;
 global using TemplateCore.Domain.Enums;
-global using Microsoft.AspNetCore.Identity;
-global using System.ComponentModel.DataAnnotations;
-
+global using Microsoft.EntityFrameworkCore;

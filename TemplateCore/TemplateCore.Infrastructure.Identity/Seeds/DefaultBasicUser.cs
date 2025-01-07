@@ -24,6 +24,7 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     MaNhanVien = "2",
+                    TypeUser = TypeAccount.UserHeThong,
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))
                 {

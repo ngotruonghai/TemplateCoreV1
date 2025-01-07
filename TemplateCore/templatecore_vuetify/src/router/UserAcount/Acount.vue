@@ -1,30 +1,37 @@
 <template>
   <div class="ChillColor">
     <v-container class="ChillColor">
-    <!-- <v-row class="mb-12">
-            <v-col cols="12">
-               
+      <v-row>
+        <v-col cols="12" md="6">
+
+        </v-col>
+        <v-col cols="12" md="6">
+          <button class="btnAdd btn">
+            <span class="icon-border">
+              <i class="fas fa-plus"></i>
+            </span> Thêm mới
+          </button>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <div>
+            <DanhSachUser :responseData="responseData" :items="items" />
+          </div>
+        </v-col>
+      </v-row>
+      <v-snackbar v-model="alert.visible" :timeout="2000" :color="alert.color">
+        <v-container>
+          <v-row>
+            <v-col cols="1">
+              <v-icon color="white">{{ alert.icon }}</v-icon>
             </v-col>
-        </v-row> -->
-    <v-row class="mb-12">
-      <v-col cols="12">
-        <div class="table">
-          <DanhSachUser :responseData="responseData" :items="items" />
-        </div>
-      </v-col>
-    </v-row>
-    <v-snackbar v-model="alert.visible" :timeout="2000" :color="alert.color">
-      <v-container>
-        <v-row>
-          <v-col cols="1">
-            <v-icon color="white">{{ alert.icon }}</v-icon>
-          </v-col>
-          <v-col cols="11" style="padding-top: 14px;">{{ alert.text }}</v-col>
-        </v-row>
-      </v-container>
-    </v-snackbar>
-  </v-container>
-  <!-- Snackbar thông báo lỗi -->
+            <v-col cols="11" style="padding-top: 14px;">{{ alert.text }}</v-col>
+          </v-row>
+        </v-container>
+      </v-snackbar>
+    </v-container>
+    <!-- Snackbar thông báo lỗi -->
   </div>
 
 
@@ -129,3 +136,8 @@ onMounted(async () => {
 });
 
 </script>
+<style>
+.btn {
+  float: right;
+}
+</style>

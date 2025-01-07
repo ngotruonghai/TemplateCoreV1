@@ -6,3 +6,6 @@ global using System.Threading.Tasks;
 global using TemplateCore.Infrastructure.Shared.Environments;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Hosting;
+global using TemplateCore.Application.Interfaces;
+global using Microsoft.Extensions.DependencyInjection;
+global using TemplateCore.Infrastructure.Shared.Services;

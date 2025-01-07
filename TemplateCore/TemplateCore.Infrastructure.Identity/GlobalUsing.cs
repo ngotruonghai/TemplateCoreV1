@@ -24,3 +24,5 @@ global using TemplateCore.Domain.Settings;
 global using System.Security.Cryptography;
 global using TemplateCore.Domain.DTOs.Account;
 global using Microsoft.Extensions.Options;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using TemplateCore.Domain.Enums;

@@ -1,6 +1,8 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TemplateCore.Infrastructure.Identity;
+using TemplateCore.Infrastructure.Persistence;
+using TemplateCore.Infrastructure.Shared;
 using TemplateCore.Server.Extensions;
 using TemplateCore.Server.Initializer;
 
@@ -17,8 +19,9 @@ namespace TemplateCore.Server
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
             _services.AddEnvironmentVariablesExtension();
+            _services.AddSharedInfrastructure(_config);
+            _services.AddSqlServerPersistenceInfrastructure(typeof(Program).Assembly.FullName);
 
             #region Swagger
 

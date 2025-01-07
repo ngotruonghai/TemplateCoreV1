@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using TemplateCore.Application.Wrappers;
-using TemplateCore.Domain.Settings;
-using Microsoft.Extensions.DependencyInjection;
 using TemplateCore.Infrastructure.Identity.Repositories;
-using static TemplateCore.Application.Features.Account.Commands.AccountCommand;
-using TemplateCore.Application.Services;
 
 namespace TemplateCore.Infrastructure.Identity
 {

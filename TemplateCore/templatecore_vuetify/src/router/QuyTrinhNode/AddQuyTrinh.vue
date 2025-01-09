@@ -1,6 +1,6 @@
 <template>
     <div>
-        dssg
+        <btn class="btnAdd btn" @click="AddQuyTrinh">Thêm quy trình</btn>
     </div>
     <div>
         <div ref="paperContainer" class="diagram-container" @contextmenu.prevent="showContextMenu"></div>
@@ -40,6 +40,16 @@ let graph: joint.dia.Graph;
 // Biến lưu trữ nút cuối cùng và nút được chọn
 let lastNode: joint.dia.Element | null = null;
 let selectedNode: joint.dia.Element | null = null;
+
+interface INodeMap {
+    KeyId: string | null,
+    type: string | null,
+    position: string | null
+    label: string | null,
+}
+const request = ref({
+    INodeMap: [] as INodeMap[], // khởi tạo là danh sách rỗng
+});
 
 onMounted(() => {
     // Tạo Graph (model)
@@ -178,15 +188,13 @@ const saveNodes = () => {
     // Lấy thông tin của các node, bao gồm vị trí và loại hình
     const nodeData = nodes.map((node) => {
         return {
-            id: node.id, // ID của node
-            type: node.get('type'), // Loại hình của node (hình vuông, hình thoi, hình bầu dục)
-            position: node.position().toString(), // Vị trí của node (x, y)
-            label: node.attr('label/text'), // Label của node (nếu có)
+            KeyId: String(node.id), // Chuyển đổi ID thành chuỗi
+            type: String(node.get('type')) || null, // Chuyển đổi type thành chuỗi hoặc null
+            position: JSON.stringify(node.position()),//`${position.x}@${position.y}`, // Tọa độ x@y
+            label: node.attr('label/text') || null, // Tên hiển thị
         };
     });
-
-    // In ra console thông tin các node
-    console.log('Danh sách các node:', nodeData);
+    request.value.INodeMap = nodeData;
 };
 
 // Hàm lưu các liên kết (links) giữa các node
@@ -207,6 +215,9 @@ const saveLinks = () => {
     // In ra console thông tin các liên kết
     console.log('Danh sách các liên kết:', linkData);
 };
+function AddQuyTrinh(){
+    console.log( request.value.INodeMap);
+}
 </script>
 
 <style scoped>

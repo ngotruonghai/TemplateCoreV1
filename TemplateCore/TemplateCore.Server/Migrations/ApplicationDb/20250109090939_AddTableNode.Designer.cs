@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250109090939_AddTableNode")]
+    partial class AddTableNode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,21 +25,6 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DanhSachQuyTrinhDiagramNode", b =>
-                {
-                    b.Property<int>("DanhSachQuyTrinhsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DiagramNodesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DanhSachQuyTrinhsId", "DiagramNodesId");
-
-                    b.HasIndex("DiagramNodesId");
-
-                    b.ToTable("DanhSachQuyTrinhDiagramNode", "tempplate");
-                });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.ApplicationUser", b =>
                 {
@@ -183,7 +171,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DiagramNodeId")
+                    b.Property<int?>("DiagramNodeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModified")
@@ -198,7 +186,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("NodeId")
+                    b.Property<int?>("NodeId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenQuyTrinh")
@@ -215,6 +203,10 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DiagramNodeId");
+
+                    b.HasIndex("NodeId");
 
                     b.ToTable("DanhSachQuyTrinhs", "tempplate");
                 });
@@ -305,40 +297,28 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DanhSachQuyTrinhId");
-
                     b.ToTable("Nodes", "tempplate");
-                });
-
-            modelBuilder.Entity("DanhSachQuyTrinhDiagramNode", b =>
-                {
-                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", null)
-                        .WithMany()
-                        .HasForeignKey("DanhSachQuyTrinhsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DiagramNode", null)
-                        .WithMany()
-                        .HasForeignKey("DiagramNodesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
-                {
-                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", "DanhSachQuyTrinhs")
-                        .WithMany("Nodes")
-                        .HasForeignKey("DanhSachQuyTrinhId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DanhSachQuyTrinhs");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", b =>
                 {
-                    b.Navigation("Nodes");
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DiagramNode", null)
+                        .WithMany("DanhSachQuyTrinhs")
+                        .HasForeignKey("DiagramNodeId");
+
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.Node", null)
+                        .WithMany("DanhSachQuyTrinhs")
+                        .HasForeignKey("NodeId");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.DiagramNode", b =>
+                {
+                    b.Navigation("DanhSachQuyTrinhs");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
+                {
+                    b.Navigation("DanhSachQuyTrinhs");
                 });
 #pragma warning restore 612, 618
         }

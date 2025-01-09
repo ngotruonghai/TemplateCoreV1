@@ -3,6 +3,7 @@ using TemplateCore.Application.Interfaces;
 using TemplateCore.Application.Services;
 using TemplateCore.Domain.Common;
 using TemplateCore.Domain.Entities;
+using TemplateCore.Domain.Entities.QuyTrinh;
 using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Infrastructure.Persistence.Contexts
@@ -19,6 +20,10 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
             _authenticatedUser = authenticatedUser;
         }
         public DbSet<KeyActive> KeyActives { get; set; }
+        public DbSet<DanhSachQuyTrinh> DanhSachQuyTrinhs { get; set; }
+        public DbSet<DiagramNode> DiagramNodes { get; set; }
+        public DbSet<Node> Nodes { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())

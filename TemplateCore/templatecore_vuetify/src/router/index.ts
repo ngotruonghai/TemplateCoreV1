@@ -34,6 +34,12 @@ const routess = [
         name:'CreateUser',
         component: import('../router/UserAcount/CreateAccountNew.vue'), // Component con cho /main/home
         props: true
+      },
+      {
+        path:'themquytrinh',
+        name:'ThemQuyTrinh',
+        component: import('../router/QuyTrinhNode/AddQuyTrinh.vue'), // Component con cho /main/home
+        props: true
       }
     ]
   },

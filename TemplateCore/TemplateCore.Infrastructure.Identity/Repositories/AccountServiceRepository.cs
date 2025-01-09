@@ -8,16 +8,19 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
         private readonly IdentityContext _context;
         private readonly JWTSettings _jwtSettings;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAuthenticatedUserService _authenticatedUserService;
 
         public AccountServiceRepository(UserManager<ApplicationUser> userManager,
             IdentityContext context,
             IOptions<JWTSettings> jwtSettings,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IAuthenticatedUserService authenticatedUserService)
         {
             _userManager = userManager;
             _context = context;
             _jwtSettings = jwtSettings.Value;
             _roleManager = roleManager;
+            _authenticatedUserService = authenticatedUserService;
         }
 
         public async Task<Response<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
@@ -48,8 +51,18 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
 
         public async Task<IEnumerable<object>> GetAllAcount()
         {
-            var user = await _userManager.Users.ToListAsync();
-            return user;
+            if (_authenticatedUserService.CheckUserSupperAdmin == true)
+            {
+                var user = await _userManager.Users.ToListAsync();
+                return user;
+            }
+            else
+            {
+                var user = await _userManager.Users.Where(x => x.MaPhongBan == _authenticatedUserService.maphongban && x.UserName != "superadmin")
+                                            .ToListAsync();
+                return user;
+            }
+
         }
 
         #region Function
@@ -66,7 +79,12 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("uid", user.Id),
                 new Claim("ip", ipAddress),
-                new Claim("permission",roles.FirstOrDefault())
+                new Claim("permission",roles.FirstOrDefault()),
+                new Claim("maphongban",user.MaPhongBan),
+                new Claim("keyactive",user.KeyActiveId??""),
+                new Claim("parentUserId",user.ParentUserId ?? ""),
+                new Claim("typeuser",user.TypeUser.ToString()),
+                new Claim("username",user.UserName.ToString()),
             }.Union(userClaims);
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
@@ -162,6 +180,7 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
         public async Task<IEnumerable<object>> GetAllRole()
         {
             var role = await (from rol in _context.Roles
+                              where rol.Name != "SuperAdmin"
                               select rol).ToListAsync();
             return role;
         }

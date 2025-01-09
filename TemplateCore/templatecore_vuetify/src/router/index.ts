@@ -14,8 +14,8 @@ const routess = [
     component: () => MainPage,
     children: [
       {
-        path: 'acount',
-        name: 'Acount',
+        path: 'account',
+        name: 'Account',
         component: import('../router/UserAcount/Acount.vue'), // Component con cho /main/home
       },
       {
@@ -27,6 +27,12 @@ const routess = [
         path:'userId/:id',
         name:'UserId',
         component: import('../router/UserAcount/UserInfor.vue'), // Component con cho /main/home
+        props: true
+      },
+      {
+        path:'createuser',
+        name:'CreateUser',
+        component: import('../router/UserAcount/CreateAccountNew.vue'), // Component con cho /main/home
         props: true
       }
     ]

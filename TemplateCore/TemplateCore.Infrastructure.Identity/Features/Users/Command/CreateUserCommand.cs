@@ -2,40 +2,50 @@
 
 namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
 {
-    public class CreateUserCommand: IRequest<Response<int>>
+    public class CreateUserCommand : IRequest<Response<int>>
     {
-        public string RoleId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string UserName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string MaPhongBan { get; set; }
-        public string ParentUserId { get; set; }
+        public string? RoleId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
+        public string? UserName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? MaPhongBan { get; set; }
+        public string? ParentUserId { get; set; }
 
         public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
         {
             private readonly RoleManager<IdentityRole> _roleManager;
             private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IAuthenticatedUserService _authenticatedUserService;
             public CreateUserCommandHandler(
                 RoleManager<IdentityRole> roleManager,
-                UserManager<ApplicationUser> userManager)
+                UserManager<ApplicationUser> userManager,
+                IAuthenticatedUserService authenticatedUserService)
             {
                 _roleManager = roleManager;
                 _userManager = userManager;
+                _authenticatedUserService = authenticatedUserService;
             }
             public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
+                    request.ParentUserId = _authenticatedUserService.parentUserId == "" ? _authenticatedUserService.UserId : _authenticatedUserService.parentUserId;
+                    request.MaPhongBan = _authenticatedUserService.maphongban;
+                    
                     CheckValid();
                     var listUser = await _userManager.Users.Where(x => x.MaPhongBan == request.MaPhongBan && x.LockoutEnabled == true).ToListAsync();
-                    var userDangKy = listUser.Where(x => (x.TypeUser == TypeAccount.UserDangKy || x.TypeUser == TypeAccount.UserHeThong)  
-                                                    && x.Id == request.ParentUserId
-                                                    ).FirstOrDefault();
+                    if (_authenticatedUserService.CheckUserSupperAdmin == false)
+                    {
+                        var userDangKy = listUser.Where(x => (x.TypeUser == TypeAccount.UserDangKy || x.TypeUser == TypeAccount.UserHeThong)
+                                                 && x.Id == request.ParentUserId 
+                                                 ).FirstOrDefault();
+                        if (userDangKy == null) throw new Exception("Không tồn tại user đăng ký nên không tạo tài khoản được");
+                        if (_authenticatedUserService.permission.ToLower() != "ADMIN") throw new Exception("Không có quyền tạo tài khoản");
+                    }
 
-                    if(listUser.Any() == false) throw new Exception("Không tồn tại mã phòng ban này");
-                    if (userDangKy == null) throw new Exception("Không tồn tại user đăng ký nên không tạo tài khoản được");
+                    if (listUser.Any() == false) throw new Exception("Không tồn tại mã phòng ban này");
 
                     ApplicationUser applicationUser = new ApplicationUser()
                     {
@@ -46,7 +56,7 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
                         TypeUser = TypeAccount.UserTao,
                         ParentUserId = request.ParentUserId,
                         EmailConfirmed = true,
-                        MaNhanVien = (listUser.Count() + 1).ToString("D5"),
+                        MaNhanVien = "EMP" + (listUser.Count() + 1).ToString("D5"),
                         MaPhongBan = request.MaPhongBan,
                         UserName = request.UserName,
                         PhoneNumber = request.PhoneNumber,
@@ -55,10 +65,12 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
                     var result = await _userManager.CreateAsync(applicationUser, "123Pa$$word!");
                     if (result.Succeeded)
                     {
+                        var role = await _roleManager.FindByIdAsync(request.RoleId);
+                        await _userManager.AddToRoleAsync(applicationUser, role.Name);
                         return new Response<int>(1);
                     }
                     else
-                        throw new Exception("Lỗi tạo user");
+                        throw new Exception("Tài khoản đã tồn tại vui lòng đổi lại tài khoản khác");
 
 
                 }

@@ -68,8 +68,11 @@ export const callAuthenticationAPI = async <T>(
     if(MessgaeError =="ERR_NETWORK"){
        throw("Hết thời gian sử dụng, vui lòng đăng nhập lại");
     }
-    else{
+    else if(error.response.data.Message != ''){
       throw( error.response.data.Message);
+    }
+    else{
+      throw("Lỗi hệ thống");
     }
   }
 };

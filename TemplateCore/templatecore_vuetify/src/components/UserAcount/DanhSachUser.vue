@@ -12,7 +12,7 @@
 
     <v-divider></v-divider>
     <v-data-table v-model:search="search" :filter-keys="['firstName', 'lastName', 'userName', 'email', 'lockoutEnabled']"
-      :items="dataResponse ?? []" :headers="headers" item-value="id">
+      :items="dataResponse ?? []" :headers="headers" item-value="id" >
       <template v-slot:header.STT>
         <div class="HeaderTable FontDefault">STT</div>
       </template>
@@ -84,13 +84,12 @@ const router = useRouter();
 
 const props = defineProps<{
   responseData: { [key: string]: any };
-  items: Array<any>;
 }>();
 
 let search = ref('');
 let dataResponse = ref([]); // Ban đầu để rỗng, sẽ được cập nhật qua `watch`
 let headers = [
-  { text: 'STT', value: 'STT', width: '30px', class: 'table-header-left' },
+  { text: 'STT', value: 'STT', width: '30px', sortable: true},
   { text: 'Tên người dùng', value: 'userName' },
   { text: 'Mã nhân viên', value: 'maNhanVien' },
   { text: 'Quyền', value: 'normalizedUserName' },

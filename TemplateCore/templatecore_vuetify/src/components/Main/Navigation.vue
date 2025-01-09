@@ -53,7 +53,7 @@ export default {
     data: () => ({
         open: [''],
         admins: [
-            ['Quản lý user đăng nhập', 'mdi-cog-outline', '/home/acount'],
+            ['Quản lý user đăng nhập', 'mdi-cog-outline', '/home/account'],
             ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
         ],
         CauHinhs: [

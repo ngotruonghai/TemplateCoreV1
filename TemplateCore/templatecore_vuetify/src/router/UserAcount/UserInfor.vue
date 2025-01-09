@@ -3,30 +3,24 @@
         <v-container>
             <v-row>
                 <v-col cols="12" md="6">
+
                     <v-row>
                         <v-col cols="12">
                             <div class="input-container">
-                                <label for="account" class="FontDefault">Tài khoản</label>
+                                <label for="account" class="FontDefault">Mã nhân viên</label>
+                                <input type="text" id="account" :value="responseData.data.maNhanVien" class="FontDefault"
+                                     />
+                            </div>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12">
+                            <div class="input-container">
+                                <label for="account" class="FontDefault">Tài khoản (user đăng nhập)</label>
                                 <input type="text" id="account" :value="responseData.data.firstName" class="FontDefault"
-                                    readonly />
+                                     />
                             </div>
-                        </v-col>
-                    </v-row>
-
-
-                    <v-row>
-                        <v-col cols="12">
-                            <div class="input-container">
-                                <label for="account" class="FontDefault">Ma nhân viên</label>
-                                <input type="text" id="account" :value="responseData.data.maNhanVien"
-                                    class="FontDefault" readonly />
-                            </div>
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col cols="12">
-                            <ComboboxData -role-id=""/>
                         </v-col>
                     </v-row>
 
@@ -34,8 +28,8 @@
                         <v-col cols="12">
                             <div class="input-container">
                                 <label for="account" class="FontDefault">Quyền</label>
-                                <input type="text" id="account" :value="responseData.data.normalizedUserName"
-                                    class="FontDefault" readonly />
+                                <CbPhanQuyen :RoleId="responseData.data.roleId" />
+
                             </div>
                         </v-col>
                     </v-row>
@@ -45,7 +39,7 @@
                             <div class="input-container">
                                 <label for="account" class="FontDefault">Email</label>
                                 <input type="text" id="account" :value="responseData.data.email" class="FontDefault"
-                                    readonly />
+                                     />
                             </div>
                         </v-col>
                     </v-row>
@@ -55,7 +49,7 @@
                             <div class="input-container">
                                 <label for="account" class="FontDefault">Họ</label>
                                 <input type="text" id="account" :value="responseData.data.firstName" class="FontDefault"
-                                    readonly />
+                                     />
                             </div>
                         </v-col>
                     </v-row>
@@ -65,7 +59,7 @@
                             <div class="input-container">
                                 <label for="account" class="FontDefault">Tên</label>
                                 <input type="text" id="account" :value="responseData.data.lastName" class="FontDefault"
-                                    readonly />
+                                     />
                             </div>
                         </v-col>
                     </v-row>
@@ -75,7 +69,7 @@
                             <div class="input-container">
                                 <label for="account" class="FontDefault">Số điện thoại</label>
                                 <input type="text" id="account" :value="responseData.data.phoneNumber"
-                                    class="FontDefault" readonly />
+                                    class="FontDefault"  />
                             </div>
                         </v-col>
                     </v-row>
@@ -120,7 +114,7 @@ let alert = ref({
 interface UserData {
     firstName: string;
     lastName: string;
-    maNhanVien: string;
+    maNhanVien: string | null;
     id: string;
     userName: string;
     normalizedUserName: string;
@@ -135,6 +129,7 @@ interface UserData {
     lockoutEnd: string | null;
     lockoutEnabled: boolean;
     accessFailedCount: number;
+    roleId: string;
 }
 
 interface APIResponse {
@@ -160,7 +155,6 @@ async function LoadUserInfo(UserId: string) {
     try {
         const response = await callAuthenticationAPI('/api/account/GetUserById?userId=' + UserId, 'GET', {}, { timeout: 15000 });
         responseData.value = response as APIResponse; // Gán trực tiếp nếu dùng reactive
-        console.log(responseData.value);
     } catch (error) {
         alert.value.text = error as string;
         alert.value.visible = true;

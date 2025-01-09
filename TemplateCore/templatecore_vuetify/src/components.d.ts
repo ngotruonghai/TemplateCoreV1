@@ -9,8 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     Alert: typeof import('./components/Alert/Alert.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    BtnDiaLogYesNo: typeof import('./components/Common/BtnDiaLogYesNo.vue')['default']
+    CbPhanQuyen: typeof import('./components/Common/CbPhanQuyen.vue')['default']
     ComboboxData: typeof import('./components/Common/ComboboxData.vue')['default']
     DanhSachUser: typeof import('./components/UserAcount/DanhSachUser.vue')['default']
+    DiaLogYesNo: typeof import('./components/Common/DiaLogYesNo.vue')['default']
     MainHome: typeof import('./components/Main/MainHome.vue')['default']
     Navigation: typeof import('./components/Main/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

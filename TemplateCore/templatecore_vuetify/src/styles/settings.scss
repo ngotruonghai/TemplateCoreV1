@@ -116,8 +116,41 @@ input:focus {
 }
 
 .btnAdd:hover {
-  background-color: #4096ff; /* White background on hover */
+  background-color: #5ea4fa; /* White background on hover */
 }
+
+.btnCancel {
+  background-color: #ee9836; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 10px;
+  font-size: $font_size;
+  font-family: $font_default;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.btnCancel:hover {
+  background-color: #5ea4fa; /* White background on hover */
+}
+
+.btnCancel {
+  background-color: #c4c3c3; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 10px;
+  font-size: $font_size;
+  font-family: $font_default;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.btnCancel:hover {
+  background-color: #dddcdc; /* White background on hover */
+}
+
 .icon-border {
   display: inline-flex;
   align-items: center;
@@ -134,4 +167,3 @@ input:focus {
 .icon-border i {
   font-size: 10px; /* Kích thước icon */
 }
-

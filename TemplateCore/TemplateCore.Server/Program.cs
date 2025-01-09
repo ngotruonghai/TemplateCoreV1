@@ -1,10 +1,12 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using TemplateCore.Application.Interfaces;
 using TemplateCore.Infrastructure.Identity;
 using TemplateCore.Infrastructure.Persistence;
 using TemplateCore.Infrastructure.Shared;
 using TemplateCore.Server.Extensions;
 using TemplateCore.Server.Initializer;
+using TemplateCore.Server.Services;
 
 namespace TemplateCore.Server
 {
@@ -22,6 +24,7 @@ namespace TemplateCore.Server
             _services.AddEnvironmentVariablesExtension();
             _services.AddSharedInfrastructure(_config);
             _services.AddSqlServerPersistenceInfrastructure(typeof(Program).Assembly.FullName);
+            _services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
             #region Swagger
 

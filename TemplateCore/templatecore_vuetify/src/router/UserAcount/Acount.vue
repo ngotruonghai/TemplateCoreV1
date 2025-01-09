@@ -6,7 +6,7 @@
 
         </v-col>
         <v-col cols="12" md="6">
-          <button class="btnAdd btn">
+          <button class="btnAdd btn" v-on:click="btnCreateClick">
             <span class="icon-border">
               <i class="fas fa-plus"></i>
             </span> Thêm mới
@@ -16,7 +16,7 @@
       <v-row>
         <v-col cols="12">
           <div>
-            <DanhSachUser :responseData="responseData" :items="items" />
+            <DanhSachUser :responseData="responseData"/>
           </div>
         </v-col>
       </v-row>
@@ -39,6 +39,8 @@
 
 <script lang="ts" setup>
 import { callApi, callAuthenticationAPI } from '@/providers/data-provider';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 let alert = ref({
   visible: false, // Trạng thái hiển thị snackbar
@@ -47,44 +49,6 @@ let alert = ref({
   title: 'Login Failed', // Tiêu đề thông báo (không dùng trong ví dụ này)
   text: 'Invalid username or password. Please try again.', // Nội dung thông báo
 });
-
-let items = [
-  {
-    name: 'Nebula GTX 3080',
-    image: '1.png',
-    price: 699.99,
-    rating: 5,
-    stock: true,
-  },
-  {
-    name: 'Galaxy RTX 3080',
-    image: '2.png',
-    price: 799.99,
-    rating: 4,
-    stock: false,
-  },
-  {
-    name: 'Orion RX 6800 XT',
-    image: '3.png',
-    price: 649.99,
-    rating: 3,
-    stock: true,
-  },
-  {
-    name: 'Vortex RTX 3090',
-    image: '4.png',
-    price: 1499.99,
-    rating: 4,
-    stock: true,
-  },
-  {
-    name: 'Cosmos GTX 1660 Super',
-    image: '5.png',
-    price: 299.99,
-    rating: 4,
-    stock: false,
-  },
-];
 interface User {
   firstName: string;
   lastName: string;
@@ -131,6 +95,11 @@ async function API_UserInfo() {
     alert.value.visible = true;
   }
 }
+
+function btnCreateClick(){
+  router.push("/home/createuser");
+}
+
 onMounted(async () => {
   await API_UserInfo();
 });

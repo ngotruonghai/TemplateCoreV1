@@ -3,6 +3,7 @@ using TemplateCore.Application.Interfaces;
 using TemplateCore.Application.Services;
 using TemplateCore.Domain.Common;
 using TemplateCore.Domain.Entities;
+using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Infrastructure.Persistence.Contexts
 {

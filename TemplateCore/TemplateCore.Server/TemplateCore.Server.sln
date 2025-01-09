@@ -11,15 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{4E5AB070-76B1-4F95-B30B-13BECB9843A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateCore.Domain", "..\TemplateCore.Domain\TemplateCore.Domain.csproj", "{6CC872BC-0390-43F1-BA85-4706C6CAA046}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCore.Domain", "..\TemplateCore.Domain\TemplateCore.Domain.csproj", "{6CC872BC-0390-43F1-BA85-4706C6CAA046}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateCore.Application", "..\TemplateCore.Application\TemplateCore.Application.csproj", "{EF1CA472-3FE6-405E-953D-61E2518385C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCore.Application", "..\TemplateCore.Application\TemplateCore.Application.csproj", "{EF1CA472-3FE6-405E-953D-61E2518385C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateCore.Infrastructure.Identity", "..\TemplateCore.Infrastructure.Identity\TemplateCore.Infrastructure.Identity.csproj", "{944C2639-B7D7-4926-A998-73E7647E9910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCore.Infrastructure.Identity", "..\TemplateCore.Infrastructure.Identity\TemplateCore.Infrastructure.Identity.csproj", "{944C2639-B7D7-4926-A998-73E7647E9910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateCore.Infrastructure.Persistence", "..\TemplateCore.Infrastructure.Persistence\TemplateCore.Infrastructure.Persistence.csproj", "{38BAAE20-CF5A-4833-8B72-B9CE3C34742F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCore.Infrastructure.Persistence", "..\TemplateCore.Infrastructure.Persistence\TemplateCore.Infrastructure.Persistence.csproj", "{38BAAE20-CF5A-4833-8B72-B9CE3C34742F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateCore.Infrastructure.Shared", "..\TemplateCore.Infrastructure.Shared\TemplateCore.Infrastructure.Shared.csproj", "{D1E5D505-41AE-4DAD-B514-E5CAF74CC003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateCore.Infrastructure.Shared", "..\TemplateCore.Infrastructure.Shared\TemplateCore.Infrastructure.Shared.csproj", "{D1E5D505-41AE-4DAD-B514-E5CAF74CC003}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{C82CB504-8CAC-476F-9087-C401E11EAA7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{C07E98DC-C9C1-4BBB-BDFF-095D53EDDB31} = {C82CB504-8CAC-476F-9087-C401E11EAA7D}
 		{6CC872BC-0390-43F1-BA85-4706C6CAA046} = {163BF781-BF94-403C-AA62-0B5D13EF7DB7}
 		{EF1CA472-3FE6-405E-953D-61E2518385C4} = {163BF781-BF94-403C-AA62-0B5D13EF7DB7}
 		{944C2639-B7D7-4926-A998-73E7647E9910} = {2AED6FC8-3599-4BAA-8B7C-038C15D03F92}

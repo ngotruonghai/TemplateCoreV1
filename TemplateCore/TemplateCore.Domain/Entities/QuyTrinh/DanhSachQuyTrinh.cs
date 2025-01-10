@@ -14,10 +14,8 @@
         [MaxLength(100)]
         public string UserName {  get; set; }
 
-        public int DiagramNodeId {  get; set; }
         public ICollection<DiagramNode> DiagramNodes { get; set; }
 
-        public int NodeId {  get; set; }
         public ICollection<Node> Nodes {  get; set; }
     }
 }

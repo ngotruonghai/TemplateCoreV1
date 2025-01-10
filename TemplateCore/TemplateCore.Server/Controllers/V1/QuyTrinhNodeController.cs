@@ -13,7 +13,7 @@ namespace TemplateCore.Server.Controllers.V1
 
 
         
-        [HttpGet("AddQuyTrinhNode")]
+        [HttpPost("AddQuyTrinhNode")]
         public async Task<IActionResult> AddQuyTrinhNode(AddNodeDetailCommand command)
         {
             return Ok(await Mediator.Send(command));

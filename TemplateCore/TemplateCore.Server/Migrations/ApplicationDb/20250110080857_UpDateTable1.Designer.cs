@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250110080857_UpDateTable1")]
+    partial class UpDateTable1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,6 +124,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
@@ -135,6 +139,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
@@ -163,12 +168,14 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MaQuyTrinh")
@@ -206,6 +213,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DanhSachQuyTrinhId")
@@ -220,6 +228,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("lineAttributes")
@@ -248,6 +257,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DanhSachQuyTrinhId")
@@ -262,6 +272,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("label")

@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, computed } from 'vue';
 import * as joint from 'jointjs';
+import { callAuthenticationAPI } from "@/providers/data-provider";
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -47,8 +48,15 @@ interface INodeMap {
     position: string | null
     label: string | null,
 }
+interface IDiagram {
+    KeyId: string | null,
+    source: string | null,
+    lineAttributes: string | null,
+    target: string | null
+}
 const request = ref({
-    INodeMap: [] as INodeMap[], // khởi tạo là danh sách rỗng
+    INodeMap: [] as INodeMap[],
+    IDiagram: [] as IDiagram[]
 });
 
 onMounted(() => {
@@ -205,25 +213,40 @@ const saveLinks = () => {
     // Lấy thông tin của các liên kết, bao gồm nguồn, đích và các thuộc tính liên quan
     const linkData = links.map((link) => {
         return {
-            id: link.id, // ID của liên kết
-            source: link.source().id, // ID của node nguồn
-            target: link.target().id, // ID của node đích
-            lineAttributes: JSON.stringify(link.attr('line')), // Các thuộc tính của đường liên kết (màu, độ dày, v.v.)
+            KeyId: link.id ? String(link.id) : null, // Chuyển ID sang string
+            source: link.source().id ? String(link.source().id) : null, // Chuyển ID nguồn sang string
+            target: link.target().id ? String(link.target().id) : null, // Chuyển ID đích sang string
+            lineAttributes: link.attr('line') ? JSON.stringify(link.attr('line')) : null, // Thuộc tính đường liên kết
         };
     });
+    request.value.IDiagram = linkData;
 
     // In ra console thông tin các liên kết
     console.log('Danh sách các liên kết:', linkData);
 };
-function AddQuyTrinh(){
-    console.log( request.value.INodeMap);
+async function AddQuyTrinh() {
+    try {
+        let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
+            lsdiagram: request.value.IDiagram,
+            lsnodes: request.value.INodeMap,
+            MaQuyTrinh: "123",
+            TenQuyTrinh: "123",
+            UserId: "dsads",
+            UserName: "dsads"
+        }, {
+            timeout: 15000
+        });
+        console.log(responseData);
+    } catch (error) {
+        console.log(error);
+    }
 }
 </script>
 
 <style scoped>
 .diagram-container {
     background: linear-gradient(0deg, transparent 9%, #ddd 10%) 0% 0%,
-                linear-gradient(90deg, transparent 9%, #ddd 10%) 0% 0%;
+        linear-gradient(90deg, transparent 9%, #ddd 10%) 0% 0%;
     background-size: 10px 10px;
     position: relative;
     overflow: auto;

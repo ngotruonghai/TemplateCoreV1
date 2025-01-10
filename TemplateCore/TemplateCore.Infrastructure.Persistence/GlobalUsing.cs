@@ -1,8 +1,11 @@
-﻿global using System;
-global using System.Collections.Generic;
+﻿global using System.Collections.Generic;
 global using System.Linq;
-global using System.Text;
 global using System.Threading.Tasks;
-global using System.ComponentModel.DataAnnotations.Schema;
-global using TemplateCore.Domain.Enums;
 global using Microsoft.EntityFrameworkCore;
+global using TemplateCore.Domain.Entities.QuyTrinh;
+global using TemplateCore.Infrastructure.Persistence.Contexts;
+global using Microsoft.Extensions.DependencyInjection;
+global using TemplateCore.Application.Interfaces;
+global using TemplateCore.Domain.Entities;
+global using TemplateCore.Infrastructure.Persistence.Repositories;
+global using TemplateCore.Infrastructure.Shared.Environments;

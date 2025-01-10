@@ -88,7 +88,6 @@ namespace TemplateCore.Infrastructure.Identity
         {
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg =>
             {

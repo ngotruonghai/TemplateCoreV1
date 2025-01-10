@@ -1,9 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using TemplateCore.Domain.Entities;
-using TemplateCore.Infrastructure.Persistence.Contexts;
-using TemplateCore.Infrastructure.Shared.Environments;
+﻿using System.Reflection;
 
 namespace TemplateCore.Infrastructure.Persistence
 {
@@ -30,6 +25,11 @@ namespace TemplateCore.Infrastructure.Persistence
 
         public static void AddPersistenceRepositories(this IServiceCollection services)
         {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddScoped<IDanhSachQuyTrinhRepositoryAsync, DanhSachQuyTrinhRepositoryAsync>();
+            services.AddScoped<IDiagramNodeRepositoryAsync, DiagramNodeRepositoryAsync>();
+            services.AddScoped<INodeRepositoryAsync, NodeRepositoryAsync>();
         }
     }
 }

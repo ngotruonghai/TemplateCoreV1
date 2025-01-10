@@ -8,3 +8,8 @@ global using TemplateCore.Application.Wrappers;
 global using TemplateCore.Application.Services;
 global using MediatR;
 global using TemplateCore.Domain.Enums;
+global using TemplateCore.Domain.Entities.QuyTrinh;
+global using AutoMapper;
+global using TemplateCore.Application.Features.QuyTrinhNode.Commads;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Reflection;

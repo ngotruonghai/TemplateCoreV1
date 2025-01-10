@@ -42,6 +42,7 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
             }
             return base.SaveChangesAsync(cancellationToken);
         }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

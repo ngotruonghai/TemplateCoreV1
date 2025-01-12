@@ -18,6 +18,5 @@
         public string? label { get; set; }
 
         public int DanhSachQuyTrinhId { get; set; }
-        public virtual DanhSachQuyTrinh DanhSachQuyTrinhs { get; set; }
     }
 }

@@ -236,7 +236,7 @@ async function AddQuyTrinh() {
         }, {
             timeout: 15000
         });
-        console.log(responseData);
+        console.log(request.value.INodeMap);
     } catch (error) {
         console.log(error);
     }

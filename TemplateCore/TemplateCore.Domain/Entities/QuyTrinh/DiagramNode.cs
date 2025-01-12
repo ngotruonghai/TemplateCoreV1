@@ -11,9 +11,11 @@
         [MaxLength(100)]
         public string? source { get; set; }
 
+        [MaxLength(250)]
+        public string? target { get; set; }
+
         public string? lineAttributes { get; set; }
 
         public int DanhSachQuyTrinhId { get; set; }
-        public virtual DanhSachQuyTrinh DanhSachQuyTrinhs { get; set; }
     }
 }

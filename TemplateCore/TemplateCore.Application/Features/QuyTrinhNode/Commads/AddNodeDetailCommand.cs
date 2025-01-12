@@ -5,7 +5,7 @@ using TemplateCore.Domain.Entities.QuyTrinh;
 
 namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
 {
-    public class AddNodeDetailCommand : IRequest<Response<object>>
+    public class AddNodeDetailCommand : IRequest<Response<int>>
     {
         public string? MaQuyTrinh { get; set; }
 
@@ -14,13 +14,11 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
         public string? UserId { get; set; }
 
         public string? UserName { get; set; }
-        //public ICollection<DiagramNode>? DiagramNodes { get; set; }
 
-        //public ICollection<Node>? Nodes { get; set; }
         public List<ListNodeModel>? lsnodes { get; set; }
         public List<ListDiagramModel>? lsdiagram { get; set; }
 
-        public class AddNodeDetailCommandHandler : IRequestHandler<AddNodeDetailCommand, Response<object>>
+        public class AddNodeDetailCommandHandler : IRequestHandler<AddNodeDetailCommand, Response<int>>
         {
             private readonly IDanhSachQuyTrinhRepositoryAsync _danhSachQuyTrinhRepository;
             private readonly IDiagramNodeRepositoryAsync _diagramNodeRepository;
@@ -38,7 +36,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                 _mapper = mapper;
             }
 
-            public async Task<Response<object>> Handle(AddNodeDetailCommand request, CancellationToken cancellationToken)
+            public async Task<Response<int>> Handle(AddNodeDetailCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
@@ -68,6 +66,8 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                             source = data.source,
                             lineAttributes = data.lineAttributes,
                             DanhSachQuyTrinhId = danhsach.Id,
+                            target = data.target,
+                            
                         }).ToList();
                         await _diagramNodeRepository.AddRangeAsync(lsDiagramNode);
                         await _diagramNodeRepository.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                     await _danhSachQuyTrinhRepository.SaveChangesAsync();
                     
 
-                    return new Response<object>(1);
+                    return new Response<int>(danhsach.Id);
                 }
                 catch (Exception ex)
                 {

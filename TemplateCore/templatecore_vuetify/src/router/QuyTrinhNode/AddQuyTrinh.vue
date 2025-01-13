@@ -58,6 +58,7 @@ const request = ref({
     INodeMap: [] as INodeMap[],
     IDiagram: [] as IDiagram[]
 });
+let positions: { x: number; y: number }[] = [];
 
 onMounted(() => {
     // Tạo Graph (model)
@@ -138,6 +139,8 @@ const createNode = (type: 'square' | 'diamond' | 'ellipse') => {
         contextMenuPosition.x - (paper.options.el as HTMLElement).offsetLeft,
         contextMenuPosition.y - (paper.options.el as HTMLElement).offsetTop
     );
+    const x = contextMenuPosition.x - (paper.options.el as HTMLElement).offsetLeft;
+    const y = contextMenuPosition.y - (paper.options.el as HTMLElement).offsetTop;
 
     newNode.attr({
         body: { fill: 'orange' },
@@ -168,8 +171,8 @@ const createNode = (type: 'square' | 'diamond' | 'ellipse') => {
     hideContextMenu();
 
     // Sau khi tạo node, lưu lại thông tin các node và các liên kết
-    saveNodes();
-    saveLinks();
+    //saveNodes(x, y);
+    //saveLinks();
 };
 
 // Xóa node đã chọn
@@ -184,17 +187,16 @@ const deleteNode = () => {
     hideContextMenu();
 
     // Sau khi xóa node, lưu lại thông tin các node và các liên kết
-    saveNodes();
-    saveLinks();
+    //saveNodes();
+    //saveLinks();
 };
 
 // Hàm lưu các node và in ra console thông tin
 const saveNodes = () => {
     // Lấy tất cả các node trong graph
     const nodes = graph.getElements();
-
     // Lấy thông tin của các node, bao gồm vị trí và loại hình
-    const nodeData = nodes.map((node) => {
+    const nodeData = nodes.map((node,index) => {
         return {
             KeyId: String(node.id), // Chuyển đổi ID thành chuỗi
             type: String(node.get('type')) || null, // Chuyển đổi type thành chuỗi hoặc null
@@ -222,10 +224,11 @@ const saveLinks = () => {
     request.value.IDiagram = linkData;
 
     // In ra console thông tin các liên kết
-    console.log('Danh sách các liên kết:', linkData);
 };
 async function AddQuyTrinh() {
     try {
+        saveNodes();
+        saveLinks();
         let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
             lsdiagram: request.value.IDiagram,
             lsnodes: request.value.INodeMap,
@@ -236,7 +239,6 @@ async function AddQuyTrinh() {
         }, {
             timeout: 15000
         });
-        console.log(request.value.INodeMap);
     } catch (error) {
         console.log(error);
     }

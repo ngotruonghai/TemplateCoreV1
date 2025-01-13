@@ -51,7 +51,7 @@ interface DiagramNode {
     created: string;
     lastModifiedBy: string | null;
     lastModified: string | null;
-    target:string ;
+    target: string;
 }
 
 interface Node {
@@ -132,7 +132,7 @@ onMounted(() => {
 
 async function LoadDataAPI() {
     try {
-        const response = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById?QuyTringId=26', 'GET', {}, { timeout: 15000 });
+        const response = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById?QuyTringId=50', 'GET', {}, { timeout: 15000 });
         responseData.value = response as ApiResponse<QuyTrinh[]>; // Gán trực tiếp nếu dùng reactive
         console.log(responseData.value.data);
         mapNodesFromAPI();
@@ -140,7 +140,7 @@ async function LoadDataAPI() {
 
     }
 }
-function test(){
+function test() {
     logAllNodes();
 }
 
@@ -158,11 +158,12 @@ const mapNodesFromAPI = () => {
             const paperRect = paper.viewport.getBoundingClientRect();
             const containerRect = paperContainer.value?.getBoundingClientRect();
             if (containerRect && paperRect) {
-                const offsetX = containerRect.left + window.scrollX - paperRect.left;
-                const offsetY = containerRect.top + window.scrollY - paperRect.top;
+                const offsetX = containerRect.left ;
+                const offsetY = containerRect.top;
 
                 // Điều chỉnh vị trí node
                 newNode.position(position.x, position.y);
+
             }
 
             newNode.resize(120, 60);

@@ -1,10 +1,4 @@
-﻿
-using TemplateCore.Application.Interfaces;
-using TemplateCore.Application.Services;
-using TemplateCore.Domain.Common;
-using TemplateCore.Domain.Entities;
-using TemplateCore.Domain.Entities.QuyTrinh;
-using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
+﻿using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Infrastructure.Persistence.Contexts
 {
@@ -23,6 +17,9 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
         public DbSet<DanhSachQuyTrinh> DanhSachQuyTrinhs { get; set; }
         public DbSet<DiagramNode> DiagramNodes { get; set; }
         public DbSet<Node> Nodes { get; set; }
+        public DbSet<PhongBan> PhongBans { get; set; }
+        public DbSet<DanhMucPhanQuyen> DanhMucPhanQuyens { get; set; }
+        public DbSet<DanhMuc> DanhMucs { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

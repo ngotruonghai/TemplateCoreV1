@@ -19,7 +19,7 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     PhoneNumberConfirmed = true,
                     MaNhanVien = "EMP00001",
                     TypeUser = TypeAccount.UserHeThong,
-                    MaPhongBan = Guid.NewGuid().ToString(),
+                    //MaPhongBan = Guid.NewGuid().ToString(),
                     PhoneNumber = "0968103653"
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))

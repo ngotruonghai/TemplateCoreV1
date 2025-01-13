@@ -40,6 +40,12 @@ const routess = [
         name:'ThemQuyTrinh',
         component: import('../router/QuyTrinhNode/AddQuyTrinh.vue'), // Component con cho /main/home
         props: true
+      },
+      {
+        path:'taophongban',
+        name:'TaoPhongBan',
+        component: import('../router/PhongBan/CreatePhongBan.vue'), // Component con cho /main/home
+        props: true
       }
     ]
   },

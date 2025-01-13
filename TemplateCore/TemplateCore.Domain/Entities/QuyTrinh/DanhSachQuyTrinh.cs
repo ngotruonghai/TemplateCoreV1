@@ -14,6 +14,14 @@
         [MaxLength(100)]
         public string UserName {  get; set; }
 
+        [MaxLength(500)]
+        public string? GhiChu {  get; set; }
+
+        /// <summary>
+        /// Ngày bắt đầu quy trình
+        /// </summary>
+        public DateTime? NgayBatDau { get; set; }
+
         public ICollection<DiagramNode> DiagramNodes { get; set; }
 
         public ICollection<Node> Nodes {  get; set; }

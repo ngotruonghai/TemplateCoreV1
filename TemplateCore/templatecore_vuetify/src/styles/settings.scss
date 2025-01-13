@@ -31,6 +31,18 @@ body::-webkit-scrollbar {
     background-color: $chiil_color;
     height: 100%;
 }
+.layoutChill {
+  background-color: white;
+  /* Màu nền trắng */
+  border-radius: 10px;
+  /* Bo góc (tăng giá trị để bo góc nhiều hơn) */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Hiệu ứng đổ bóng nhẹ */
+  padding: 20px;
+  /* Khoảng cách bên trong */
+  margin: 20px;
+  /* Khoảng cách bên ngoài */
+}
 
 #TitleName {
     background-color: $chiil_color;
@@ -166,4 +178,20 @@ input:focus {
 /* Đặt kích thước của icon */
 .icon-border i {
   font-size: 10px; /* Kích thước icon */
+}
+textarea.form-control {
+  width: 100%; /* Chiếm 100% chiều ngang của container */
+  height: 40px; /* Chiều cao của textarea (giống input) */
+  padding: 8px 10px; /* Khoảng cách nội dung */
+  font-size: 14px; /* Kích thước chữ */
+  border: 1px solid #ccc; /* Viền xám */
+  border-radius: 5px; /* Bo tròn góc */
+  outline: none; /* Loại bỏ đường viền mặc định khi focus */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Hiệu ứng lõm vào bên trong */
+  height: 100px;
+}
+
+textarea.form-control:focus {
+  border-color: #007bff; /* Màu viền khi focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng focus */
 }

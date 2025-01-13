@@ -7,5 +7,7 @@
         public DateTime Created { get; set; }
         public string? LastModifiedBy { get; set; }
         public DateTime? LastModified { get; set; }
+        public bool Status {  get; set; } = true;
+        public string? UserParentId {  get; set; }
     }
 }

@@ -232,10 +232,10 @@ async function AddQuyTrinh() {
         let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
             lsdiagram: request.value.IDiagram,
             lsnodes: request.value.INodeMap,
-            MaQuyTrinh: "123",
-            TenQuyTrinh: "123",
-            UserId: "dsads",
-            UserName: "dsads"
+            MaQuyTrinh: "",
+            TenQuyTrinh: "",
+            UserId: "",
+            UserName: localStorage.getItem("UserName")
         }, {
             timeout: 15000
         });

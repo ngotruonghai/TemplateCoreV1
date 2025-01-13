@@ -9,3 +9,6 @@ global using TemplateCore.Application.Interfaces;
 global using TemplateCore.Domain.Entities;
 global using TemplateCore.Infrastructure.Persistence.Repositories;
 global using TemplateCore.Infrastructure.Shared.Environments;
+global using TemplateCore.Domain.Common;
+global using TemplateCore.Domain.Entities.DanhMuc;
+global using TemplateCore.Domain.Entities.PhongBan;

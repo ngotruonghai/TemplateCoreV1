@@ -132,7 +132,7 @@ onMounted(() => {
 
 async function LoadDataAPI() {
     try {
-        const response = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById?QuyTringId=50', 'GET', {}, { timeout: 15000 });
+        const response = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById?QuyTringId=54', 'GET', {}, { timeout: 15000 });
         responseData.value = response as ApiResponse<QuyTrinh[]>; // Gán trực tiếp nếu dùng reactive
         console.log(responseData.value.data);
         mapNodesFromAPI();

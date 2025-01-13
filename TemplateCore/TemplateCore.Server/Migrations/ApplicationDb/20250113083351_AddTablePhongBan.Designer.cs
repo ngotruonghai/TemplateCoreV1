@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250113083351_AddTablePhongBan")]
+    partial class AddTablePhongBan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,89 +112,6 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         });
                 });
 
-            modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GhiChu")
-                        .HasMaxLength(350)
-                        .HasColumnType("nvarchar(350)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("TenDanhMuc")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("UrlLink")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DanhMucs", "tempplate");
-                });
-
-            modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMucPhanQuyen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DanhMucId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DanhMucId1")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DanhMucId1");
-
-                    b.ToTable("DanhMucPhanQuyens", "tempplate");
-                });
-
             modelBuilder.Entity("TemplateCore.Domain.Entities.KeyActive", b =>
                 {
                     b.Property<int>("Id")
@@ -232,47 +152,6 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.ToTable("KeyActives", "tempplate");
-                });
-
-            modelBuilder.Entity("TemplateCore.Domain.Entities.PhongBan.PhongBan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GhiChu")
-                        .HasMaxLength(350)
-                        .HasColumnType("nvarchar(350)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaPhongBan")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("TenPhongBan")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PhongBans", "tempplate");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", b =>
@@ -427,13 +306,6 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.ToTable("Nodes", "tempplate");
                 });
 
-            modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMucPhanQuyen", b =>
-                {
-                    b.HasOne("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", null)
-                        .WithMany("DanhMucPhanQuyens")
-                        .HasForeignKey("DanhMucId1");
-                });
-
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.DiagramNode", b =>
                 {
                     b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", null)
@@ -450,11 +322,6 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasForeignKey("DanhSachQuyTrinhId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", b =>
-                {
-                    b.Navigation("DanhMucPhanQuyens");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", b =>

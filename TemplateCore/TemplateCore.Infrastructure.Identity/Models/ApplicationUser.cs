@@ -16,7 +16,8 @@ namespace TemplateCore.Infrastructure.Identity.Models
         [MaxLength(250)]
         public string MaNhanVien { get; set; }
         [MaxLength(250)]
-        public string MaPhongBan { get; set; }
+        public string? MaPhongBan { get; set; }
+        public int? PhongBanId {  get; set; }
         [NotMapped]
         public string? RoleId { get; set; }
     }

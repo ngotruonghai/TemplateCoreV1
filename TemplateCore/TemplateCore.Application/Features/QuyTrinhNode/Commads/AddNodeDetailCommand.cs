@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TemplateCore.Application.Interfaces;
+﻿using TemplateCore.Application.Interfaces;
 using TemplateCore.Domain.DTOs.QuyTrinh;
-using TemplateCore.Domain.Entities.QuyTrinh;
+using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
 {
@@ -24,22 +23,30 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
             private readonly IDiagramNodeRepositoryAsync _diagramNodeRepository;
             private readonly INodeRepositoryAsync _nodeRepositoryAsync;
             private readonly IMapper _mapper;
+            private readonly IAuthenticatedUserService _authenticatedUserService;
 
             public AddNodeDetailCommandHandler(IDanhSachQuyTrinhRepositoryAsync danhSachQuyTrinhRepositoryAsync,
                 IDiagramNodeRepositoryAsync diagramNodeRepository,
                 INodeRepositoryAsync nodeRepositoryAsync,
-                IMapper mapper)
+                IMapper mapper,
+                IAuthenticatedUserService authenticatedUserService,
+                ITransaction transaction)
             {
                 _danhSachQuyTrinhRepository = danhSachQuyTrinhRepositoryAsync;
                 _diagramNodeRepository = diagramNodeRepository;
                 _nodeRepositoryAsync = nodeRepositoryAsync;
                 _mapper = mapper;
+                _authenticatedUserService = authenticatedUserService;
             }
 
             public async Task<Response<int>> Handle(AddNodeDetailCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
+                    DateTime now = DateTime.Now;
+                    request.UserId = _authenticatedUserService.UserId;
+                    request.MaQuyTrinh = "QT" + now.ToString("yyMMddHHmmss");
+
                     var danhsach = _mapper.Map<DanhSachQuyTrinh>(request);
                     await _danhSachQuyTrinhRepository.AddAsync(danhsach);
                     await _danhSachQuyTrinhRepository.SaveChangesAsync();

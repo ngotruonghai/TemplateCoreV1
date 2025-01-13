@@ -17,4 +17,8 @@
     <ProjectReference Include="..\TemplateCore.Domain\TemplateCore.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\PhongBan\Queries\" />
+  </ItemGroup>
+
 </Project>

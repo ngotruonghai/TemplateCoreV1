@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using TemplateCore.Application.Interfaces;
+using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
 {
@@ -12,30 +14,36 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
         public string? PhoneNumber { get; set; }
         public string? MaPhongBan { get; set; }
         public string? ParentUserId { get; set; }
+        public int PhongBanId {  get; set; }
 
         public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<int>>
         {
             private readonly RoleManager<IdentityRole> _roleManager;
             private readonly UserManager<ApplicationUser> _userManager;
             private readonly IAuthenticatedUserService _authenticatedUserService;
+            private readonly IPhongBanRepositoryAsync _phongBanRepositoryAsync;
+
             public CreateUserCommandHandler(
                 RoleManager<IdentityRole> roleManager,
                 UserManager<ApplicationUser> userManager,
-                IAuthenticatedUserService authenticatedUserService)
+                IAuthenticatedUserService authenticatedUserService,
+                IPhongBanRepositoryAsync phongBanRepositoryAsync)
             {
                 _roleManager = roleManager;
                 _userManager = userManager;
                 _authenticatedUserService = authenticatedUserService;
+                _phongBanRepositoryAsync = phongBanRepositoryAsync;
             }
             public async Task<Response<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
                     request.ParentUserId = _authenticatedUserService.parentUserId == "" ? _authenticatedUserService.UserId : _authenticatedUserService.parentUserId;
-                    request.MaPhongBan = _authenticatedUserService.maphongban;
+                    string maphongbanUser = _authenticatedUserService.maphongban;
                     
                     CheckValid();
-                    var listUser = await _userManager.Users.Where(x => x.MaPhongBan == request.MaPhongBan && x.LockoutEnabled == true).ToListAsync();
+                    /* Kiểm tra người tạo là ai */
+                    var listUser = await _userManager.Users.Where(x => x.MaPhongBan == maphongbanUser && x.LockoutEnabled == true).ToListAsync();
                     if (_authenticatedUserService.CheckUserSupperAdmin == false)
                     {
                         var userDangKy = listUser.Where(x => (x.TypeUser == TypeAccount.UserDangKy || x.TypeUser == TypeAccount.UserHeThong)
@@ -45,7 +53,11 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
                         if (_authenticatedUserService.permission.ToLower() != "ADMIN") throw new Exception("Không có quyền tạo tài khoản");
                     }
 
+                    var phongban = await _phongBanRepositoryAsync.GetPhongBanId(request.PhongBanId);
+
                     if (listUser.Any() == false) throw new Exception("Không tồn tại mã phòng ban này");
+                    if(phongban == null) throw new Exception("Không tồn tại phòng ban này");
+                    request.MaPhongBan = phongban.MaPhongBan;
 
                     ApplicationUser applicationUser = new ApplicationUser()
                     {
@@ -60,6 +72,7 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
                         MaPhongBan = request.MaPhongBan,
                         UserName = request.UserName,
                         PhoneNumber = request.PhoneNumber,
+                        PhongBanId = request.PhongBanId,
                     };
 
                     var result = await _userManager.CreateAsync(applicationUser, "123Pa$$word!");

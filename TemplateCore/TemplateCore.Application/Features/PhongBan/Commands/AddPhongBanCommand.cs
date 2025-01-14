@@ -1,4 +1,5 @@
-﻿using TemplateCore.Application.Interfaces;
+﻿using SimpleResults;
+using TemplateCore.Application.Interfaces;
 
 namespace TemplateCore.Application.Features.PhongBan.Commands
 {
@@ -11,19 +12,36 @@ namespace TemplateCore.Application.Features.PhongBan.Commands
 
         public class AddPhongBanCommandHandler : IRequestHandler<AddPhongBanCommand, Response<int>>
         {
-            private readonly IAccountService _accountService;
+            private readonly Interfaces.IAuthenticatedUserService _authenticatedUserService;
             private readonly IPhongBanRepositoryAsync _phongBanRepository;
 
-            public AddPhongBanCommandHandler(IAccountService accountService, IPhongBanRepositoryAsync phongBanRepository)
+            public AddPhongBanCommandHandler(Interfaces.IAuthenticatedUserService authenticatedUserService, IPhongBanRepositoryAsync phongBanRepository)
             {
-                _accountService = accountService;
+                _authenticatedUserService = authenticatedUserService;
                 _phongBanRepository = phongBanRepository;
             }
 
             public async Task<Response<int>> Handle(AddPhongBanCommand request, CancellationToken cancellationToken)
             {
-                if (string.IsNullOrEmpty(request.MaPhongBan)) throw new Exception("Mã phòng ban không được trống");
-                return new Response<int>(1);
+                try
+                {
+                    if (string.IsNullOrEmpty(request.MaPhongBan)) throw new Exception("Mã phòng ban không được trống");
+
+                    await _phongBanRepository.AddAsync(new Domain.Entities.PhongBan.PhongBan()
+                    {
+                        TenPhongBan = request.MaPhongBan,
+                        MaPhongBan = request.MaPhongBan,
+                        GhiChu = request.GhiChu
+                    });
+                    await _phongBanRepository.SaveChangesAsync();
+
+                    return new Response<int>(1);
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.Message;
+                    throw;
+                }
             }
         }
     }

@@ -89,7 +89,7 @@ export default {
             ['Quy trình', 'mdi-plus-outline', '/home/themquytrinh'],
         ],
         PhanQuyen:[
-            ['Phòng ban','mdi-plus-outline','/home/taophongban']
+            ['Phòng ban','mdi-plus-outline','/home/phongban']
         ],
         userName: ""
     }),

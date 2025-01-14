@@ -30,6 +30,8 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
                     case EntityState.Added:
                         entry.Entity.Created = _dateTime.Now;
                         entry.Entity.CreatedBy = _authenticatedUser.UserId;
+                        entry.Entity.UserParentId = _authenticatedUser.parentUserId?? null;
+                        entry.Entity.Status = true;
                         break;
                     case EntityState.Modified:
                         entry.Entity.LastModified = _dateTime.Now;
@@ -52,7 +54,7 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
             {
                 property.SetColumnType("decimal(18,6)");
             }
-            base.OnModelCreating(builder);
+
         }
     }
 }

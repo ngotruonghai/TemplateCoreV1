@@ -21,7 +21,7 @@
                                     Tài khoản (user đăng nhập không dấu không khoảng cách)
                                 </label>
                                 <input type="text" id="myInputId" class="FontDefault" placeholder="VD: nguyenvantuan"
-                                    v-model="taikhoan" ref="taiKhoanRef" >
+                                    v-model="taikhoan" ref="taiKhoanRef">
                             </div>
                         </v-col>
                     </v-row>
@@ -29,11 +29,13 @@
                     <v-row>
                         <v-col cols="12">
                             <div class="input-container">
-                                <label for="" class="FontDefault">                                    
+                                <label for="" class="FontDefault">
                                     Mật khẩu (mặc định)
-                                    <div style="display: inline-block; vertical-align: middle; color: red;">Người dụng tự đổi mật khẩu khi vào phần mềm</div>
+                                    <div style="display: inline-block; vertical-align: middle; color: red;">Người dụng
+                                        tự đổi mật khẩu khi vào phần mềm</div>
                                 </label>
-                                <input type="text" id="myInputId" class="FontDefault" placeholder="" value="123Pa$$word!" ref="taiKhoanRef" readonly />
+                                <input type="text" id="myInputId" class="FontDefault" placeholder=""
+                                    value="123Pa$$word!" ref="taiKhoanRef" readonly />
                             </div>
                         </v-col>
                     </v-row>
@@ -46,7 +48,14 @@
                             </div>
                         </v-col>
                     </v-row>
-
+                    <v-row>
+                        <v-col cols="12">
+                            <div class="input-container">
+                                <label for="" class="FontDefault">Phòng ban</label>
+                                <CBPhongBan :Id="selectedRoleId" @update:Id="GetIdPhongBan" />
+                            </div>
+                        </v-col>
+                    </v-row>
                     <v-row>
                         <v-col cols="12">
                             <div class="input-container">
@@ -86,7 +95,8 @@
                         <v-col cols="12">
                             <div class="input-container">
                                 <label for="" class="FontDefault">Số điện thoại</label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: 0968103653" v-model="phoneNumber"/>
+                                <input type="text" id="" class="FontDefault" placeholder="VD: 0968103653"
+                                    v-model="phoneNumber" />
                             </div>
                         </v-col>
                     </v-row>
@@ -133,6 +143,7 @@ let ten = ref<string>("");
 let ho = ref<string>("");
 let email = ref<string>("");
 let selectedRoleId = ref<string>("");
+let selectPhongBanId = ref<string>("");
 let isshow = ref(false);
 let message = ref('');
 let phoneNumber = ref('');
@@ -149,16 +160,14 @@ interface requestData {
 const taikhoan = computed({
     get: () => rawInput.value,
     set: (value: string) => {
-      // Chỉ cho phép chữ cái và số (a-z, A-Z, 0-9)
-      rawInput.value = value.replace(/[^a-zA-Z0-9]/g, '');
+        // Chỉ cho phép chữ cái và số (a-z, A-Z, 0-9)
+        rawInput.value = value.replace(/[^a-zA-Z0-9]/g, '');
     }
-  });
+});
 
 const childData = ref<boolean>(false);
 // Hàm xử lý dữ liệu từ component con
 const handleDataFromChild = (data: boolean) => {
-    debugger;
-
     childData.value = data;
     if (childData.value == true) {
         CreateUserDataAPI();
@@ -166,9 +175,11 @@ const handleDataFromChild = (data: boolean) => {
 };
 // Hàm xử lý sự kiện update:RoleId từ component con
 function updateRoleId(newRoleId: string) {
-    selectedRoleId.value = newRoleId;    
+    selectedRoleId.value = newRoleId;
 }
-
+function GetIdPhongBan(NewId: string) {
+    selectPhongBanId.value = NewId;
+}
 // Hàm kiểm tra trước khi hiển thị dialog
 const triggerValidation = () => {
 
@@ -192,18 +203,19 @@ const triggerValidation = () => {
         isshow.value = true;
     }
 
-   
+
 };
 
 async function CreateUserDataAPI() {
     try {
         let responseData = await callAuthenticationAPI('/api/account/CreateAcount', 'POST', {
-            roleId: selectedRoleId.value??"",
-            firstName: ho.value??"",
-            lastName: ten.value??"",
-            email: email.value??"",
-            userName: taikhoan.value??"",
-            phoneNumber: phoneNumber.value??""
+            roleId: selectedRoleId.value ?? "",
+            firstName: ho.value ?? "",
+            lastName: ten.value ?? "",
+            email: email.value ?? "",
+            userName: taikhoan.value ?? "",
+            phoneNumber: phoneNumber.value ?? "",
+            phongBanId: selectPhongBanId.value
         }, {
             timeout: 15000
         });

@@ -76,3 +76,12 @@ export const callAuthenticationAPI = async <T>(
     }
   }
 };
+
+export function convertToDate(isoDate: string): string {
+  const date = new Date(isoDate); // Chuyển chuỗi ISO thành đối tượng Date
+  const day = date.getDate().toString().padStart(2, "0"); // Lấy ngày và thêm số 0 nếu cần
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Tháng bắt đầu từ 0
+  const year = date.getFullYear().toString(); // Lấy năm
+
+  return `${day}/${month}/${year}`;
+}

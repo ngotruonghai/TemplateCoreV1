@@ -46,6 +46,12 @@ const routess = [
         name:'TaoPhongBan',
         component: import('../router/PhongBan/CreatePhongBan.vue'), // Component con cho /main/home
         props: true
+      },
+      {
+        path:'phongban',
+        name:'PhongBan',
+        component: import('../router/PhongBan/DanhSachPhongBan.vue'), // Component con cho /main/home
+        props: true
       }
     ]
   },

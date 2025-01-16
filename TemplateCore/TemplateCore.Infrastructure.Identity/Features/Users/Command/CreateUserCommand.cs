@@ -42,8 +42,9 @@ namespace TemplateCore.Infrastructure.Identity.Features.Users.Command
                     string maphongbanUser = _authenticatedUserService.maphongban;
                     
                     CheckValid();
-                    /* Kiểm tra người tạo là ai */
-                    var listUser = await _userManager.Users.Where(x => x.MaPhongBan == maphongbanUser && x.LockoutEnabled == true).ToListAsync();
+
+                    /* Kiểm tra người tạo là ai SupperAdmin không tạo được  */
+                    var listUser = await _userManager.Users.Where(x => x.ParentUserId == request.ParentUserId && x.LockoutEnabled == true).ToListAsync();
                     if (_authenticatedUserService.CheckUserSupperAdmin == false)
                     {
                         var userDangKy = listUser.Where(x => (x.TypeUser == TypeAccount.UserDangKy || x.TypeUser == TypeAccount.UserHeThong)

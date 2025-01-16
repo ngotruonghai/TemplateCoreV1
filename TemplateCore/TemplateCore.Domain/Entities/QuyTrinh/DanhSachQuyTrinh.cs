@@ -20,7 +20,7 @@
         /// <summary>
         /// Ngày bắt đầu quy trình
         /// </summary>
-        public DateTime? NgayBatDau { get; set; }
+        public DateTime NgayBatDau { get; set; } = DateTime.Now;
 
         public ICollection<DiagramNode> DiagramNodes { get; set; }
 

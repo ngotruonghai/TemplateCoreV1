@@ -36,7 +36,7 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
         {
             try
             {
-                if (this.permission == "SuperAdmin" && this.parentUserId == "")
+                if (this.permission == "SuperAdmin" && this.parentUserId == "1")
                     return true;
                 else return false;
             }

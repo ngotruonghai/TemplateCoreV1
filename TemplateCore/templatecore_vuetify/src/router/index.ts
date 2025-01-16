@@ -36,12 +36,6 @@ const routess = [
         props: true
       },
       {
-        path:'themquytrinh',
-        name:'ThemQuyTrinh',
-        component: import('../router/QuyTrinhNode/AddQuyTrinh.vue'), // Component con cho /main/home
-        props: true
-      },
-      {
         path:'taophongban',
         name:'TaoPhongBan',
         component: import('../router/PhongBan/CreatePhongBan.vue'), // Component con cho /main/home
@@ -51,6 +45,18 @@ const routess = [
         path:'phongban',
         name:'PhongBan',
         component: import('../router/PhongBan/DanhSachPhongBan.vue'), // Component con cho /main/home
+        props: true
+      },
+      {
+        path:'danhsachquytrinh',
+        name:'DanhSachQuyTrinh',
+        component: import('../router/QuyTrinhNode/DanhSachQuyTrinh.vue'), // Component con cho /main/home
+        props: true
+      },
+      {
+        path:'taoquytrinh',
+        name:'TaoQuyTrinh',
+        component: import('../router/QuyTrinhNode/AddQuyTrinh.vue'), // Component con cho /main/home
         props: true
       }
     ]

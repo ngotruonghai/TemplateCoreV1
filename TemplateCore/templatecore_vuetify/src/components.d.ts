@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddNode: typeof import('./components/QuyTrinh/AddNode.vue')['default']
     Alert: typeof import('./components/Alert/Alert.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BtnDiaLogYesNo: typeof import('./components/Common/BtnDiaLogYesNo.vue')['default']

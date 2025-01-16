@@ -18,5 +18,9 @@
         public string? label { get; set; }
 
         public int DanhSachQuyTrinhId { get; set; }
+
+        public int NodeSettingId {  get; set; }
+
+        public virtual NodeSetting? NodeSettings { get; set; }
     }
 }

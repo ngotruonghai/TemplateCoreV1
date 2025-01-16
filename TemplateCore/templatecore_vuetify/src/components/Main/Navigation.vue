@@ -86,7 +86,7 @@ export default {
             ['Đăng xuất', 'mdi-plus-outline', '/Login'],
         ],
         QuyTrinh: [
-            ['Quy trình', 'mdi-plus-outline', '/home/themquytrinh'],
+            ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],
         ],
         PhanQuyen:[
             ['Phòng ban','mdi-plus-outline','/home/phongban']

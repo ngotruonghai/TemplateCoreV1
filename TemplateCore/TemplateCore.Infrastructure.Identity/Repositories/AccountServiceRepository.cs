@@ -80,7 +80,7 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
                 new Claim("uid", user.Id),
                 new Claim("ip", ipAddress),
                 new Claim("permission",roles.FirstOrDefault()),
-                new Claim("maphongban",user.MaPhongBan),
+                new Claim("maphongban",user.MaPhongBan??""),
                 new Claim("keyactive",user.KeyActiveId??""),
                 new Claim("parentUserId",user.ParentUserId ?? ""),
                 new Claim("typeuser",user.TypeUser.ToString()),

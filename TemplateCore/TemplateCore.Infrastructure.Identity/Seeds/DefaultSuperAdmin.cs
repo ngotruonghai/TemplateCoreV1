@@ -20,7 +20,9 @@ namespace TemplateCore.Infrastructure.Identity.Seeds
                     MaNhanVien = "EMP00001",
                     TypeUser = TypeAccount.UserHeThong,
                     //MaPhongBan = Guid.NewGuid().ToString(),
-                    PhoneNumber = "0968103653"
+                    PhoneNumber = "0968103653",
+                    ParentUserId =  "1"
+                    
                 };
                 if (userManager.Users.All(u => u.Id != defaultUser.Id))
                 {

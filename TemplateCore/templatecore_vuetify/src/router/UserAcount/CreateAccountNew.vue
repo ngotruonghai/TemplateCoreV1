@@ -43,7 +43,10 @@
                     <v-row>
                         <v-col cols="12">
                             <div class="input-container">
-                                <label for="" class="FontDefault">Quyền</label>
+                                <label for="" class="FontDefault">
+                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
+                                    Quyền
+                                </label>
                                 <CbPhanQuyen :RoleId="selectedRoleId" @update:RoleId="updateRoleId" />
                             </div>
                         </v-col>
@@ -51,8 +54,11 @@
                     <v-row>
                         <v-col cols="12">
                             <div class="input-container">
-                                <label for="" class="FontDefault">Phòng ban</label>
-                                <CBPhongBan :Id="selectedRoleId" @update:Id="GetIdPhongBan" />
+                                <label for="" class="FontDefault">
+                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
+                                    Phòng ban
+                                </label>
+                                <CBPhongBan :Id="selectPhongBanId" @update:Id="GetIdPhongBan" />
                             </div>
                         </v-col>
                     </v-row>
@@ -196,6 +202,14 @@ const triggerValidation = () => {
     else if (ten.value === "") {
 
         message.value = 'Vui lòng nhập "TÊN"!';
+        isshow.value = false;
+    }
+    else if(selectedRoleId.value == ""){
+        message.value = 'Vui lòng chọn "QUYỀN"!';
+        isshow.value = false;
+    }
+    else if(selectPhongBanId.value == ""){
+        message.value = 'Vui lòng chọn "PHÒNG BAN"!';
         isshow.value = false;
     }
     else {

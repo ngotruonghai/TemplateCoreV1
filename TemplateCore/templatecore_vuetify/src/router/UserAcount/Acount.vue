@@ -16,7 +16,7 @@
       <v-row>
         <v-col cols="12">
           <div>
-            <DanhSachUser :responseData="responseData"/>
+            <DanhSachUser :responseData="responseData" />
           </div>
         </v-col>
       </v-row>
@@ -96,7 +96,7 @@ async function API_UserInfo() {
   }
 }
 
-function btnCreateClick(){
+function btnCreateClick() {
   router.push("/home/createuser");
 }
 

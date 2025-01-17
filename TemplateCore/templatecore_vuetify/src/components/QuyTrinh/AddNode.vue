@@ -3,43 +3,44 @@
         <div ref="paperContainer" class="diagram-container" @contextmenu.prevent="showContextMenu"></div>
 
         <!-- Context Menu -->
-        <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu">
-            <ul>
-                <li @click="createNode('bauduc')" style=" color: #0066CC;">
-                    <span class="icon-border2" style=" color: #0066CC;">
-                        <i class="fas fa-circle"></i>
-                    </span>
-                    Bắt đầu
-                </li>
-                <li @click="createNode('thoi')" style=" color: #FF9933;">
-                    <span class="icon-border2" style=" color: #FF9933;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </span>
-                    Điều kiện
-                </li>
-                <li @click="createNode('vuong')" style=" color: #0099CC;">
-                    <span class="icon-border2" style=" color: #0099CC;">
-                        <i class="fas fa-square"></i>
-                    </span>
-                    Bước
-                </li>
-                <li @click="createNode('thoi_ketthuc')" style=" color: #009966;">
-                    <span class="icon-border2" style=" color: #009966;">
-                        <i class="fas fa-check"></i>
-                    </span>
-                    Duyệt
-                </li>
-                <li @click="createNode('thoi_tuchoi')" style=" color: #DD0000;">
-                    <span class="icon-border2" style=" color: #DD0000;">
-                        <i class="fas fa-times"></i>
-                    </span>
-                    Từ chối
-                </li>
-                <li>Chỉnh sửa</li>
-                <li @click="deleteNode">Xóa node</li>
-                <li @click="hideContextMenu">Hủy</li>
-            </ul>
-        </div>
+
+    </div>
+    <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu">
+        <ul>
+            <li @click="createNode('bauduc')" style=" color: #0066CC;">
+                <span class="icon-border2" style=" color: #0066CC;">
+                    <i class="fas fa-circle"></i>
+                </span>
+                Bắt đầu
+            </li>
+            <li @click="createNode('thoi')" style=" color: #FF9933;">
+                <span class="icon-border2" style=" color: #FF9933;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                Điều kiện
+            </li>
+            <li @click="createNode('vuong')" style=" color: #0099CC;">
+                <span class="icon-border2" style=" color: #0099CC;">
+                    <i class="fas fa-square"></i>
+                </span>
+                Bước
+            </li>
+            <li @click="createNode('thoi_ketthuc')" style=" color: #009966;">
+                <span class="icon-border2" style=" color: #009966;">
+                    <i class="fas fa-check"></i>
+                </span>
+                Duyệt
+            </li>
+            <li @click="createNode('thoi_tuchoi')" style=" color: #DD0000;">
+                <span class="icon-border2" style=" color: #DD0000;">
+                    <i class="fas fa-times"></i>
+                </span>
+                Từ chối
+            </li>
+            <li>Chỉnh sửa</li>
+            <li @click="deleteNode">Xóa</li>
+            <li @click="hideContextMenu">Hủy</li>
+        </ul>
     </div>
 </template>
 
@@ -56,8 +57,8 @@ const isContextMenuVisible = ref(false);
 const contextMenuPosition = reactive({ x: 0, y: 0 });
 
 const contextMenuStyle = computed(() => ({
-    top: `${contextMenuPosition.y - 150}px`,
-    left: `${contextMenuPosition.x - 260}px`,
+    top: `${contextMenuPosition.y}px`,
+    left: `${contextMenuPosition.x}px`,
 }));
 
 // Khởi tạo các thành phần của JointJS
@@ -86,6 +87,12 @@ const request = ref({
 });
 let positions: { x: number; y: number }[] = [];
 
+
+const emit = defineEmits<{
+    (event: 'data-sent', data: boolean): void;
+}>();
+
+
 onMounted(() => {
     // Tạo Graph (model)
     graph = new joint.dia.Graph();
@@ -94,7 +101,7 @@ onMounted(() => {
     paper = new joint.dia.Paper({
         el: paperContainer.value!,
         model: graph,
-        width: 2500, // Full window width
+        width: window.innerWidth, // Full window width
         height: window.innerHeight - 40, // Full window height
         gridSize: 10,
         drawGrid: true,
@@ -105,26 +112,25 @@ onMounted(() => {
         evt.preventDefault(); // Ngăn menu mặc định của trình duyệt
         // Lưu node được chọn
         selectedNode = elementView.model;
-       
+
 
         // Hiển thị menu ngữ cảnh tại vị trí chuột
-        contextMenuPosition.x = x + 230;
-        contextMenuPosition.y = y + 3400;
+        contextMenuPosition.x = x + 300;
+        contextMenuPosition.y = y + 50;
         isContextMenuVisible.value = true;
     });
 });
 
 // Hiển thị context menu tại vị trí click
 const showContextMenu = (event: MouseEvent) => {
-    //event.preventDefault(); // Ngăn menu mặc định của trình duyệt
+    event.preventDefault(); // Ngăn menu mặc định của trình duyệt
+    //const paperWidth = paper.options.width;
+    //const paperHeight = paper.options.height;
 
-    const paperWidth = paper.options.width;
-    const paperHeight = paper.options.height;
-
-
+    contextMenuPosition.x = event.clientX;
+    contextMenuPosition.y = event.clientY + 20;
     isContextMenuVisible.value = true;
-    contextMenuPosition.x =  event.clientX;
-    contextMenuPosition.y = event.clientY;
+
 };
 
 // Ẩn context menu
@@ -196,15 +202,20 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
             body: {
                 refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
                 fill: '#DD0000', // Màu nền
-                stroke: 'black',  // Màu viền
+                stroke: 'black', // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
                 text: 'Từ chối',
                 fill: 'black',
-                refY: 110, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: '100%',
+                refY2: 10, // Dịch chuyển tương đối
+                textAnchor: 'middle', // Căn giữa theo chiều ngang
+                yAlignment: 'middle', // Căn giữa theo chiều dọc
             },
         });
+
+
         newNode.resize(100, 100);
     } else if (type === 'bauduc') {
         // Tạo node hình bầu dục (ellipse)
@@ -239,12 +250,13 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
 
     if (!newNode) return;
 
+
+    const x = contextMenuPosition.x - 250;
+    const y = contextMenuPosition.y;
+
     newNode.position(
-        contextMenuPosition.x - (paper.options.el as HTMLElement).offsetLeft - 225,
-        contextMenuPosition.y - (paper.options.el as HTMLElement).offsetTop - 135
+        x, y
     );
-    const x = contextMenuPosition.x - (paper.options.el as HTMLElement).offsetLeft;
-    const y = contextMenuPosition.y - (paper.options.el as HTMLElement).offsetTop;
 
     newNode.attr({
         //body: { fill: 'orange' },
@@ -262,6 +274,20 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
         link.attr({
             line: { stroke: 'black', strokeWidth: 2 },
         });
+        link.appendLabel({
+            attrs: {
+                text: {
+                    text: 'Mũi tên', // Nội dung nhãn
+                    fill: 'blue', // Màu chữ
+                    fontSize: 14, // Kích thước chữ
+                    fontWeight: 'bold', // Đậm chữ (tùy chọn)
+                },
+            },
+            position: {
+                distance: 0.5, // Vị trí nhãn nằm giữa đường nối
+            },
+        });
+
 
         graph.addCell(link);
     }
@@ -350,14 +376,6 @@ async function AddQuyTrinh() {
 </script>
 
 <style scoped>
-#bieudoquytrinh {
-    position: relative;
-    overflow: auto;
-    height: 100vh;
-    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.3);
-    padding: 0px;
-}
-
 .diagram-container {
     background: linear-gradient(0deg, transparent 9%, #ddd 10%) 0% 0%,
         linear-gradient(90deg, transparent 9%, #ddd 10%) 0% 0%;
@@ -366,9 +384,17 @@ async function AddQuyTrinh() {
     /* overflow: auto; */
 }
 
+#bieudoquytrinh {
+    position: relative;
+    overflow: auto;
+    height: 100vh;
+    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.3);
+    padding: 0px;
+}
+
 .context-menu {
     position: absolute;
-    z-index: 2;
+    z-index: 100;
     background: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);

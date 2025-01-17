@@ -5,49 +5,87 @@
         <!-- Context Menu -->
 
     </div>
+
+    <v-dialog v-model="dialog" max-width="400" persistent>
+        <template v-slot:activator="{ props: activatorProps }">
+        </template>
+
+        <v-card title="Cấu hình quy trình">
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Tên bước thực hiện
+                        </label>
+                        <input type="text" id="" class="FontDefault" placeholder="VD: Bước duyệt quy trình" style="width: 100%;" v-model="tenNode"/>
+                    </v-col>
+
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Ghi chú mũi tên
+                        </label>
+                        <input type="text" id="" class="FontDefault" placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;" v-model="ghichuNode"/>
+                    </v-col>
+                </v-row>
+
+            </v-container>
+
+            <template v-slot:actions>
+                <v-spacer></v-spacer>
+                <v-btn class="btnAdd btn no-uppercase" @click="btnXacNhanDialog()">
+                    Xác nhận
+                </v-btn>
+            </template>
+        </v-card>
+    </v-dialog>
+
     <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu">
         <ul>
-            <li @click="createNode('bauduc')" style=" color: #0066CC;">
+            <li @click="btnAddNode('bauduc')" style=" color: #0066CC;">
                 <span class="icon-border2" style=" color: #0066CC;">
                     <i class="fas fa-circle"></i>
                 </span>
                 Bắt đầu
             </li>
-            <li @click="createNode('thoi')" style=" color: #FF9933;">
+            <li @click="btnAddNode('thoi')" style=" color: #FF9933;">
                 <span class="icon-border2" style=" color: #FF9933;">
                     <i class="fas fa-exclamation-triangle"></i>
                 </span>
                 Điều kiện
             </li>
-            <li @click="createNode('vuong')" style=" color: #0099CC;">
+            <li @click="btnAddNode('vuong')" style=" color: #0099CC;">
                 <span class="icon-border2" style=" color: #0099CC;">
                     <i class="fas fa-square"></i>
                 </span>
                 Bước
             </li>
-            <li @click="createNode('thoi_ketthuc')" style=" color: #009966;">
+            <li @click="btnAddNode('thoi_ketthuc')" style=" color: #009966;">
                 <span class="icon-border2" style=" color: #009966;">
                     <i class="fas fa-check"></i>
                 </span>
                 Duyệt
             </li>
-            <li @click="createNode('thoi_tuchoi')" style=" color: #DD0000;">
+            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #DD0000;">
                 <span class="icon-border2" style=" color: #DD0000;">
                     <i class="fas fa-times"></i>
                 </span>
                 Từ chối
             </li>
-            <li>Chỉnh sửa</li>
             <li @click="deleteNode">Xóa</li>
             <li @click="hideContextMenu">Hủy</li>
         </ul>
     </div>
+
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, computed } from 'vue';
 import * as joint from 'jointjs';
 import { callAuthenticationAPI } from "@/providers/data-provider";
+let dialog = ref(false);
+let typeText = '';
+let tenNode = ref("");
+let ghichuNode= ref("");
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -102,7 +140,7 @@ onMounted(() => {
         el: paperContainer.value!,
         model: graph,
         width: window.innerWidth, // Full window width
-        height: window.innerHeight - 40, // Full window height
+        height: window.innerHeight -25, // Full window height
         gridSize: 10,
         drawGrid: true,
     });
@@ -139,10 +177,9 @@ const hideContextMenu = () => {
 };
 
 // Tạo nút (node) mới với loại hình vuông, hình thoi, hoặc hình bầu dục
-const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' | 'thoi_tuchoi') => {
-    if (!paper) return;
-
+const createNode = (type: string) => {
     let newNode;
+    let titleNode = tenNode.value;
     if (type === 'vuong') {
         // Tạo node hình vuông
         newNode = new joint.shapes.standard.Rectangle();
@@ -153,7 +190,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
-                text: 'Bước',
+                text: titleNode,
                 fill: 'black',
                 refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
@@ -171,7 +208,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
-                text: 'Điều kiện',
+                text: titleNode,
                 fill: 'black',
                 refY: 110, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
@@ -188,7 +225,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
-                text: 'Kết thúc',
+                text: titleNode,
                 fill: 'black',
                 refY: 110, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
@@ -206,7 +243,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
-                text: 'Từ chối',
+                text: titleNode,
                 fill: 'black',
                 refY: '100%',
                 refY2: 10, // Dịch chuyển tương đối
@@ -227,7 +264,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
-                text: 'Bắt đầu',
+                text: titleNode,
                 fill: 'black',
                 refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
@@ -240,7 +277,7 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
                 fill: 'lightblue', // Màu nền hình bầu dục
             },
             label: {
-                text: 'Bắt đầu',
+                text: titleNode,
                 fill: 'black',
                 refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
@@ -272,15 +309,14 @@ const createNode = (type: 'vuong' | 'tron' | 'bauduc' | 'thoi' | 'thoi_ketthuc' 
         link.source(sourceNode);
         link.target(newNode);
         link.attr({
-            line: { stroke: 'black', strokeWidth: 2 },
+            line: { stroke: 'black', strokeWidth: 1 },
         });
         link.appendLabel({
             attrs: {
                 text: {
-                    text: 'Mũi tên', // Nội dung nhãn
-                    fill: 'blue', // Màu chữ
+                    text: ghichuNode.value, // Nội dung nhãn
+                    fill: 'black', // Màu chữ
                     fontSize: 14, // Kích thước chữ
-                    fontWeight: 'bold', // Đậm chữ (tùy chọn)
                 },
             },
             position: {
@@ -337,6 +373,7 @@ const saveNodes = () => {
     request.value.INodeMap = nodeData;
 };
 
+
 // Hàm lưu các liên kết (links) giữa các node
 const saveLinks = () => {
     // Lấy tất cả các liên kết trong graph
@@ -355,6 +392,7 @@ const saveLinks = () => {
 
     // In ra console thông tin các liên kết
 };
+
 async function AddQuyTrinh() {
     try {
         saveNodes();
@@ -363,7 +401,7 @@ async function AddQuyTrinh() {
             lsdiagram: request.value.IDiagram,
             lsnodes: request.value.INodeMap,
             MaQuyTrinh: "",
-            TenQuyTrinh: "",
+            tenNode: "",
             UserId: "",
             UserName: localStorage.getItem("UserName")
         }, {
@@ -373,7 +411,23 @@ async function AddQuyTrinh() {
         console.log(error);
     }
 }
+
+
+function btnXacNhanDialog() {
+    dialog.value = false;
+    createNode(typeText);
+    tenNode.value= "";
+    ghichuNode.value="";
+}
+
+function btnAddNode(type: string) {
+    dialog.value = true;
+    typeText = type;
+    hideContextMenu();
+}
+
 </script>
+
 
 <style scoped>
 .diagram-container {

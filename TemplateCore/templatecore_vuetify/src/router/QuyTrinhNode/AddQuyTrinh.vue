@@ -4,9 +4,14 @@
             <div class="layoutChill">
                 <div v-show="flang == 0">
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="6">
                             <label for="" class="FontDefault" style="font-size: 20px; color: #0099FF; font-weight: bold;">
                                 {{ title }}
+                            </label>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <label for="" class="FontDefault" style="float: right;">
+                                <i class="fa-solid fa-book"></i> Hướng dẫn
                             </label>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -27,13 +32,13 @@
                                 <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
                             </div>
                         </v-col>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="12">
                             <div class="input-container">
                                 <label for="" class="FontDefault">
                                     <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
                                     Ghi chú
                                 </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
+                                <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
                             </div>
                         </v-col>
                     </v-row>
@@ -100,7 +105,7 @@
                     </v-col>
                 </v-row>
             </div>
-            <div v-show="flang == 1">
+            <div v-show="flang == 0">
 
                 <AddNode></AddNode>
 
@@ -111,6 +116,7 @@
 </template>
 
 <script lang="ts" setup>
+
 
 let flang = ref(0);
 let title= ref("");

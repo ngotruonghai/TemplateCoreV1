@@ -29,7 +29,8 @@
                                     <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
                                     Ngày bắt đầu
                                 </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
+                                <!-- <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" /> -->
+                                <Datetimepicker></Datetimepicker>
                             </div>
                         </v-col>
                         <v-col cols="12" md="12">

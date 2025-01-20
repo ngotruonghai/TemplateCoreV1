@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddCauHinhQuyTrinh: typeof import('./components/QuyTrinh/AddCauHinhQuyTrinh.vue')['default']
     AddNode: typeof import('./components/QuyTrinh/AddNode.vue')['default']
     Alert: typeof import('./components/Alert/Alert.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
@@ -19,5 +20,6 @@ declare module 'vue' {
     Navigation: typeof import('./components/Main/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TimePicker: typeof import('./components/Common/TimePicker.vue')['default']
   }
 }

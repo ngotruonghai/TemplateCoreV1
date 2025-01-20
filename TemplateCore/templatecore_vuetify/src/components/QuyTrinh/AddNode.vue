@@ -1,30 +1,30 @@
 <template>
     <div id="bieudoquytrinh">
         <div ref="paperContainer" class="diagram-container" @contextmenu.prevent="showContextMenu"></div>
-
-        <!-- Context Menu -->
-
     </div>
 
     <v-dialog v-model="dialog" max-width="400" persistent>
         <template v-slot:activator="{ props: activatorProps }">
         </template>
 
-        <v-card title="Cấu hình quy trình">
+        <v-card title="Tạo bước quy trình">
             <v-container>
                 <v-row>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Tên bước thực hiện
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="VD: Bước duyệt quy trình" style="width: 100%;" v-model="tenNode"/>
+                        <input type="text" id="" class="FontDefault" placeholder="VD: Bước duyệt quy trình"
+                            style="width: 100%;" v-model="tenNode" />
                     </v-col>
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Ghi chú mũi tên
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;" v-model="ghichuNode"/>
+                        <input type="text" id="" class="FontDefault"
+                            placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;"
+                            v-model="ghichuNode" />
                     </v-col>
                 </v-row>
 
@@ -32,17 +32,21 @@
 
             <template v-slot:actions>
                 <v-spacer></v-spacer>
-                <v-btn class="btnAdd btn no-uppercase" @click="btnXacNhanDialog()">
+                <v-btn @click="btnXacNhanDialog(false)" class="btnCancel no-uppercase">
+                    Hủy
+                </v-btn>
+                <v-btn class="btnAdd btn no-uppercase" @click="btnXacNhanDialog(true)">
                     Xác nhận
                 </v-btn>
+
             </template>
         </v-card>
     </v-dialog>
 
-    <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu">
+    <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu FontDefault">
         <ul>
-            <li @click="btnAddNode('bauduc')" style=" color: #0066CC;">
-                <span class="icon-border2" style=" color: #0066CC;">
+            <li @click="btnAddNode('bauduc')" style=" color: #87CEFA;">
+                <span class="icon-border2" style=" color: #87CEFA;">
                     <i class="fas fa-circle"></i>
                 </span>
                 Bắt đầu
@@ -51,41 +55,116 @@
                 <span class="icon-border2" style=" color: #FF9933;">
                     <i class="fas fa-exclamation-triangle"></i>
                 </span>
-                Điều kiện
+                Tạo điều kiện
             </li>
             <li @click="btnAddNode('vuong')" style=" color: #0099CC;">
                 <span class="icon-border2" style=" color: #0099CC;">
                     <i class="fas fa-square"></i>
                 </span>
-                Bước
+                Tạo bước
             </li>
             <li @click="btnAddNode('thoi_ketthuc')" style=" color: #009966;">
                 <span class="icon-border2" style=" color: #009966;">
                     <i class="fas fa-check"></i>
                 </span>
-                Duyệt
+                Tạo bước duyệt
             </li>
-            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #DD0000;">
-                <span class="icon-border2" style=" color: #DD0000;">
+            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #FF9AA2;">
+                <span class="icon-border2" style=" color: #FF9AA2;">
                     <i class="fas fa-times"></i>
                 </span>
-                Từ chối
+                Tạo bước từ chối
             </li>
-            <li @click="deleteNode">Xóa</li>
+            <li @click="CauHinhBuoc">
+                <span class="icon-border2">
+                    <i class="fa fa-gear"></i>
+                </span>
+                Cấu hình bước
+            </li>
+            <li @click="deleteNode"> <span class="icon-border2">
+                    <i class="fas fa-trash-alt"></i>
+                </span> Xóa</li>
             <li @click="hideContextMenu">Hủy</li>
         </ul>
     </div>
+
+    <div :class="['sliding-panel FontDefault', { open: isPanelOpen }]">
+        <div class="sliding-panel-content">
+            <v-container-fluid>
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <h3>Cấu hình bước: ...</h3>
+                    </v-col>
+
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Người tiếp nhận
+                        </label>
+                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                    </v-col>
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Phòng ban tiếp nhận
+                        </label>
+                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                    </v-col>
+
+                    <v-col cols="12" md="12">
+                            <div class="input-container">
+                                <label for="" class="FontDefault">
+                                    Ghi chú
+                                </label>
+                                <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
+                            </div>
+                        </v-col>
+
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Cấu hình mail nhắc nhở
+                        </label>
+                        <input type="number" id="" class="FontDefault" placeholder="Số mỗi lần gửi mail cách nhau bao nhiêu phút" style="width: 100%;" min="0" max="1440"/>
+                    </v-col>
+
+                    
+                    <v-col cols="12" md="12">
+                        <v-checkbox label="Tạo báo cáo tự động khi hoàn thành." class="FontDefault"></v-checkbox>
+                        <v-checkbox label="Gửi mail cho người/phòng ban tiếp nhận." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
+                        <v-checkbox label="Gửi mail nhắc nhở nếu có (có cấu hình)." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
+                        <v-checkbox label="Tích hợp trình ký." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
+                    </v-col>
+
+                    <!-- button xác nhận -->
+                    <v-col cols="12" md="12">
+                        <v-btn class="btnAdd btn no-uppercase" @click="btncauHinhXacNhan(true)" style="float: right;">
+                            Xác nhận
+                        </v-btn>
+                        <v-btn @click="btncauHinhXacNhan(false)" class="btnCancel no-uppercase" style="float: right; margin-right: 10px;">
+                            Hủy
+                        </v-btn>
+                       
+                    </v-col>
+                    
+
+                </v-row>
+
+            </v-container-fluid>
+
+        </div>
+    </div>
+
+    <div class="overlay" :class="{ show: isPanelOpen }"></div>
 
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, computed } from 'vue';
-import * as joint from 'jointjs';
+import { dia, shapes, util } from 'jointjs';
 import { callAuthenticationAPI } from "@/providers/data-provider";
 let dialog = ref(false);
 let typeText = '';
 let tenNode = ref("");
-let ghichuNode= ref("");
+let ghichuNode = ref("");
+let isPanelOpen = ref(false);;
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -100,12 +179,12 @@ const contextMenuStyle = computed(() => ({
 }));
 
 // Khởi tạo các thành phần của JointJS
-let paper: joint.dia.Paper;
-let graph: joint.dia.Graph;
+let paper: dia.Paper;
+let graph: dia.Graph;
 
 // Biến lưu trữ nút cuối cùng và nút được chọn
-let lastNode: joint.dia.Element | null = null;
-let selectedNode: joint.dia.Element | null = null;
+let lastNode: dia.Element | null = null;
+let selectedNode: dia.Element | null = null;
 
 interface INodeMap {
     KeyId: string | null,
@@ -133,25 +212,25 @@ const emit = defineEmits<{
 
 onMounted(() => {
     // Tạo Graph (model)
-    graph = new joint.dia.Graph();
+    graph = new dia.Graph({}, { cellNamespace: shapes });
 
     // Tạo Paper (hiển thị)
-    paper = new joint.dia.Paper({
+    paper = new dia.Paper({
         el: paperContainer.value!,
         model: graph,
         width: window.innerWidth, // Full window width
-        height: window.innerHeight -25, // Full window height
+        height: window.innerHeight - 25, // Full window height
         gridSize: 10,
         drawGrid: true,
+        overflow: true,
+        cellViewNamespace: shapes
     });
 
     // Sự kiện chuột phải vào node
-    paper.on('element:contextmenu', (elementView: joint.dia.ElementView, evt: joint.dia.Event, x: number, y: number) => {
+    paper.on('element:contextmenu', (elementView: dia.ElementView, evt: dia.Event, x: number, y: number) => {
         evt.preventDefault(); // Ngăn menu mặc định của trình duyệt
         // Lưu node được chọn
         selectedNode = elementView.model;
-
-
         // Hiển thị menu ngữ cảnh tại vị trí chuột
         contextMenuPosition.x = x + 300;
         contextMenuPosition.y = y + 50;
@@ -182,7 +261,7 @@ const createNode = (type: string) => {
     let titleNode = tenNode.value;
     if (type === 'vuong') {
         // Tạo node hình vuông
-        newNode = new joint.shapes.standard.Rectangle();
+        newNode = new shapes.standard.Rectangle();
         newNode.attr({
             body: {
                 fill: '#0099CC', // Màu nền
@@ -192,53 +271,53 @@ const createNode = (type: string) => {
             label: {
                 text: titleNode,
                 fill: 'black',
-                refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
         });
-        newNode.resize(80, 80); // Kích thước hình vuông
+        newNode.resize(50, 50); // Kích thước hình vuông
     } else if (type === 'thoi') {
         // Tạo node hình thoi
-        newNode = new joint.shapes.standard.Polygon();
+        newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
 
                 refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
-                fill: '#FF9933', // Màu nền
+                fill: '#FFE4B5', // Màu nền
                 stroke: 'black',  // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
                 text: titleNode,
                 fill: 'black',
-                refY: 110, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: 80, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
         });
-        newNode.resize(100, 100);
+        newNode.resize(70, 70);
     } else if (type === 'thoi_ketthuc') {
         // Tạo node hình thoi
-        newNode = new joint.shapes.standard.Polygon();
+        newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
                 refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
-                fill: '#009966', // Màu nền
+                fill: '#B5EAD7', // Màu nền
                 stroke: 'black',  // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
                 text: titleNode,
                 fill: 'black',
-                refY: 110, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: 80, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
         });
-        newNode.resize(100, 100);
+        newNode.resize(70, 70);
     }
     else if (type === 'thoi_tuchoi') {
         // Tạo node hình thoi
-        newNode = new joint.shapes.standard.Polygon();
+        newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
                 refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
-                fill: '#DD0000', // Màu nền
+                fill: '#FF9AA2', // Màu nền
                 stroke: 'black', // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
@@ -253,25 +332,25 @@ const createNode = (type: string) => {
         });
 
 
-        newNode.resize(100, 100);
+        newNode.resize(70, 70);
     } else if (type === 'bauduc') {
         // Tạo node hình bầu dục (ellipse)
-        newNode = new joint.shapes.standard.Ellipse();
+        newNode = new shapes.standard.Ellipse();
         newNode.attr({
             body: {
-                fill: '#0066CC', // Màu nền hình bầu dục
+                fill: '#87CEFA', // Màu nền hình bầu dục
                 stroke: 'black',  // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
             label: {
                 text: titleNode,
                 fill: 'black',
-                refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
         });
-        newNode.resize(100, 80);
+        newNode.resize(70, 50);
     } else if (type === 'tron') {
-        newNode = new joint.shapes.standard.Circle();
+        newNode = new shapes.standard.Circle();
         newNode.attr({
             body: {
                 fill: 'lightblue', // Màu nền hình bầu dục
@@ -279,10 +358,10 @@ const createNode = (type: string) => {
             label: {
                 text: titleNode,
                 fill: 'black',
-                refY: 90, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
             },
         });
-        newNode.resize(80, 80);
+        newNode.resize(50, 50);
     }
 
     if (!newNode) return;
@@ -305,7 +384,7 @@ const createNode = (type: string) => {
     // Tạo liên kết từ node được chọn hoặc node cuối cùng
     const sourceNode = selectedNode || lastNode;
     if (sourceNode) {
-        const link = new joint.shapes.standard.Link();
+        const link = new shapes.standard.Link();
         link.source(sourceNode);
         link.target(newNode);
         link.attr({
@@ -323,22 +402,15 @@ const createNode = (type: string) => {
                 distance: 0.5, // Vị trí nhãn nằm giữa đường nối
             },
         });
+        link.router('orthogonal');
+        link.connector('straight', { cornerType: 'line' });
 
 
         graph.addCell(link);
     }
-
-    // Cập nhật node cuối cùng
     lastNode = newNode;
-
-    // Xóa trạng thái của selectedNode
     selectedNode = null;
-
     hideContextMenu();
-
-    // Sau khi tạo node, lưu lại thông tin các node và các liên kết
-    //saveNodes(x, y);
-    //saveLinks();
 };
 
 // Xóa node đã chọn
@@ -349,37 +421,31 @@ const deleteNode = () => {
     } else {
         alert('Vui lòng chọn node cần xóa');
     }
-
     hideContextMenu();
-
-    // Sau khi xóa node, lưu lại thông tin các node và các liên kết
-    //saveNodes();
-    //saveLinks();
 };
 
-// Hàm lưu các node và in ra console thông tin
+// Cấu hình từng bước của quy trình
+function CauHinhBuoc() {
+    isPanelOpen.value = !isPanelOpen.value;
+    hideContextMenu();
+}
+
 const saveNodes = () => {
-    // Lấy tất cả các node trong graph
     const nodes = graph.getElements();
-    // Lấy thông tin của các node, bao gồm vị trí và loại hình
     const nodeData = nodes.map((node, index) => {
         return {
-            KeyId: String(node.id), // Chuyển đổi ID thành chuỗi
-            type: String(node.get('type')) || null, // Chuyển đổi type thành chuỗi hoặc null
-            position: JSON.stringify(node.position()),//`${position.x}@${position.y}`, // Tọa độ x@y
-            label: node.attr('label/text') || null, // Tên hiển thị
+            KeyId: String(node.id),
+            type: String(node.get('type')) || null,
+            position: JSON.stringify(node.position()),
+            label: node.attr('label/text') || null,
         };
     });
     request.value.INodeMap = nodeData;
 };
 
 
-// Hàm lưu các liên kết (links) giữa các node
 const saveLinks = () => {
-    // Lấy tất cả các liên kết trong graph
     const links = graph.getLinks();
-
-    // Lấy thông tin của các liên kết, bao gồm nguồn, đích và các thuộc tính liên quan
     const linkData = links.map((link) => {
         return {
             KeyId: link.id ? String(link.id) : null, // Chuyển ID sang string
@@ -389,11 +455,9 @@ const saveLinks = () => {
         };
     });
     request.value.IDiagram = linkData;
-
-    // In ra console thông tin các liên kết
 };
 
-async function AddQuyTrinh() {
+async function API_AddQuyTrinh() {
     try {
         saveNodes();
         saveLinks();
@@ -413,11 +477,18 @@ async function AddQuyTrinh() {
 }
 
 
-function btnXacNhanDialog() {
-    dialog.value = false;
-    createNode(typeText);
-    tenNode.value= "";
-    ghichuNode.value="";
+function btnXacNhanDialog(status: boolean) {
+    if (status == false) {
+        dialog.value = false;
+
+    }
+    else {
+        dialog.value = false;
+        createNode(typeText);
+    }
+    tenNode.value = "";
+    ghichuNode.value = "";
+
 }
 
 function btnAddNode(type: string) {
@@ -426,8 +497,11 @@ function btnAddNode(type: string) {
     hideContextMenu();
 }
 
-</script>
+function btncauHinhXacNhan(status: boolean) {
+    isPanelOpen.value = false;
+}
 
+</script>
 
 <style scoped>
 .diagram-container {
@@ -486,5 +560,56 @@ function btnAddNode(type: string) {
 .icon-border2 i {
     font-size: 15px;
     /* Kích thước icon */
+}
+
+
+.sliding-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 400px;
+    background-color: #333;
+    box-shadow: 15px 0 30px black;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+    background-color: white;
+    z-index: 10;
+}
+
+.sliding-panel.open {
+    transform: translateX(0);
+    overflow: auto;
+
+}
+
+.sliding-panel .close-button {
+    padding: 10px;
+    background-color: white;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+.sliding-panel-content {
+    padding: 20px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(235, 235, 235, 0.5);
+    z-index: 0;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
 }
 </style>

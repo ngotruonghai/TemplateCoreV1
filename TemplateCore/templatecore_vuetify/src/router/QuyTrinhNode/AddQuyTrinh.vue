@@ -53,33 +53,7 @@
                                 {{ title }}
                             </label>
                         </v-col>
-                        <v-col cols="12" md="6">
-                            <div class="input-container">
-                                <label for="" class="FontDefault">
-                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
-                                    Tên quy trình
-                                </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
-                            </div>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <div class="input-container">
-                                <label for="" class="FontDefault">
-                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
-                                    Ngày bắt đầu
-                                </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
-                            </div>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <div class="input-container">
-                                <label for="" class="FontDefault">
-                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
-                                    Ghi chú
-                                </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
-                            </div>
-                        </v-col>
+                        <AddCauHinhQuyTrinh></AddCauHinhQuyTrinh>
                     </v-row>
 
                 </div>

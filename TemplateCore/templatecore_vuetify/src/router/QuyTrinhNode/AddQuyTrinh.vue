@@ -33,7 +33,7 @@
                                 <Datetimepicker></Datetimepicker>
                             </div>
                         </v-col>
-                        <v-col cols="12" md="12">
+                        <!-- <v-col cols="12" md="12">
                             <div class="input-container">
                                 <label for="" class="FontDefault">
                                     <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
@@ -41,7 +41,7 @@
                                 </label>
                                 <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
                             </div>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                 </div>
 
@@ -58,10 +58,6 @@
 
                 </div>
 
-                <div v-show="flang == 2">
-                    test 2
-                </div>
-
                 <v-row>
                     <v-col cols="12" md="6">
                         <button class="btnAdd btn" v-on:click="btnTraVe" style="float: left;" v-show="flang">
@@ -70,11 +66,18 @@
                             </span> Trả về trước
                         </button>
                     </v-col>
-                    <v-col cols="12" md="6">
-                        <button class="btnAdd btn" v-on:click="btnTiepThep" style="float: right;">
+                    <v-col cols="12" md="6" v-show="btnHide == false">
+                        <button class="btnAdd btn" v-on:click="btnTiepThep(true)" style="float: right;">
                             Bươc tiếp theo
                             <span class="icon-border">
                                 <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </button>
+                    </v-col>
+                    <v-col cols="12" md="6" v-show="btnHide == true">
+                        <button class="btnAdd btn" style="float: right;">
+                            Tạo quy trình  <span class="icon-border">
+                                <i class="fa fa-plus"></i>
                             </span>
                         </button>
                     </v-col>
@@ -91,19 +94,28 @@
 </template>
 
 <script lang="ts" setup>
-
-
 let flang = ref(0);
 let title= ref("");
+let btnHide = ref(false);
 
-function btnTiepThep() {
+interface IDanhSachQuyTrinh {
+    ThietLapMaPhieu: string | null;
+    TenQuyTrinh: string | null;
+    GhiChu: string | null;
+    NgayBatDau: string | null;
+    NoiDung: string | null;
+}
+
+function btnTiepThep(status : boolean) {
     flang.value = flang.value + 1
     LoadTitle();
+    btnHide.value = true;
 }
 
 function btnTraVe() {
     flang.value = flang.value - 1
     LoadTitle();
+    btnHide.value = false;
 }
 
 function LoadTitle(){

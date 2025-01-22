@@ -3,7 +3,10 @@
     public class DanhSachQuyTrinh: AuditableBaseEntity
     {
         [MaxLength(50)]
-        public string MaQuyTrinh { get; set; }
+        public string? MaQuyTrinh { get; set; }
+
+        [MaxLength(10)]
+        public string? ThietLapMaPhieu {  get; set; }
 
         [MaxLength(350)]
         public string? TenQuyTrinh { get;set; }
@@ -22,8 +25,15 @@
         /// </summary>
         public DateTime NgayBatDau { get; set; } = DateTime.Now;
 
-        public ICollection<DiagramNode> DiagramNodes { get; set; }
+        [MaxLength(150)]
+        public string? NoiDung {  get; set; }
 
-        public ICollection<Node> Nodes {  get; set; }
+        public virtual ICollection<DiagramNode>? DiagramNodes { get; set; }
+
+        public virtual ICollection<Node>? Nodes {  get; set; }
+
+        public virtual ICollection<NhanSuTheoDoiQuyTrinh>? NhanSuTheoDoiQuyTrinhs { get; set; }
+
+        public virtual ICollection<PhongBanTheoDoiQuyTrinh>? PhongBanTheoDoiQuyTrinhs { get; set; }
     }
 }

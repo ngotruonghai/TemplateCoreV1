@@ -12,6 +12,7 @@ declare module 'vue' {
     Alert: typeof import('./components/Alert/Alert.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BtnDiaLogYesNo: typeof import('./components/Common/BtnDiaLogYesNo.vue')['default']
+    CBCheckNhanSu: typeof import('./components/Common/CBCheckNhanSu.vue')['default']
     CbPhanQuyen: typeof import('./components/Common/CbPhanQuyen.vue')['default']
     CBPhongBan: typeof import('./components/Common/CBPhongBan.vue')['default']
     DanhSachUser: typeof import('./components/UserAcount/DanhSachUser.vue')['default']

@@ -1,8 +1,59 @@
 <template>
     <div id="bieudoquytrinh">
         <div ref="paperContainer" class="diagram-container" @contextmenu.prevent="showContextMenu"></div>
-    </div>
 
+    </div>
+    <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu FontDefault">
+        <ul>
+            <li @click="btnAddNode('bauduc')" style=" color: #87CEFA;">
+                <span class="icon-border2" style=" color: #87CEFA;">
+                    <i class="fas fa-circle"></i>
+                </span>
+                Tạo bước bắt đầu
+            </li>
+            <li @click="btnAddNode('vuong')" style=" color: #0099CC;">
+                <span class="icon-border2" style=" color: #0099CC;">
+                    <i class="fas fa-square"></i>
+                </span>
+                Tạo bước tiếp theo
+            </li>
+            <li @click="btnAddNode('thoi')" style=" color: #FF9933;">
+                <span class="icon-border2" style=" color: #FF9933;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                Điều kiện
+            </li>
+
+            <li @click="btnAddNode('thoi_ketthuc')" style=" color: #009966;">
+                <span class="icon-border2" style=" color: #009966;">
+                    <i class="fas fa-check"></i>
+                </span>
+                Duyệt
+            </li>
+            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #FF9AA2;">
+                <span class="icon-border2" style=" color: #FF9AA2;">
+                    <i class="fas fa-times"></i>
+                </span>
+                Từ chối
+            </li>
+            <li @click="btnTraVe()" style=" color: #FF9AA2;">
+                <span class="icon-border2" style=" color: #FF9AA2;">
+                    <i class="fas fa-times"></i>
+                </span>
+                Trả về
+            </li>
+            <li @click="CauHinhBuoc">
+                <span class="icon-border2">
+                    <i class="fa fa-gear"></i>
+                </span>
+                Cấu hình bước
+            </li>
+            <li @click="deleteNode"> <span class="icon-border2">
+                    <i class="fas fa-trash-alt"></i>
+                </span> Xóa</li>
+            <li @click="hideContextMenu">Hủy</li>
+        </ul>
+    </div>
     <v-dialog v-model="dialog" max-width="400" persistent>
         <template v-slot:activator="{ props: activatorProps }">
         </template>
@@ -26,6 +77,14 @@
                             placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;"
                             v-model="ghichuNode" />
                     </v-col>
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault">
+                            Trả về cho bước
+                        </label>
+                        <input type="text" id="" class="FontDefault"
+                            placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;"
+                            v-model="ghichuNode" />
+                    </v-col>
                 </v-row>
 
             </v-container>
@@ -43,50 +102,7 @@
         </v-card>
     </v-dialog>
 
-    <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu FontDefault">
-        <ul>
-            <li @click="btnAddNode('bauduc')" style=" color: #87CEFA;">
-                <span class="icon-border2" style=" color: #87CEFA;">
-                    <i class="fas fa-circle"></i>
-                </span>
-                Bắt đầu
-            </li>
-            <li @click="btnAddNode('thoi')" style=" color: #FF9933;">
-                <span class="icon-border2" style=" color: #FF9933;">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </span>
-                Tạo điều kiện
-            </li>
-            <li @click="btnAddNode('vuong')" style=" color: #0099CC;">
-                <span class="icon-border2" style=" color: #0099CC;">
-                    <i class="fas fa-square"></i>
-                </span>
-                Tạo bước
-            </li>
-            <li @click="btnAddNode('thoi_ketthuc')" style=" color: #009966;">
-                <span class="icon-border2" style=" color: #009966;">
-                    <i class="fas fa-check"></i>
-                </span>
-                Tạo bước duyệt
-            </li>
-            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #FF9AA2;">
-                <span class="icon-border2" style=" color: #FF9AA2;">
-                    <i class="fas fa-times"></i>
-                </span>
-                Tạo bước từ chối
-            </li>
-            <li @click="CauHinhBuoc">
-                <span class="icon-border2">
-                    <i class="fa fa-gear"></i>
-                </span>
-                Cấu hình bước
-            </li>
-            <li @click="deleteNode"> <span class="icon-border2">
-                    <i class="fas fa-trash-alt"></i>
-                </span> Xóa</li>
-            <li @click="hideContextMenu">Hủy</li>
-        </ul>
-    </div>
+
 
     <div :class="['sliding-panel FontDefault', { open: isPanelOpen }]">
         <div class="sliding-panel-content">
@@ -110,27 +126,32 @@
                     </v-col>
 
                     <v-col cols="12" md="12">
-                            <div class="input-container">
-                                <label for="" class="FontDefault">
-                                    Ghi chú
-                                </label>
-                                <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
-                            </div>
-                        </v-col>
+                        <div class="input-container">
+                            <label for="" class="FontDefault">
+                                Ghi chú
+                            </label>
+                            <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
+                        </div>
+                    </v-col>
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Cấu hình mail nhắc nhở
                         </label>
-                        <input type="number" id="" class="FontDefault" placeholder="Số mỗi lần gửi mail cách nhau bao nhiêu phút" style="width: 100%;" min="0" max="1440"/>
+                        <input type="number" id="" class="FontDefault"
+                            placeholder="Số mỗi lần gửi mail cách nhau bao nhiêu phút" style="width: 100%;" min="0"
+                            max="1440" />
                     </v-col>
 
-                    
+
                     <v-col cols="12" md="12">
                         <v-checkbox label="Tạo báo cáo tự động khi hoàn thành." class="FontDefault"></v-checkbox>
-                        <v-checkbox label="Gửi mail cho người/phòng ban tiếp nhận." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
-                        <v-checkbox label="Gửi mail nhắc nhở nếu có (có cấu hình)." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
-                        <v-checkbox label="Tích hợp trình ký." class="FontDefault" style="margin-top: -50px;"></v-checkbox>
+                        <v-checkbox label="Gửi mail cho người/phòng ban tiếp nhận." class="FontDefault"
+                            style="margin-top: -50px;"></v-checkbox>
+                        <v-checkbox label="Gửi mail nhắc nhở nếu có (có cấu hình)." class="FontDefault"
+                            style="margin-top: -50px;"></v-checkbox>
+                        <v-checkbox label="Tích hợp trình ký." class="FontDefault"
+                            style="margin-top: -50px;"></v-checkbox>
                     </v-col>
 
                     <!-- button xác nhận -->
@@ -138,12 +159,13 @@
                         <v-btn class="btnAdd btn no-uppercase" @click="btncauHinhXacNhan(true)" style="float: right;">
                             Xác nhận
                         </v-btn>
-                        <v-btn @click="btncauHinhXacNhan(false)" class="btnCancel no-uppercase" style="float: right; margin-right: 10px;">
+                        <v-btn @click="btncauHinhXacNhan(false)" class="btnCancel no-uppercase"
+                            style="float: right; margin-right: 10px;">
                             Hủy
                         </v-btn>
-                       
+
                     </v-col>
-                    
+
 
                 </v-row>
 
@@ -164,7 +186,7 @@ let dialog = ref(false);
 let typeText = '';
 let tenNode = ref("");
 let ghichuNode = ref("");
-let isPanelOpen = ref(false);;
+let isPanelOpen = ref(false);
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -411,6 +433,7 @@ const createNode = (type: string) => {
     lastNode = newNode;
     selectedNode = null;
     hideContextMenu();
+    saveNodes();
 };
 
 // Xóa node đã chọn
@@ -423,6 +446,44 @@ const deleteNode = () => {
     }
     hideContextMenu();
 };
+
+function btnTraVe() {
+    if (selectedNode) {
+        // console.log(request.value.INodeMap[0]);
+        // console.log(selectedNode);
+
+        const nodes = graph.getElements();
+        saveNodes();
+
+        const link = new shapes.standard.Link();
+        link.source(selectedNode);
+        link.target(nodes[0]);
+        link.attr({
+            line: { stroke: 'black', strokeWidth: 1 },
+        });
+        link.appendLabel({
+            attrs: {
+                text: {
+                    text: ghichuNode.value, // Nội dung nhãn
+                    fill: 'black', // Màu chữ
+                    fontSize: 14, // Kích thước chữ
+                },
+            },
+            position: {
+                distance: 0.5, // Vị trí nhãn nằm giữa đường nối
+            },
+        });
+        link.router('orthogonal');
+        link.connector('straight', { cornerType: 'line' });
+
+
+        graph.addCell(link);
+
+    } else {
+        alert('Vui lòng chọn node cần xóa');
+    }
+    hideContextMenu();
+}
 
 // Cấu hình từng bước của quy trình
 function CauHinhBuoc() {
@@ -441,6 +502,7 @@ const saveNodes = () => {
         };
     });
     request.value.INodeMap = nodeData;
+    console.log(request.value.INodeMap);
 };
 
 
@@ -611,5 +673,44 @@ function btncauHinhXacNhan(status: boolean) {
 
 .overlay.show {
     display: block;
+}
+
+select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+}
+
+.combobox-container {
+    position: relative;
+    width: 100%;
+}
+
+.combobox {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: white;
+}
+
+.combobox:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 3px #007bff;
+}
+
+.combobox-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    color: #aaa;
 }
 </style>

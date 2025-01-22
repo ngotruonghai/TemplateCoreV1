@@ -20,6 +20,9 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
         public DbSet<PhongBan> PhongBans { get; set; }
         public DbSet<DanhMucPhanQuyen> DanhMucPhanQuyens { get; set; }
         public DbSet<DanhMuc> DanhMucs { get; set; }
+        public DbSet<NhanSuTheoDoiQuyTrinh> NhanSuTheoDoiQuyTrinhs { get; set; }
+        public DbSet<PhongBanTheoDoiQuyTrinh> PhongBanTheoDoiQuyTrinhs { get; set; }
+        public DbSet<ThongTinNoiDungQuyTrinh> ThongTinNoiDungQuyTrinhs { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

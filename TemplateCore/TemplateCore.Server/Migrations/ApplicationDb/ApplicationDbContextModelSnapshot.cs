@@ -326,12 +326,15 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("MaQuyTrinh")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("NgayBatDau")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("NoiDung")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -339,6 +342,10 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.Property<string>("TenQuyTrinh")
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
+
+                    b.Property<string>("ThietLapMaPhieu")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("UserId")
                         .HasMaxLength(100)
@@ -411,6 +418,62 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.HasIndex("DanhSachQuyTrinhId");
 
                     b.ToTable("DiagramNodes", "tempplate");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NhanSuTheoDoiQuyTrinh", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("DanhSachQuyTrinhId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HoTen")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LoaiNhanSu")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ThongTinNoiDungQuyTrinhId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserParentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DanhSachQuyTrinhId");
+
+                    b.HasIndex("ThongTinNoiDungQuyTrinhId");
+
+                    b.ToTable("NhanSuTheoDoiQuyTrinhs", "tempplate");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
@@ -508,6 +571,112 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.ToTable("NodeSetting", "tempplate");
                 });
 
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTheoDoiQuyTrinh", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("DanhSachQuyTrinhId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LoaiPhongBan")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhongbanId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenPhongBan")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UserParentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DanhSachQuyTrinhId");
+
+                    b.ToTable("PhongBanTheoDoiQuyTrinhs", "tempplate");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.ThongTinNoiDungQuyTrinh", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BatBuocNhap")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CauHinhHienThiBuoc")
+                        .IsRequired()
+                        .HasMaxLength(350)
+                        .HasColumnType("nvarchar(350)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("FileDinhKem")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenThongTin")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("UserParentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ThongTinNoiDungQuyTrinhs", "tempplate");
+                });
+
             modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMucPhanQuyen", b =>
                 {
                     b.HasOne("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", null)
@@ -522,6 +691,17 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasForeignKey("DanhSachQuyTrinhId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NhanSuTheoDoiQuyTrinh", b =>
+                {
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", null)
+                        .WithMany("NhanSuTheoDoiQuyTrinhs")
+                        .HasForeignKey("DanhSachQuyTrinhId");
+
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.ThongTinNoiDungQuyTrinh", null)
+                        .WithMany("NhanSuTheoDoiQuyTrinhs")
+                        .HasForeignKey("ThongTinNoiDungQuyTrinhId");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
@@ -541,6 +721,15 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.Navigation("NodeSettings");
                 });
 
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTheoDoiQuyTrinh", b =>
+                {
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", null)
+                        .WithMany("PhongBanTheoDoiQuyTrinhs")
+                        .HasForeignKey("DanhSachQuyTrinhId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", b =>
                 {
                     b.Navigation("DanhMucPhanQuyens");
@@ -550,7 +739,16 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                 {
                     b.Navigation("DiagramNodes");
 
+                    b.Navigation("NhanSuTheoDoiQuyTrinhs");
+
                     b.Navigation("Nodes");
+
+                    b.Navigation("PhongBanTheoDoiQuyTrinhs");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.ThongTinNoiDungQuyTrinh", b =>
+                {
+                    b.Navigation("NhanSuTheoDoiQuyTrinhs");
                 });
 #pragma warning restore 612, 618
         }

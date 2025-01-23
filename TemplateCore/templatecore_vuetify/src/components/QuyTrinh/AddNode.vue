@@ -81,9 +81,20 @@
                         <label class="FontDefault">
                             Trả về cho bước
                         </label>
-                        <input type="text" id="" class="FontDefault"
-                            placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;"
-                            v-model="ghichuNode" />
+
+
+                        <div class="combobox-container">
+                            <select class="combobox" v-model="_selectNodeId">
+                                <option value="" key="0"></option>
+                                <option v-for="(item, index) in request.INodeMap" :key="item.KeyId || ''"
+                                    :value="item.KeyId || ''">
+                                    {{ item.TenNode }}
+                                </option>
+                            </select>
+                            <span class="combobox-icon">▼</span>
+                        </div>
+
+
                     </v-col>
                 </v-row>
 
@@ -182,11 +193,14 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { dia, shapes, util } from 'jointjs';
 import { callAuthenticationAPI } from "@/providers/data-provider";
+import * as joint from 'jointjs';
 let dialog = ref(false);
 let typeText = '';
 let tenNode = ref("");
 let ghichuNode = ref("");
 let isPanelOpen = ref(false);
+let _indexNode = ref(0);
+let _selectNodeId = ref("");
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -210,15 +224,25 @@ let selectedNode: dia.Element | null = null;
 
 interface INodeMap {
     KeyId: string | null,
-    type: string | null,
-    position: string | null
-    label: string | null,
+    Type: string | null,
+    Index: number,
+    TenNode: String | null
+    X: number,
+    Y: number
 }
 interface IDiagram {
     KeyId: string | null,
-    source: string | null,
-    lineAttributes: string | null,
-    target: string | null
+    Source: string | null,
+    Target: string | null
+    TenDiagram: string | null
+}
+interface INextStep {
+    StepKeyId: string | null,
+    StepName: String | null
+    Action: string | null,
+    NextStepId: string | null,
+    NextStepName: string | null,
+    Status: String | null
 }
 const request = ref({
     INodeMap: [] as INodeMap[],
@@ -403,6 +427,18 @@ const createNode = (type: string) => {
 
     graph.addCell(newNode);
 
+    request.value.INodeMap.push({
+        Index: _indexNode.value,
+        X: x,
+        KeyId: newNode.id as string,
+        Type: type,
+        TenNode: titleNode,
+        Y: y
+    });
+
+    _indexNode.value++;
+
+
     // Tạo liên kết từ node được chọn hoặc node cuối cùng
     const sourceNode = selectedNode || lastNode;
     if (sourceNode) {
@@ -429,11 +465,17 @@ const createNode = (type: string) => {
 
 
         graph.addCell(link);
+
+        request.value.IDiagram.push({
+            KeyId: link.id as string,
+            Source: newNode.id as string,
+            Target: link.id as string,
+            TenDiagram: ghichuNode.value
+        });
     }
     lastNode = newNode;
     selectedNode = null;
     hideContextMenu();
-    saveNodes();
 };
 
 // Xóa node đã chọn
@@ -448,36 +490,22 @@ const deleteNode = () => {
 };
 
 function btnTraVe() {
+    alert(_selectNodeId.value);
     if (selectedNode) {
-        // console.log(request.value.INodeMap[0]);
-        // console.log(selectedNode);
-
         const nodes = graph.getElements();
-        saveNodes();
+        
 
-        const link = new shapes.standard.Link();
-        link.source(selectedNode);
-        link.target(nodes[0]);
-        link.attr({
-            line: { stroke: 'black', strokeWidth: 1 },
-        });
-        link.appendLabel({
-            attrs: {
-                text: {
-                    text: ghichuNode.value, // Nội dung nhãn
-                    fill: 'black', // Màu chữ
-                    fontSize: 14, // Kích thước chữ
-                },
-            },
-            position: {
-                distance: 0.5, // Vị trí nhãn nằm giữa đường nối
-            },
-        });
-        link.router('orthogonal');
-        link.connector('straight', { cornerType: 'line' });
+        const link = new joint.shapes.standard.Link();
+            link.source({ id: selectedNode.id });
+            link.target({ id: _selectNodeId.value });
+            link.router('orthogonal');
+            link.connector('straight', { cornerType: 'line' });
 
+          
 
-        graph.addCell(link);
+           
+
+            graph.addCell(link);
 
     } else {
         alert('Vui lòng chọn node cần xóa');
@@ -491,38 +519,8 @@ function CauHinhBuoc() {
     hideContextMenu();
 }
 
-const saveNodes = () => {
-    const nodes = graph.getElements();
-    const nodeData = nodes.map((node, index) => {
-        return {
-            KeyId: String(node.id),
-            type: String(node.get('type')) || null,
-            position: JSON.stringify(node.position()),
-            label: node.attr('label/text') || null,
-        };
-    });
-    request.value.INodeMap = nodeData;
-    console.log(request.value.INodeMap);
-};
-
-
-const saveLinks = () => {
-    const links = graph.getLinks();
-    const linkData = links.map((link) => {
-        return {
-            KeyId: link.id ? String(link.id) : null, // Chuyển ID sang string
-            source: link.source().id ? String(link.source().id) : null, // Chuyển ID nguồn sang string
-            target: link.target().id ? String(link.target().id) : null, // Chuyển ID đích sang string
-            lineAttributes: link.attr('line') ? JSON.stringify(link.attr('line')) : null, // Thuộc tính đường liên kết
-        };
-    });
-    request.value.IDiagram = linkData;
-};
-
 async function API_AddQuyTrinh() {
     try {
-        saveNodes();
-        saveLinks();
         let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
             lsdiagram: request.value.IDiagram,
             lsnodes: request.value.INodeMap,

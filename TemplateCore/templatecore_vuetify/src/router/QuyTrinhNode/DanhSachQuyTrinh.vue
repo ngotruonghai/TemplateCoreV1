@@ -3,7 +3,7 @@
         <v-container>
             <div class="layoutChill">
                 <v-row>
-                    <v-col cols="12" md="12">
+                    <v-col cols="12" md="12" style="float: right;">
                         <button class="btnAdd btn" v-on:click="btnCreateClick">
                             <span class="icon-border">
                                 <i class="fas fa-plus"></i>

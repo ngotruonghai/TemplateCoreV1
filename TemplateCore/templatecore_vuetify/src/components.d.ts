@@ -17,6 +17,7 @@ declare module 'vue' {
     CBPhongBan: typeof import('./components/Common/CBPhongBan.vue')['default']
     DanhSachUser: typeof import('./components/UserAcount/DanhSachUser.vue')['default']
     Datetimepicker: typeof import('./components/Common/datetimepicker.vue')['default']
+    DialogMessage: typeof import('./components/Common/DialogMessage.vue')['default']
     MainHome: typeof import('./components/Main/MainHome.vue')['default']
     Navigation: typeof import('./components/Main/Navigation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

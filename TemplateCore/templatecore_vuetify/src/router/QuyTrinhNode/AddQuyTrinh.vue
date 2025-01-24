@@ -33,15 +33,6 @@
                                 <Datetimepicker></Datetimepicker>
                             </div>
                         </v-col>
-                        <!-- <v-col cols="12" md="12">
-                            <div class="input-container">
-                                <label for="" class="FontDefault">
-                                    <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
-                                    Ghi chú
-                                </label>
-                                <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
-                            </div>
-                        </v-col> -->
                     </v-row>
                 </div>
 
@@ -68,7 +59,7 @@
                     </v-col>
                     <v-col cols="12" md="6" v-show="btnHide == false">
                         <button class="btnAdd btn" v-on:click="btnTiepThep(true)" style="float: right;">
-                            Bươc tiếp theo
+                            Bươc tiếp theo s
                             <span class="icon-border">
                                 <i class="fas fa-arrow-right"></i>
                             </span>
@@ -85,7 +76,7 @@
             </div>
             <div v-show="flang == 0">
 
-                <AddNode></AddNode>
+                <AddNode  @emit_Node='handleDataSent'></AddNode>
 
             </div>
         </v-container>
@@ -97,6 +88,34 @@
 let flang = ref(0);
 let title= ref("");
 let btnHide = ref(false);
+
+
+interface INodeMap {
+    KeyId: string | null,
+    Type: string | null,
+    Index: number,
+    TenNode: String | null
+    X: number,
+    Y: number
+}
+interface IDiagram {
+    KeyId: string | null,
+    Source: string | null,
+    Target: string | null
+    TenDiagram: string | null
+}
+interface INextStep {
+    StepKeyId: string | null,
+    StepName: String | null
+    Action: string | null,
+    NextStepId: string | null,
+    NextStepName: string | null,
+    Status: String | null
+}
+const request = ref({
+    INodeMap: [] as INodeMap[],
+    IDiagram: [] as IDiagram[]
+});
 
 interface IDanhSachQuyTrinh {
     ThietLapMaPhieu: string | null;
@@ -127,6 +146,14 @@ function LoadTitle(){
     }
 }
 
+const INodeMap = ref<INodeMap[]>([]);
+const IDiagram = ref<IDiagram[]>([]);
+
+// Hàm xử lý sự kiện nhận dữ liệu
+function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[] }) {
+  INodeMap.value = data.INodeMap; // Cập nhật dữ liệu Nodes
+  IDiagram.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
+}
 onMounted(() => {
     LoadTitle();
 });

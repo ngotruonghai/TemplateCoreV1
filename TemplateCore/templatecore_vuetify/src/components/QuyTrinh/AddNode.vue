@@ -5,42 +5,41 @@
     </div>
     <div v-if="isContextMenuVisible" :style="contextMenuStyle" class="context-menu FontDefault">
         <ul>
-            <li @click="btnAddNode('bauduc')" style=" color: #87CEFA;">
+            <li @click="btnAddNode('bauduc_batdau')" style=" color: #87CEFA;">
                 <span class="icon-border2" style=" color: #87CEFA;">
                     <i class="fas fa-circle"></i>
                 </span>
                 Tạo bước bắt đầu
             </li>
-            <li @click="btnAddNode('vuong')" style=" color: #0099CC;">
+            <li @click="btnAddNode('vuong_buoc')" style=" color: #0099CC;">
                 <span class="icon-border2" style=" color: #0099CC;">
                     <i class="fas fa-square"></i>
                 </span>
                 Tạo bước tiếp theo
             </li>
-            <li @click="btnAddNode('thoi')" style=" color: #FF9933;">
+            <li @click="btnAddNode('thoi_dieukien')" style=" color: #FF9933;">
                 <span class="icon-border2" style=" color: #FF9933;">
                     <i class="fas fa-exclamation-triangle"></i>
                 </span>
-                Điều kiện
+                Tạo bước điều kiện
             </li>
-
+            <li @click="btnAddNode('thoi_trave')" style=" color: #FF9933;">
+                <span class="icon-border2" style=" color: #FF9933;">
+                    <i class="fas fa-undo-alt"></i>
+                </span>
+                Trả về hoặc chuyển bước
+            </li>
             <li @click="btnAddNode('thoi_ketthuc')" style=" color: #009966;">
                 <span class="icon-border2" style=" color: #009966;">
                     <i class="fas fa-check"></i>
                 </span>
                 Duyệt
             </li>
-            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #FF9AA2;">
-                <span class="icon-border2" style=" color: #FF9AA2;">
+            <li @click="btnAddNode('thoi_tuchoi')" style=" color: #CC0033;">
+                <span class="icon-border2" style=" color: #CC0033;">
                     <i class="fas fa-times"></i>
                 </span>
                 Từ chối
-            </li>
-            <li @click="btnTraVe()" style=" color: #FF9AA2;">
-                <span class="icon-border2" style=" color: #FF9AA2;">
-                    <i class="fas fa-times"></i>
-                </span>
-                Trả về
             </li>
             <li @click="CauHinhBuoc">
                 <span class="icon-border2">
@@ -63,7 +62,8 @@
                 <v-row>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
-                            Tên bước thực hiện
+                            <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
+                            Tên bước quy trình
                         </label>
                         <input type="text" id="" class="FontDefault" placeholder="VD: Bước duyệt quy trình"
                             style="width: 100%;" v-model="tenNode" />
@@ -71,18 +71,16 @@
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
-                            Ghi chú mũi tên
+                            Tên luồng chuyền (mũi tên)
                         </label>
                         <input type="text" id="" class="FontDefault"
                             placeholder="VD: Chuyển quy trình bước 1 sang bước 2" style="width: 100%;"
-                            v-model="ghichuNode" />
+                            v-model="_ActionName" />
                     </v-col>
-                    <v-col cols="12" md="12">
+                    <v-col cols="12" md="12" v-show="_isShowListNode">
                         <label class="FontDefault">
-                            Trả về cho bước
+                            Trả về hoặc chuyển cho bước:
                         </label>
-
-
                         <div class="combobox-container">
                             <select class="combobox" v-model="_selectNodeId">
                                 <option value="" key="0"></option>
@@ -93,8 +91,6 @@
                             </select>
                             <span class="combobox-icon">▼</span>
                         </div>
-
-
                     </v-col>
                 </v-row>
 
@@ -113,7 +109,31 @@
         </v-card>
     </v-dialog>
 
+    <v-dialog v-model="_isShoeMessError" max-width="400" persistent>
+        <template v-slot:activator="{ props: activatorProps }">
+        </template>
 
+        <v-card title="Thông báo lỗi">
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <label class="FontDefault" style="font-size: 15px;">
+                            {{ _meesageError }} !
+                        </label>
+                    </v-col>
+                </v-row>
+
+            </v-container>
+
+            <template v-slot:actions>
+                <v-spacer></v-spacer>
+                <v-btn class="btnAdd btn no-uppercase" @click=" _isShoeMessError = false">
+                    Xác nhận
+                </v-btn>
+
+            </template>
+        </v-card>
+    </v-dialog>
 
     <div :class="['sliding-panel FontDefault', { open: isPanelOpen }]">
         <div class="sliding-panel-content">
@@ -187,20 +207,31 @@
 
     <div class="overlay" :class="{ show: isPanelOpen }"></div>
 
+
+
 </template>
 
 <script lang="ts" setup>
+
 import { ref, reactive, onMounted, computed } from 'vue';
 import { dia, shapes, util } from 'jointjs';
 import { callAuthenticationAPI } from "@/providers/data-provider";
 import * as joint from 'jointjs';
 let dialog = ref(false);
-let typeText = '';
+let typeText = ''; // type node trong popup
 let tenNode = ref("");
-let ghichuNode = ref("");
+let _ActionName = ref("");
 let isPanelOpen = ref(false);
-let _indexNode = ref(0);
-let _selectNodeId = ref("");
+let _indexNode = ref(0); // Index khi add ndoe
+let _selectNodeId = ref(""); // chọn bước để trả về
+let _isShowListNode = ref(false); // list control các bước
+let _isShoeMessError = ref(false); // ẩn hiên thông báo lỗi
+let _meesageError = ref(''); // Mess thông báo lỗi
+
+/* biến ẩn hiển các bước trên màn hình */
+
+/* biến ẩn hiển các bước trên màn hình */
+
 
 // Tham chiếu tới container của sơ đồ
 const paperContainer = ref<HTMLDivElement | null>(null);
@@ -211,7 +242,7 @@ const contextMenuPosition = reactive({ x: 0, y: 0 });
 
 const contextMenuStyle = computed(() => ({
     top: `${contextMenuPosition.y}px`,
-    left: `${contextMenuPosition.x}px`,
+    left: `${contextMenuPosition.x + 20}px`,
 }));
 
 // Khởi tạo các thành phần của JointJS
@@ -220,7 +251,7 @@ let graph: dia.Graph;
 
 // Biến lưu trữ nút cuối cùng và nút được chọn
 let lastNode: dia.Element | null = null;
-let selectedNode: dia.Element | null = null;
+let _selectedNode: dia.Element | null = null;
 
 interface INodeMap {
     KeyId: string | null,
@@ -237,46 +268,46 @@ interface IDiagram {
     TenDiagram: string | null
 }
 interface INextStep {
-    StepKeyId: string | null,
-    StepName: String | null
-    Action: string | null,
-    NextStepId: string | null,
-    NextStepName: string | null,
-    Status: String | null
+    NodeIdStart: string | null,
+    NodeIdEnd: string | null,
+    DiagramId: string | null,
+    ActionName: string | null, // Tên Diagram
+    Action: number
 }
 const request = ref({
     INodeMap: [] as INodeMap[],
-    IDiagram: [] as IDiagram[]
+    IDiagram: [] as IDiagram[],
+    INextStep: [] as INextStep[]
 });
 let positions: { x: number; y: number }[] = [];
 
 
 const emit = defineEmits<{
-    (event: 'data-sent', data: boolean): void;
+    (event: 'emit_Node', data: {
+        INodeMap: INodeMap[],
+        IDiagram: IDiagram[]
+    }): void;
 }>();
 
 
-onMounted(() => {
-    // Tạo Graph (model)
-    graph = new dia.Graph({}, { cellNamespace: shapes });
 
-    // Tạo Paper (hiển thị)
+onMounted(() => {
+    graph = new dia.Graph({}, { cellNamespace: shapes });
     paper = new dia.Paper({
         el: paperContainer.value!,
         model: graph,
         width: window.innerWidth, // Full window width
-        height: window.innerHeight - 25, // Full window height
+        height: window.innerHeight - 30, // Full window height
         gridSize: 10,
         drawGrid: true,
         overflow: true,
         cellViewNamespace: shapes
     });
 
-    // Sự kiện chuột phải vào node
     paper.on('element:contextmenu', (elementView: dia.ElementView, evt: dia.Event, x: number, y: number) => {
         evt.preventDefault(); // Ngăn menu mặc định của trình duyệt
         // Lưu node được chọn
-        selectedNode = elementView.model;
+        _selectedNode = elementView.model;
         // Hiển thị menu ngữ cảnh tại vị trí chuột
         contextMenuPosition.x = x + 300;
         contextMenuPosition.y = y + 50;
@@ -284,14 +315,12 @@ onMounted(() => {
     });
 });
 
-// Hiển thị context menu tại vị trí click
 const showContextMenu = (event: MouseEvent) => {
     event.preventDefault(); // Ngăn menu mặc định của trình duyệt
     //const paperWidth = paper.options.width;
     //const paperHeight = paper.options.height;
-
-    contextMenuPosition.x = event.clientX;
-    contextMenuPosition.y = event.clientY + 20;
+    contextMenuPosition.x = event.clientX + 30;
+    contextMenuPosition.y = event.clientY - 100;
     isContextMenuVisible.value = true;
 
 };
@@ -301,11 +330,10 @@ const hideContextMenu = () => {
     isContextMenuVisible.value = false;
 };
 
-// Tạo nút (node) mới với loại hình vuông, hình thoi, hoặc hình bầu dục
 const createNode = (type: string) => {
     let newNode;
     let titleNode = tenNode.value;
-    if (type === 'vuong') {
+    if (type === 'vuong_buoc') {
         // Tạo node hình vuông
         newNode = new shapes.standard.Rectangle();
         newNode.attr({
@@ -321,13 +349,12 @@ const createNode = (type: string) => {
             },
         });
         newNode.resize(50, 50); // Kích thước hình vuông
-    } else if (type === 'thoi') {
-        // Tạo node hình thoi
+    } else if (type === 'thoi_dieukien') {
         newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
 
-                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
+                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi_dieukien
                 fill: '#FFE4B5', // Màu nền
                 stroke: 'black',  // Màu viền
                 strokeWidth: 1, // Độ dày viền
@@ -340,11 +367,10 @@ const createNode = (type: string) => {
         });
         newNode.resize(70, 70);
     } else if (type === 'thoi_ketthuc') {
-        // Tạo node hình thoi
         newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
-                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
+                refPoints: '50,0 100,50 50,100 0,50',
                 fill: '#B5EAD7', // Màu nền
                 stroke: 'black',  // Màu viền
                 strokeWidth: 1, // Độ dày viền
@@ -358,12 +384,11 @@ const createNode = (type: string) => {
         newNode.resize(70, 70);
     }
     else if (type === 'thoi_tuchoi') {
-        // Tạo node hình thoi
         newNode = new shapes.standard.Polygon();
         newNode.attr({
             body: {
-                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi
-                fill: '#FF9AA2', // Màu nền
+                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng thoi_dieukien
+                fill: '#CC0033', // Màu nền
                 stroke: 'black', // Màu viền
                 strokeWidth: 1, // Độ dày viền
             },
@@ -376,10 +401,8 @@ const createNode = (type: string) => {
                 yAlignment: 'middle', // Căn giữa theo chiều dọc
             },
         });
-
-
         newNode.resize(70, 70);
-    } else if (type === 'bauduc') {
+    } else if (type === 'bauduc_batdau') {
         // Tạo node hình bầu dục (ellipse)
         newNode = new shapes.standard.Ellipse();
         newNode.attr({
@@ -412,18 +435,15 @@ const createNode = (type: string) => {
 
     if (!newNode) return;
 
-
     const x = contextMenuPosition.x - 250;
     const y = contextMenuPosition.y;
-
     newNode.position(
         x, y
     );
-
-    newNode.attr({
-        //body: { fill: 'orange' },
-        //label: { text: type === 'tron' ? 'Hình vuông' : 'Hình thoi', fill: 'white' },
-    });
+    // newNode.attr({
+    //     body: { fill: 'orange' },
+    //     label: { text: type === 'tron' ? 'Hình vuông' : 'Hình thoi_dieukien', fill: 'white' },
+    // });
 
     graph.addCell(newNode);
 
@@ -438,9 +458,8 @@ const createNode = (type: string) => {
 
     _indexNode.value++;
 
-
     // Tạo liên kết từ node được chọn hoặc node cuối cùng
-    const sourceNode = selectedNode || lastNode;
+    const sourceNode = _selectedNode || lastNode;
     if (sourceNode) {
         const link = new shapes.standard.Link();
         link.source(sourceNode);
@@ -451,7 +470,7 @@ const createNode = (type: string) => {
         link.appendLabel({
             attrs: {
                 text: {
-                    text: ghichuNode.value, // Nội dung nhãn
+                    text: _ActionName.value, // Nội dung nhãn
                     fill: 'black', // Màu chữ
                     fontSize: 14, // Kích thước chữ
                 },
@@ -462,27 +481,60 @@ const createNode = (type: string) => {
         });
         link.router('orthogonal');
         link.connector('straight', { cornerType: 'line' });
-
-
         graph.addCell(link);
 
+        // Tạo Diagram
         request.value.IDiagram.push({
             KeyId: link.id as string,
             Source: newNode.id as string,
             Target: link.id as string,
-            TenDiagram: ghichuNode.value
+            TenDiagram: _ActionName.value
         });
+
+        // Phân tích tạo NextStep
+        switch (type) {
+            case 'vuong_buoc':
+                {
+                    request.value.INextStep.push({
+                        NodeIdStart: _selectedNode?.id as string,
+                        NodeIdEnd: newNode.id as string,
+                        DiagramId: link.id as string,
+                        ActionName: _ActionName.value,
+                        Action: 0
+                    });
+                    break;
+                }
+                case 'thoi_dieukien':{
+                    request.value.INextStep.push({
+                        NodeIdStart: _selectedNode?.id as string,
+                        NodeIdEnd: newNode.id as string,
+                        DiagramId: link.id as string,
+                        ActionName: _ActionName.value,
+                        Action: 0
+                    });
+                    break;
+                }
+            default:
+                break;
+        }
+
+        console.log(request.value.INextStep);
+
+
     }
+
     lastNode = newNode;
-    selectedNode = null;
+    _selectedNode = null;
+
     hideContextMenu();
 };
 
-// Xóa node đã chọn
 const deleteNode = () => {
-    if (selectedNode) {
-        selectedNode.remove();
-        selectedNode = null;
+    if (_selectedNode) {
+        _selectedNode.remove();
+        request.value.INodeMap = request.value.INodeMap.filter(x => x.KeyId != _selectedNode?.id);
+        request.value.IDiagram = request.value.IDiagram.filter(x => x.Source != _selectedNode?.id);
+        _selectedNode = null;
     } else {
         alert('Vui lòng chọn node cần xóa');
     }
@@ -490,30 +542,43 @@ const deleteNode = () => {
 };
 
 function btnTraVe() {
-    alert(_selectNodeId.value);
-    if (selectedNode) {
-        const nodes = graph.getElements();
-        
+    if (_selectedNode) {
+        //const nodes = graph.getElements();
+
+        if (_selectNodeId.value == _selectedNode.id) {
+            _isShoeMessError.value = true;
+            _meesageError.value = "Không được chọn cùng bước để trả về";
+            return;
+        }
 
         const link = new joint.shapes.standard.Link();
-            link.source({ id: selectedNode.id });
-            link.target({ id: _selectNodeId.value });
-            link.router('orthogonal');
-            link.connector('straight', { cornerType: 'line' });
-
-          
-
-           
-
-            graph.addCell(link);
+        link.source({ id: _selectedNode.id }); // Từ node
+        link.target({ id: _selectNodeId.value }); // đến node
+        link.attr({
+            line: { stroke: 'black', strokeWidth: 1 },
+        });
+        link.appendLabel({
+            attrs: {
+                text: {
+                    text: _ActionName.value, // Nội dung nhãn
+                    fill: 'black', // Màu chữ
+                    fontSize: 14, // Kích thước chữ
+                },
+            },
+            position: {
+                distance: 0.5, // Vị trí nhãn nằm giữa đường nối
+            },
+        });
+        link.router('orthogonal');
+        link.connector('straight', { cornerType: 'line' });
+        graph.addCell(link);
 
     } else {
-        alert('Vui lòng chọn node cần xóa');
+        alert('Vui lòng chọn click chuột phải để chọn bước thực hiện');
     }
     hideContextMenu();
 }
 
-// Cấu hình từng bước của quy trình
 function CauHinhBuoc() {
     isPanelOpen.value = !isPanelOpen.value;
     hideContextMenu();
@@ -543,17 +608,40 @@ function btnXacNhanDialog(status: boolean) {
 
     }
     else {
+        if (tenNode.value === '') {
+            _isShoeMessError.value = true;
+            _meesageError.value = "Vui lòng điền tên bước quyt trình";
+            dialog.value = false;
+
+            tenNode.value = "";
+            _ActionName.value = "";
+            return;
+        }
+
+        if (_isShowListNode.value == true) {
+            btnTraVe();
+            _selectNodeId.value = '';
+        }
+        else {
+            createNode(typeText);
+        }
+
         dialog.value = false;
-        createNode(typeText);
     }
     tenNode.value = "";
-    ghichuNode.value = "";
-
+    _ActionName.value = "";
+    emit('emit_Node', request.value);
 }
 
 function btnAddNode(type: string) {
     dialog.value = true;
     typeText = type;
+    if (type == "thoi_trave") {
+        _isShowListNode.value = true;
+    }
+    else {
+        _isShowListNode.value = false;
+    }
     hideContextMenu();
 }
 

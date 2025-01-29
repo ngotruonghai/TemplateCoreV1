@@ -8,14 +8,13 @@
         [MaxLength(250)]
         public string KeyId { get; set; }
 
-        [MaxLength(100)]
-        public string? type { get; set; }
+        public EnumStepQuyTrinh? Type { get; set; }
 
         [MaxLength(50)]
-        public string? position { get; set; }
+        public string? Index { get; set; }
 
         [MaxLength(150)]
-        public string? label { get; set; }
+        public string? TenNode { get; set; }
 
         public int DanhSachQuyTrinhId { get; set; }
 

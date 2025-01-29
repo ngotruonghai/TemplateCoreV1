@@ -264,7 +264,7 @@ let _selectedNode: dia.Element | null = null;
 
 interface INodeMap {
     KeyId: string | null,
-    Type: string | null,
+    Type: number,
     Index: number,
     TenNode: String | null
     X: number,
@@ -301,8 +301,6 @@ const emit = defineEmits<{
         IDiagram: IDiagram[]
     }): void;
 }>();
-
-
 
 onMounted(() => {
     graph = new dia.Graph({}, { cellNamespace: shapes });
@@ -498,7 +496,7 @@ const createNode = (type: string) => {
         Index: _indexNode.value,
         X: x,
         KeyId: newNode.id as string,
-        Type: type,
+        Type: parseInt(type),
         TenNode: titleNode,
         Y: y
     });
@@ -714,12 +712,11 @@ function CheckLogicAddNode(SelectNode: string) {
     const data_Node = request.value.INodeMap;
     const data_Diagram = request.value.IDiagram;
     const data_nextStep = request.value.INextStep;
-    console.log(data_nextStep);
 
     if (SelectNode.length > 0) { // sự kiện click chọn node
         let typeNode = data_Node.find(x => x.KeyId == SelectNode);
         switch (typeNode?.Type) {
-            case "5": { // bắt đầu
+            case 5: { // bắt đầu
                 if (data_nextStep.length == 1) { // có data
                     _xbatdau.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
                     _xbuoc.value = true;
@@ -730,7 +727,7 @@ function CheckLogicAddNode(SelectNode: string) {
 
                 break;
             }
-            case "1": { // bước
+            case 1: { // bước
                 if (data_nextStep.filter(x => x.NodeIdStart == SelectNode).length > 0) { // bước đã có diagram start
                     _xbuoc.value = _xbatdau.value = _xtrave.value = false;
                     _xdieukien.value = _xketthuc.value = _xduyet.value = false;
@@ -742,7 +739,7 @@ function CheckLogicAddNode(SelectNode: string) {
 
                 break;
             }
-            case "2": { // điều kiện
+            case 2: { // điều kiện
                 /* Điều kiện chưa có gì hết */
                 _xbuoc.value = _xketthuc.value = _xduyet.value = _xtrave.value = true;
                 if (data_nextStep.filter(x => x.NodeIdStart == SelectNode).length == 0) {
@@ -790,8 +787,13 @@ function CheckLogicAddNode(SelectNode: string) {
                     ko trả về cho bước tiếp theo
                 */
                const buoctieptheo = data_nextStep.find(x => x.NodeIdStart == SelectNode);
-                _dataTraVe.value.INodeMap = data_Node.filter(x => x.Type != "2" && x.Type != "5" && x.KeyId != buoctieptheo?.NodeIdEnd);
+                _dataTraVe.value.INodeMap = data_Node.filter(x => x.Type != 2 && x.Type != 5 && x.KeyId != buoctieptheo?.NodeIdEnd);
 
+                break;
+            }
+            case 3:{
+                _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
+                _xXoaNode.value=true;
                 break;
             }
 
@@ -800,9 +802,13 @@ function CheckLogicAddNode(SelectNode: string) {
                 break;
             }
         }
+        console.log(data_Node);
 
         /* kiểm tra nếu là ước cuối thì cho xóa */
-        if(data_nextStep.filter(x => x.NodeIdStart == SelectNode).length > 0){
+        if(data_Node.length == 1){
+            _xXoaNode.value = true;
+        }
+        else if(data_nextStep.filter(x => x.NodeIdStart == SelectNode).length >= 1){
             _xXoaNode.value = false;
         }
         else{

@@ -43,47 +43,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
             {
                 try
                 {
-                    DateTime now = DateTime.Now;
-                    request.UserId = _authenticatedUserService.UserId;
-                    request.MaQuyTrinh = "QT" + now.ToString("yyMMddHHmmss");
-
-                    var danhsach = _mapper.Map<DanhSachQuyTrinh>(request);
-                    await _danhSachQuyTrinhRepository.AddAsync(danhsach);
-                    await _danhSachQuyTrinhRepository.SaveChangesAsync();
-
-                    if (request.lsnodes != null && request.lsnodes.Any())
-                    {
-                        List<Node> lsNode = request.lsnodes.Select(data => new Node
-                        {
-                            KeyId = data.KeyId,
-                            position = data.position,
-                            label = data.label,
-                            type = data.type,
-                            DanhSachQuyTrinhId = danhsach.Id,
-                        }).ToList();
-                        await _nodeRepositoryAsync.AddRangeAsync(lsNode);
-                        await _nodeRepositoryAsync.SaveChangesAsync();
-                    }
-
-                    if (request.lsdiagram != null && request.lsdiagram.Any())
-                    {
-                        List<DiagramNode> lsDiagramNode = request.lsdiagram.Select(data => new DiagramNode
-                        {
-                            KeyId = data.KeyId,
-                            source = data.source,
-                            lineAttributes = data.lineAttributes,
-                            DanhSachQuyTrinhId = danhsach.Id,
-                            target = data.target,
-                            
-                        }).ToList();
-                        await _diagramNodeRepository.AddRangeAsync(lsDiagramNode);
-                        await _diagramNodeRepository.SaveChangesAsync();
-                    }
-
-                    await _danhSachQuyTrinhRepository.SaveChangesAsync();
-                    
-
-                    return new Response<int>(danhsach.Id);
+                    return new Response<int>();
                 }
                 catch (Exception ex)
                 {

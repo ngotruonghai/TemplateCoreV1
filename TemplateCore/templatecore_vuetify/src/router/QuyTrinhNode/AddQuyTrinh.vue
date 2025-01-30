@@ -20,7 +20,7 @@
                                     <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
                                     Tên quy trình
                                 </label>
-                                <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
+                                <input type="text" v-model="tenquytrinh" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
                             </div>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -85,37 +85,35 @@
 </template>
 
 <script lang="ts" setup>
+import { callAuthenticationAPI } from "@/providers/data-provider";
 let flang = ref(0);
 let title= ref("");
 let btnHide = ref(false);
+let tenquytrinh = "";
 
 
 interface INodeMap {
-    KeyId: string | null,
-    Type: string | null,
-    Index: number,
-    TenNode: String | null
-    X: number,
-    Y: number
+    keyId: string | null,
+    type: number,
+    index: number,
+    tenNode: String | null
+    x: number,
+    y: number
 }
 interface IDiagram {
-    KeyId: string | null,
-    Source: string | null,
-    Target: string | null
-    TenDiagram: string | null
+    keyId: string | null,
+    source: string | null,
+    target: string | null
+    tenDiagram: string | null
 }
 interface INextStep {
-    StepKeyId: string | null,
-    StepName: String | null
-    Action: string | null,
-    NextStepId: string | null,
-    NextStepName: string | null,
-    Status: String | null
+    nodeIdStart: string | null,
+    nodeIdEnd: string | null,
+    diagramId: string | null,
+    actionName: string | null, // Tên Diagram
+    action: number,
+    typeNextStep: number
 }
-const request = ref({
-    INodeMap: [] as INodeMap[],
-    IDiagram: [] as IDiagram[]
-});
 
 interface IDanhSachQuyTrinh {
     ThietLapMaPhieu: string | null;
@@ -129,6 +127,7 @@ function btnTiepThep(status : boolean) {
     flang.value = flang.value + 1
     LoadTitle();
     btnHide.value = true;
+    API_AddQuyTrinh();
 }
 
 function btnTraVe() {
@@ -146,13 +145,30 @@ function LoadTitle(){
     }
 }
 
-const INodeMap = ref<INodeMap[]>([]);
-const IDiagram = ref<IDiagram[]>([]);
+const INodeMaps = ref<INodeMap[]>([]);
+const IDiagrams = ref<IDiagram[]>([]);
+const INextSteps = ref<INextStep[]>([]);
 
 // Hàm xử lý sự kiện nhận dữ liệu
-function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[] }) {
-  INodeMap.value = data.INodeMap; // Cập nhật dữ liệu Nodes
-  IDiagram.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
+function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[]}) {
+  INodeMaps.value = data.INodeMap; // Cập nhật dữ liệu Nodes
+  IDiagrams.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
+  INextSteps.value = data.INextStep;
+}
+async function API_AddQuyTrinh() {
+    try {
+        let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
+            tenQuyTrinh: tenquytrinh,
+            userName: localStorage.getItem("UserName"),
+            nodeMapModels: INodeMaps.value,
+            diagramNodeModels: IDiagrams.value,
+            nextStepNodeModels:INextSteps.value
+        }, {
+            timeout: 15000
+        });
+    } catch (error) {
+       
+    }
 }
 onMounted(() => {
     LoadTitle();

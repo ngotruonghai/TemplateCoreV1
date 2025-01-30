@@ -86,8 +86,8 @@
                             <select class="combobox" v-model="_selectNodeId">
                                 <option value="" key="0"></option>
                                 <option v-for="(item, index) in _dataTraVe.INodeMap"
-                                    :key="item.KeyId || ''" :value="item.KeyId || ''">
-                                    {{ item.TenNode }}
+                                    :key="item.keyId || ''" :value="item.keyId || ''">
+                                    {{ item.tenNode }}
                                 </option>
                             </select>
                             <span class="combobox-icon">▼</span>
@@ -218,12 +218,14 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { dia, shapes, util } from 'jointjs';
 import { callAuthenticationAPI } from "@/providers/data-provider";
 import * as joint from 'jointjs';
+
+
 let dialog = ref(false);
 let typeText = ''; // type node trong popup
 let tenNode = ref("");
 let _ActionName = ref("");
 let isPanelOpen = ref(false);
-let _indexNode = ref(0); // Index khi add ndoe
+let _indexNode = ref(0); // index khi add ndoe
 let _selectNodeId = ref(""); // chọn bước để trả về
 let _isShowListNode = ref(false); // list control các bước
 let _isShoeMessError = ref(false); // ẩn hiên thông báo lỗi
@@ -241,8 +243,6 @@ let _xXoaNode = ref(false);
 let _xCauHinhBuoc = ref(false);
 /* biến ẩn hiển các bước trên màn hình */
 
-
-// Tham chiếu tới container của sơ đồ
 
 // Quản lý trạng thái của context menu
 const isContextMenuVisible = ref(false);
@@ -263,26 +263,26 @@ let lastNode: dia.Element | null = null;
 let _selectedNode: dia.Element | null = null;
 
 interface INodeMap {
-    KeyId: string | null,
-    Type: number,
-    Index: number,
-    TenNode: String | null
-    X: number,
-    Y: number
+    keyId: string | null,
+    type: number,
+    index: number,
+    tenNode: String | null
+    x: number,
+    y: number
 }
 interface IDiagram {
-    KeyId: string | null,
-    Source: string | null,
-    Target: string | null
-    TenDiagram: string | null
+    keyId: string | null,
+    source: string | null,
+    target: string | null
+    tenDiagram: string | null
 }
 interface INextStep {
-    NodeIdStart: string | null,
-    NodeIdEnd: string | null,
-    DiagramId: string | null,
-    ActionName: string | null, // Tên Diagram
-    Action: number,
-    TypeNextStep: string | null
+    nodeIdStart: string | null,
+    nodeIdEnd: string | null,
+    diagramId: string | null,
+    actionName: string | null, // Tên Diagram
+    action: number,
+    typeNextStep: number
 }
 const request = ref({
     INodeMap: [] as INodeMap[],
@@ -298,7 +298,8 @@ let _dataTraVe = ref({
 const emit = defineEmits<{
     (event: 'emit_Node', data: {
         INodeMap: INodeMap[],
-        IDiagram: IDiagram[]
+        IDiagram: IDiagram[],
+        INextStep: INextStep[];
     }): void;
 }>();
 
@@ -493,19 +494,17 @@ const createNode = (type: string) => {
     graph.addCell(newNode);
 
     request.value.INodeMap.push({
-        Index: _indexNode.value,
-        X: x,
-        KeyId: newNode.id as string,
-        Type: parseInt(type),
-        TenNode: titleNode,
-        Y: y
+        index: _indexNode.value,
+        x: x,
+        keyId: newNode.id as string,
+        type: parseInt(type),
+        tenNode: titleNode,
+        y: y
     });
 
     _indexNode.value++;
     // Tạo liên kết từ node được chọn hoặc node cuối cùng
     let sourceNode = _selectedNode || lastNode;
-    console.log(_selectedNode);
-    console.log(lastNode);
     const link = new shapes.standard.Link();
 
     if (request.value.INextStep.length == 0) {
@@ -535,10 +534,10 @@ const createNode = (type: string) => {
 
         // Tạo Diagram
         request.value.IDiagram.push({
-            KeyId: link.id as string,
-            Source: newNode.id as string,
-            Target: link.id as string,
-            TenDiagram: _ActionName.value
+            keyId: link.id as string,
+            source: newNode.id as string,
+            target: link.id as string,
+            tenDiagram: _ActionName.value
         });
     }
 
@@ -546,23 +545,23 @@ const createNode = (type: string) => {
     switch (type) {
         case '5': {
             request.value.INextStep.push({
-                NodeIdStart: newNode.id as string,
-                NodeIdEnd: '',
-                DiagramId: '',
-                ActionName: _ActionName.value,
-                Action: 0,
-                TypeNextStep: type
+                nodeIdStart: newNode.id as string,
+                nodeIdEnd: '',
+                diagramId: '',
+                actionName: _ActionName.value,
+                action: 0,
+                typeNextStep: parseInt(type)
             })
             break;
         }
         default: {
             request.value.INextStep.push({
-                NodeIdStart: sourceNode?.id as string,
-                NodeIdEnd: newNode.id as string,
-                DiagramId: link.id as string,
-                ActionName: _ActionName.value,
-                Action: 0,
-                TypeNextStep: type
+                nodeIdStart: sourceNode?.id as string,
+                nodeIdEnd: newNode.id as string,
+                diagramId: link.id as string,
+                actionName: _ActionName.value,
+                action: 0,
+                typeNextStep: parseInt(type)
             })
             break;
         }
@@ -577,14 +576,12 @@ const createNode = (type: string) => {
 const deleteNode = () => {
     if (_selectedNode) {
         _selectedNode.remove();
-        request.value.INodeMap = request.value.INodeMap.filter(x => x.KeyId != _selectedNode?.id);
-        request.value.IDiagram = request.value.IDiagram.filter(x => x.Source != _selectedNode?.id);
-        request.value.INextStep = request.value.INextStep.filter(x => x.NodeIdStart != _selectedNode?.id);
-        request.value.INextStep = request.value.INextStep.filter(x => x.NodeIdEnd != _selectedNode?.id);
-
+        request.value.INodeMap = request.value.INodeMap.filter(x => x.keyId != _selectedNode?.id);
+        request.value.IDiagram = request.value.IDiagram.filter(x => x.source != _selectedNode?.id);
+        request.value.INextStep = request.value.INextStep.filter(x => x.nodeIdStart != _selectedNode?.id);
+        request.value.INextStep = request.value.INextStep.filter(x => x.nodeIdEnd != _selectedNode?.id);
         _selectedNode = null;
-
-        console.log(request.value.INextStep);
+        emit('emit_Node', request.value);
     } else {
         alert('Vui lòng chọn node cần xóa');
     }
@@ -624,12 +621,12 @@ function btnTraVe() {
         graph.addCell(link);
 
         request.value.INextStep.push({
-            NodeIdStart: _selectedNode?.id as string,
-            NodeIdEnd: _selectNodeId.value as string,
-            DiagramId: link.id as string,
-            ActionName: _ActionName.value,
-            Action: 0,
-            TypeNextStep: "6"
+            nodeIdStart: _selectedNode?.id as string,
+            nodeIdEnd: _selectNodeId.value as string,
+            diagramId: link.id as string,
+            actionName: _ActionName.value,
+            action: 0,
+            typeNextStep: 6
         })
 
     } else {
@@ -643,22 +640,7 @@ function CauHinhBuoc() {
     hideContextMenu();
 }
 
-async function API_AddQuyTrinh() {
-    try {
-        let responseData = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/AddQuyTrinhNode', 'POST', {
-            lsdiagram: request.value.IDiagram,
-            lsnodes: request.value.INodeMap,
-            MaQuyTrinh: "",
-            tenNode: "",
-            UserId: "",
-            UserName: localStorage.getItem("UserName")
-        }, {
-            timeout: 15000
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
+
 
 
 function btnXacNhanDialog(status: boolean) {
@@ -687,9 +669,9 @@ function btnXacNhanDialog(status: boolean) {
 
         dialog.value = false;
     }
+    emit('emit_Node', request.value);
     tenNode.value = "";
     _ActionName.value = "";
-    emit('emit_Node', request.value);
 }
 
 function btnAddNode(type: string) { // Add node  khi xác nhận trong popup
@@ -714,8 +696,8 @@ function CheckLogicAddNode(SelectNode: string) {
     const data_nextStep = request.value.INextStep;
 
     if (SelectNode.length > 0) { // sự kiện click chọn node
-        let typeNode = data_Node.find(x => x.KeyId == SelectNode);
-        switch (typeNode?.Type) {
+        let typeNode = data_Node.find(x => x.keyId == SelectNode);
+        switch (typeNode?.type) {
             case 5: { // bắt đầu
                 if (data_nextStep.length == 1) { // có data
                     _xbatdau.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
@@ -728,7 +710,7 @@ function CheckLogicAddNode(SelectNode: string) {
                 break;
             }
             case 1: { // bước
-                if (data_nextStep.filter(x => x.NodeIdStart == SelectNode).length > 0) { // bước đã có diagram start
+                if (data_nextStep.filter(x => x.nodeIdStart == SelectNode).length > 0) { // bước đã có diagram start
                     _xbuoc.value = _xbatdau.value = _xtrave.value = false;
                     _xdieukien.value = _xketthuc.value = _xduyet.value = false;
                 }
@@ -742,11 +724,11 @@ function CheckLogicAddNode(SelectNode: string) {
             case 2: { // điều kiện
                 /* Điều kiện chưa có gì hết */
                 _xbuoc.value = _xketthuc.value = _xduyet.value = _xtrave.value = true;
-                if (data_nextStep.filter(x => x.NodeIdStart == SelectNode).length == 0) {
+                if (data_nextStep.filter(x => x.nodeIdStart == SelectNode).length == 0) {
                     _xbatdau.value = false;
                 }
                 else {
-                    const stepNode = data_nextStep.filter(x => x.NodeIdStart == SelectNode);
+                    const stepNode = data_nextStep.filter(x => x.nodeIdStart == SelectNode);
 
                     if (stepNode.length >= 3) { // điều kiện chỉ được chọn ít nhất 2 lần
                         _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
@@ -754,25 +736,24 @@ function CheckLogicAddNode(SelectNode: string) {
                     };
                     stepNode.forEach((item) => {
                         /* đang lỗi ở đây, chỉ dc chọn 3 bước trong điề kiện */
-                        switch (item?.TypeNextStep) {
-                            case '1':{
+                        switch (item?.typeNextStep) {
+                            case 1:{
                                     _xbuoc.value = false;
                                     break;
                                 }
-                                case '3':{
+                                case 3:{
                                     _xduyet.value = false;
                                     break;
                                 }
-                                case '4':{
+                                case 4:{
                                     _xketthuc.value = false;
                                     break;
                                 }
-                                case '6':{
+                                case 6:{
                                     _xtrave.value = false;
                                     break;
                                 }
                             default:
-                                alert(item.TypeNextStep);
                                 _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
                                 break;
                         }
@@ -786,8 +767,8 @@ function CheckLogicAddNode(SelectNode: string) {
                     ko trả về cùng bước
                     ko trả về cho bước tiếp theo
                 */
-               const buoctieptheo = data_nextStep.find(x => x.NodeIdStart == SelectNode);
-                _dataTraVe.value.INodeMap = data_Node.filter(x => x.Type != 2 && x.Type != 5 && x.KeyId != buoctieptheo?.NodeIdEnd);
+               const buoctieptheo = data_nextStep.find(x => x.nodeIdStart == SelectNode);
+                _dataTraVe.value.INodeMap = data_Node.filter(x => x.type != 2 && x.type != 5 && x.keyId != buoctieptheo?.nodeIdEnd);
 
                 break;
             }
@@ -796,19 +777,24 @@ function CheckLogicAddNode(SelectNode: string) {
                 _xXoaNode.value=true;
                 break;
             }
-
+            case 4: {
+                // Từ chối
+                _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
+                _xXoaNode.value=true;
+            }
             default: {
-                alert(typeNode?.Type);
                 break;
             }
         }
-        console.log(data_Node);
 
         /* kiểm tra nếu là ước cuối thì cho xóa */
         if(data_Node.length == 1){
             _xXoaNode.value = true;
         }
-        else if(data_nextStep.filter(x => x.NodeIdStart == SelectNode).length >= 1){
+        else if(data_nextStep.filter(x => x.nodeIdStart == SelectNode).length ==1 && data_nextStep.filter(x => x.typeNextStep == 6).length ==1){
+            _xXoaNode.value = true;
+        }
+        else if(data_nextStep.filter(x => x.nodeIdStart == SelectNode).length >= 1){
             _xXoaNode.value = false;
         }
         else{

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250130031847_UpdateTableNodeNextStep1")]
+    partial class UpdateTableNodeNextStep1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -556,8 +559,9 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.Property<int>("DanhSachQuyTrinhId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Index")
-                        .HasColumnType("int");
+                    b.Property<string>("Index")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("KeyId")
                         .IsRequired()
@@ -571,7 +575,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("NodeSettingId")
+                    b.Property<int>("NodeSettingId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -588,11 +592,15 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("X")
-                        .HasColumnType("int");
+                    b.Property<string>("X")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("Y")
-                        .HasColumnType("int");
+                    b.Property<string>("Y")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -789,7 +797,9 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
 
                     b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", "NodeSettings")
                         .WithMany()
-                        .HasForeignKey("NodeSettingId");
+                        .HasForeignKey("NodeSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NodeSettings");
                 });

@@ -32,6 +32,7 @@ namespace TemplateCore.Infrastructure.Persistence
             services.AddScoped<INodeRepositoryAsync, NodeRepositoryAsync>();
             services.AddScoped<ITransaction, Transaction>();
             services.AddScoped<IPhongBanRepositoryAsync, PhongBanRepositoryAsync>();
+            services.AddScoped<INextStepRepositoryAsync, NextStepRepositoryAsync>();
         }
     }
 }

@@ -9,8 +9,13 @@ namespace TemplateCore.Infrastructure.Identity.Models
         [MaxLength(250)]
         public string LastName { get; set; }
         public TypeAccount TypeUser { get; set; } = TypeAccount.UserTao;
+
+        /// <summary>
+        /// Mã công ty
+        /// </summary>
         [MaxLength(250)]
         public string? ParentUserId { get; set; } = null;
+
         [MaxLength(150)]
         public string? KeyActiveId { get; set; } = null;
         [MaxLength(250)]

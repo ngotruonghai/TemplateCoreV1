@@ -13,5 +13,7 @@ namespace TemplateCore.Application.Services
         Task<IEnumerable<ApplicationUser>> GetUserThuocMaPhongBan(string MaPhongBan);
 
         Task<IEnumerable<object>> GetAllRole();
+
+        Task<object> GetAllUserPermission();
     }
 }

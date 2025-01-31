@@ -1,22 +1,23 @@
 <template>
-  <div class="multi-select FontDefault">
+  <div class="multi-select-nhansu FontDefault">
     <!-- Hiển thị nút dropdown -->
-    <div class="dropdown-header" @click="toggleDropdown">
-      <span :class="{ 'placeholder': selectedCities.length === 0 }">
-        {{ selectedCities.length > 0
-          ? selectedCities.join(", ")
-          : "Chọn..." }}
+    <div class="dropdown-header-nhansu" @click="toggleDropdown">
+      <span :class="{ 'placeholder': selectedId.length === 0 }">
+        {{ selectedId.length > 0
+          ? selectedId.join(", ")
+          : "Chọn nhân sự..." }}
       </span>
-      <span class="arrow">{{ dropdownOpen ? "▲" : "▼" }}</span>
+      <span class="arrow">{{ dropdownOpenNhanSu ? "▲" : "▼" }}</span>
     </div>
 
     <!-- Dropdown danh sách -->
-    <div v-if="dropdownOpen" class="dropdown">
+    <div v-if="dropdownOpenNhanSu" class="dropdown-nhansu">
       <!-- Trường tìm kiếm -->
-      <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;" @input="filterCities" />
-      <div v-for="city in filteredCities" :key="city" class="dropdown-item">
-        <input type="checkbox" :id="city" :value="city" v-model="selectedCities" />
-        <label :for="city">{{ city }}</label>
+      <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
+        @input="filterCities" />
+      <div v-for="item in responseDataFiller.data" :key="item.id" class="dropdown-item-nhansu">
+        <input type="checkbox" :id="item.id" :value="item.firstName + item.lastName" v-model="selectedId" />
+        <label :for="item.id">{{ item.firstName + item.lastName }}</label>
       </div>
     </div>
   </div>
@@ -27,19 +28,35 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { callAuthenticationAPI } from '@/providers/data-provider';
 
 // Danh sách thành phố
-const cities = ref<string[]>([]);
-const filteredCities = ref<string[]>([]);
 
 // Biến reactive
 const searchQuery = ref<string>("");
-const selectedCities = ref<string[]>([]);
-const dropdownOpen = ref<boolean>(false);
+const selectedId = ref<string[]>([]);
+const dropdownOpenNhanSu = ref<boolean>(false);
 
-interface DataItem {
+const props = defineProps<{
+  ListPhongBanId: string[];
+}>();
+
+interface User {
+  firstName: string;
+  lastName: string;
+  maNhanVien: string;
   id: string;
-  name: string | null;
-  normalizedName: string;
-  concurrencyStamp: string | null;
+  userName: string;
+  normalizedUserName: boolean;
+  email: string;
+  normalizedEmail: string;
+  emailConfirmed: boolean;
+  //passwordHash: string;
+  securityStamp: string;
+  concurrencyStamp: string;
+  phoneNumber: null | string;
+  phoneNumberConfirmed: boolean;
+  twoFactorEnabled: boolean;
+  lockoutEnd: null | string;
+  lockoutEnabled: boolean;
+  accessFailedCount: number;
 }
 
 interface APIResponse {
@@ -47,9 +64,9 @@ interface APIResponse {
   code: number | null;
   message: string | null;
   errors: Record<string, any> | null;
-  data: DataItem[];
+  data: User[];
 }
-const responseData = ref<APIResponse>({
+const responseDataFiller = ref<APIResponse>({
   succeeded: null,
   code: null,
   message: null,
@@ -57,38 +74,74 @@ const responseData = ref<APIResponse>({
   data: []
 });
 
+let responseData = <APIResponse>{
+  succeeded: null,
+  code: null,
+  message: null,
+  errors: null,
+  data: []
+}
+const emit = defineEmits<{
+  (event: 'emit_nhansuId', data: string[]): void;
+}>();
+
 // Lọc thành phố dựa trên tìm kiếm
 const filterCities = () => {
   const query = searchQuery.value.toLowerCase();
-  filteredCities.value = cities.value.filter((city) =>
-    city.toLowerCase().includes(query)
-  );
+  responseDataFiller.value.data = responseData.data;
+  if (query.length >= 1) {
+    responseDataFiller.value.data = responseDataFiller.value.data.filter(x => (x.firstName + x.lastName).toLocaleLowerCase().includes(query));
+  }
+  else {
+    responseDataFiller.value.data = responseData.data;
+  }
 };
 
 // Toggle trạng thái dropdown
 const toggleDropdown = () => {
-  dropdownOpen.value = !dropdownOpen.value;
+  dropdownOpenNhanSu.value = !dropdownOpenNhanSu.value;
 };
 
 // Xử lý click bên ngoài dropdown
 const handleOutsideClick = (event: MouseEvent) => {
-  const dropdownElement = document.querySelector(".multi-select");
+  const dropdownElement = document.querySelector(".multi-select-nhansu");
   if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
-    dropdownOpen.value = false; // Đóng dropdown nếu click ra ngoài
+    dropdownOpenNhanSu.value = false; // Đóng dropdown nếu click ra ngoài
   }
+  emit("emit_nhansuId", selectedId.value);
 };
 
 // Tải dữ liệu API
 async function LoadDataAPI() {
   try {
-    const response = await callAuthenticationAPI('/api/account/GetRole', 'GET', {}, { timeout: 15000 });
-    responseData.value = response as APIResponse;
-    responseData.value.data.forEach((item) => {
-      return cities.value.push(item.name as string);
+    const response = await callAuthenticationAPI('/api/account/GetAllUser', 'GET', {}, { timeout: 15000 });
+    responseData = response as APIResponse;
+    responseData.data.push({
+      firstName: 'Tất cả',
+      lastName: '',
+      maNhanVien: 'All',
+      id: '0',
+      userName: '',
+      normalizedUserName: false,
+      email: '',
+      normalizedEmail: '',
+      emailConfirmed: false,
+      securityStamp: '',
+      concurrencyStamp: '',
+      phoneNumber: null,
+      phoneNumberConfirmed: false,
+      twoFactorEnabled: false,
+      lockoutEnd: null,
+      lockoutEnabled: false,
+      accessFailedCount: 0
     });
-    filteredCities.value = cities.value; // Thiết lập filteredCities ban đầu sau khi đã có dữ liệu
+
+    responseData.data.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+    // coppy data
+    responseDataFiller.value = { ...responseData, data: [...responseData.data] }
   } catch (error) {
-    console.log(error);
+    console.log("Lỗi comboxbo nhân sự " + error);
   }
 }
 
@@ -102,6 +155,16 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", handleOutsideClick);
 });
+
+
+watch(
+  () => props.ListPhongBanId, // Dùng getter để theo dõi prop
+  (newVal, oldVal) => {
+    console.log("ListPhongBanId thay đổi:", newVal, oldVal);
+  },
+  { deep: true, immediate: true }
+);
+
 </script>
 
 <style>
@@ -110,13 +173,13 @@ onUnmounted(() => {
 }
 
 /* CSS tùy chỉnh */
-.multi-select {
+.multi-select-nhansu {
   width: 100%;
   position: relative;
   font-family: Arial, sans-serif;
 }
 
-.dropdown-header {
+.dropdown-header-nhansu {
   border: 1px solid #ccc;
   padding: 8px;
   border-radius: 5px;
@@ -131,7 +194,7 @@ onUnmounted(() => {
   font-size: 12px;
 }
 
-.dropdown {
+.dropdown-nhansu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -153,19 +216,19 @@ onUnmounted(() => {
   border-radius: 5px;
 }
 
-.dropdown-item {
+.dropdown-item-nhansu {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 }
 
-.dropdown-item input[type="checkbox"] {
+.dropdown-item-nhansu input[type="checkbox"] {
   margin: 0;
   margin-right: 8px;
   cursor: pointer;
 }
 
-.dropdown-item label {
+.dropdown-item-nhansu label {
   margin: 0;
   cursor: pointer;
   white-space: nowrap;

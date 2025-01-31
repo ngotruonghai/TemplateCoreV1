@@ -12,7 +12,8 @@
             </v-col>
             <v-col cols="12" md="12">
                 <div class="FontDefault">
-                    <h3>2. Thiết lập mã phiếu (Ký tự đầu tiên, tối đa 4 ký tự) <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
+                    <h3>2. Thiết lập mã phiếu (Ký tự đầu tiên, tối đa 4 ký tự) <div
+                            style="display: inline-block; vertical-align: middle; color: red;">*</div>
                     </h3>
                 </div>
                 <div class="input-container">
@@ -21,10 +22,15 @@
             </v-col>
             <v-col cols="12" md="12">
                 <div class="FontDefault">
-                    <h3>3. Nhân sự theo dõi
+                    <h3>3. Phòng ban nhân sự
                     </h3>
                 </div>
-                <CBCheckNhanSu></CBCheckNhanSu>
+                <CBCheckPhongBan @emit_phonganId="handlePhongBan" />
+
+            </v-col>
+            <v-col cols="12" md="12">
+                <CBCheckNhanSu :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSu>
+
             </v-col>
 
             <v-col cols="12" md="12">
@@ -171,6 +177,8 @@
 <script lang="ts" setup>
 
 let isPanelOpen = ref(false);
+let _phongbanId = ref([""]);
+
 
 interface IDataThongTin {
     Id: number | null;
@@ -196,6 +204,14 @@ function btncauHinhXacNhan(status: boolean) {
 function btnCauHinhThongTin() {
     isPanelOpen.value = true;
 }
+
+const handlePhongBan = (phongbanId: string[]) => {
+     _phongbanId.value = phongbanId;
+    //_phongbanId.value.push("123");
+};
+const handleNhanSu = (nhansuId: string[]) => {
+
+};
 
 </script>
 

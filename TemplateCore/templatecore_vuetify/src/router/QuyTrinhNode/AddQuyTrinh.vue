@@ -127,7 +127,7 @@ function btnTiepThep(status : boolean) {
     flang.value = flang.value + 1
     LoadTitle();
     btnHide.value = true;
-    API_AddQuyTrinh();
+    // API_AddQuyTrinh();
 }
 
 function btnTraVe() {

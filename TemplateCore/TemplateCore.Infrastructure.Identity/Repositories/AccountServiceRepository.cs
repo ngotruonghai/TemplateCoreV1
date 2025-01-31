@@ -65,6 +65,23 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
 
         }
 
+        public async Task<object> GetAllUserPermission()
+        {
+            string userparent = _authenticatedUserService.parentUserId;
+
+            var userPermissions = await (from user in _context.Users
+
+                                         select new
+                                         {
+                                             user.FirstName,
+                                             user.LastName,
+                                             user.Id
+                                         }).FirstOrDefaultAsync(); // Chỉ lấy một bản ghi
+
+            return userPermissions;
+        }
+
+
         #region Function
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {

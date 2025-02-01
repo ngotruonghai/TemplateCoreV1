@@ -65,18 +65,23 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
 
         }
 
-        public async Task<object> GetAllUserPermission()
+        public async Task<IEnumerable<object>> GetAllUserPermission()
         {
-            string userparent = _authenticatedUserService.parentUserId;
+            string userparentId = _authenticatedUserService.parentUserId;
 
             var userPermissions = await (from user in _context.Users
-
+                                         where user.ParentUserId == userparentId
                                          select new
                                          {
                                              user.FirstName,
                                              user.LastName,
-                                             user.Id
-                                         }).FirstOrDefaultAsync(); // Chỉ lấy một bản ghi
+                                             user.Id,
+                                             user.MaNhanVien,
+                                             user.PhoneNumber,
+                                             user.PhongBanId,
+                                             user.Email,
+                                             user.UserName,
+                                         }).ToListAsync(); // Chỉ lấy một bản ghi
 
             return userPermissions;
         }

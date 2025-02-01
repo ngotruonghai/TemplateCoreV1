@@ -15,7 +15,7 @@ namespace TemplateCore.Application.Features.Account.Queries
 
             public async Task<Response<object>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
             {
-                var data = await _accountService.GetAllAcount();
+                var data = await _accountService.GetAllUserPermission();
 
                 return new Response<object>(data);
             }

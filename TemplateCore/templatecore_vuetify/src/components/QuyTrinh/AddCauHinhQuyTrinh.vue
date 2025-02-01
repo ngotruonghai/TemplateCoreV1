@@ -177,7 +177,7 @@
 <script lang="ts" setup>
 
 let isPanelOpen = ref(false);
-let _phongbanId = ref([""]);
+let _phongbanId = ref<number[]>([]);
 
 
 interface IDataThongTin {
@@ -205,7 +205,7 @@ function btnCauHinhThongTin() {
     isPanelOpen.value = true;
 }
 
-const handlePhongBan = (phongbanId: string[]) => {
+const handlePhongBan = (phongbanId: number[]) => {
      _phongbanId.value = phongbanId;
     //_phongbanId.value.push("123");
 };

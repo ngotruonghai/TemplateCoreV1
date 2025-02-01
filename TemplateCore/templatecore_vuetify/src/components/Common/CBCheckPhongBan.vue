@@ -20,8 +20,8 @@
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
                 @input="filterPhongBan"/>
             <div v-for="phongban in responseDataFillter.data" :key="phongban.id" class="dropdown-item-phongban">
-                <input type="checkbox" :id="phongban.id" :value="phongban.id" v-model="selectedId" @change="LoadValuesChecked()" />
-                <label :for="phongban.id">{{ phongban.tenPhongBan }}</label>
+                <input type="checkbox" :value="phongban.id" v-model="selectedId" @change="LoadValuesChecked()" />
+                <label >{{ phongban.tenPhongBan }}</label>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { callAuthenticationAPI } from '@/providers/data-provider';
 
 const searchQuery = ref<string>("");
-const selectedId = ref<string[]>([]);
+const selectedId = ref<number[]>([]);
 const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
 
@@ -41,7 +41,7 @@ interface data {
     maPhongBan: string,
     tenPhongBan: string,
     ghiChu: string,
-    id: string,
+    id: number,
     status: boolean,
     created: Date
 }
@@ -69,7 +69,7 @@ const responseDataFillter = ref<APIResponse>({
 });
 
 const emit = defineEmits<{
-    (event: 'emit_phonganId',data: string[]): void;
+    (event: 'emit_phonganId',data: number[]): void;
 }>();
 
 // Lọc thành phố dựa trên tìm kiếm
@@ -117,7 +117,7 @@ async function LoadDataAPI() {
     try {
         const response = await callAuthenticationAPI('/api/quanlythongtin/PhongBan/DanhSachPhongBan', 'GET', {}, { timeout: 15000 });
         responseData = response as APIResponse;
-        responseData.data.sort((a,b) => parseInt(a.id) - parseInt(b.id));
+        responseData.data.sort((a,b) => a.id - b.id);
         responseDataFillter.value = { ...responseData, data: [...responseData.data] };
 
     } catch (error) {

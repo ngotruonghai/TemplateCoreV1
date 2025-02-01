@@ -3,8 +3,8 @@
     <!-- Hiển thị nút dropdown -->
     <div class="dropdown-header-nhansu" @click="toggleDropdown">
       <span :class="{ 'placeholder': selectedId.length === 0 }">
-        {{ selectedId.length > 0
-          ? selectedId.join(", ")
+        {{ selectedValues.length > 0
+          ? selectedValues.join(", ")
           : "Chọn nhân sự..." }}
       </span>
       <span class="arrow">{{ dropdownOpenNhanSu ? "▲" : "▼" }}</span>
@@ -12,11 +12,15 @@
 
     <!-- Dropdown danh sách -->
     <div v-if="dropdownOpenNhanSu" class="dropdown-nhansu">
+      <div class="dropdown-item-phongban">
+                <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
+                <label for="checkAll"><strong>Chọn tất cả</strong></label>
+            </div>
       <!-- Trường tìm kiếm -->
       <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
         @input="filterCities" />
       <div v-for="item in responseDataFiller.data" :key="item.id" class="dropdown-item-nhansu">
-        <input type="checkbox" :id="item.id" :value="item.firstName + item.lastName" v-model="selectedId" />
+        <input type="checkbox" :id="item.id" :value="item.id" v-model="selectedId" @change="LoadValuesChecked()"/>
         <label :for="item.id">{{ item.firstName + item.lastName }}</label>
       </div>
     </div>
@@ -32,6 +36,7 @@ import { callAuthenticationAPI } from '@/providers/data-provider';
 // Biến reactive
 const searchQuery = ref<string>("");
 const selectedId = ref<string[]>([]);
+const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
 
 const props = defineProps<{
@@ -57,6 +62,7 @@ interface User {
   lockoutEnd: null | string;
   lockoutEnabled: boolean;
   accessFailedCount: number;
+  phongBanId : number
 }
 
 interface APIResponse {
@@ -111,31 +117,22 @@ const handleOutsideClick = (event: MouseEvent) => {
   emit("emit_nhansuId", selectedId.value);
 };
 
+
+function LoadValuesChecked(){
+    selectedValues.value = [];
+    selectedId.value.forEach((itemId) => {
+        const nhansu = responseData.data.find(x => x.id == itemId);
+        if(nhansu){
+            selectedValues.value.push(nhansu.firstName+" "+nhansu.lastName);
+        }
+    });
+}
+
 // Tải dữ liệu API
 async function LoadDataAPI() {
   try {
     const response = await callAuthenticationAPI('/api/account/GetAllUser', 'GET', {}, { timeout: 15000 });
     responseData = response as APIResponse;
-    responseData.data.push({
-      firstName: 'Tất cả',
-      lastName: '',
-      maNhanVien: 'All',
-      id: '0',
-      userName: '',
-      normalizedUserName: false,
-      email: '',
-      normalizedEmail: '',
-      emailConfirmed: false,
-      securityStamp: '',
-      concurrencyStamp: '',
-      phoneNumber: null,
-      phoneNumberConfirmed: false,
-      twoFactorEnabled: false,
-      lockoutEnd: null,
-      lockoutEnabled: false,
-      accessFailedCount: 0
-    });
-
     responseData.data.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
     // coppy data
@@ -144,6 +141,23 @@ async function LoadDataAPI() {
     console.log("Lỗi comboxbo nhân sự " + error);
   }
 }
+
+// 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
+const isAllSelected = computed(() => {
+    return responseDataFiller.value.data.length > 0 &&
+        selectedId.value.length === responseDataFiller.value.data.length;
+});
+
+// 🔥 2️⃣ Hàm "Chọn tất cả"
+const toggleSelectAll = () => {
+    if (isAllSelected.value) {
+        selectedId.value = [];
+        selectedValues.value = [];
+    } else {
+        selectedId.value = responseData.data.map(x => x.id);
+        LoadValuesChecked();
+    }
+};
 
 // Gọi khi component được mount
 onMounted(() => {
@@ -160,7 +174,14 @@ onUnmounted(() => {
 watch(
   () => props.ListPhongBanId, // Dùng getter để theo dõi prop
   (newVal, oldVal) => {
-    console.log("ListPhongBanId thay đổi:", newVal, oldVal);
+    selectedId.value = [];
+    selectedValues.value = [];
+    responseDataFiller.value.data = responseData.data;
+
+    if(newVal.length > 0){
+      responseDataFiller.value.data = responseDataFiller.value.data.filter(x => x.phongBanId in newVal)
+    }
+
   },
   { deep: true, immediate: true }
 );

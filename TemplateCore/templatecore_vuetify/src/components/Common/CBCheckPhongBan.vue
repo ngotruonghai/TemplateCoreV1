@@ -12,11 +12,15 @@
 
         <!-- Dropdown danh sách -->
         <div v-if="dropdownOpenNhanSu" class="dropdown-phongban">
+            <div class="dropdown-item-phongban">
+                <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
+                <label for="checkAll"><strong>Chọn tất cả</strong></label>
+            </div>
             <!-- Trường tìm kiếm -->
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
                 @input="filterPhongBan"/>
             <div v-for="phongban in responseDataFillter.data" :key="phongban.id" class="dropdown-item-phongban">
-                <input type="checkbox" :id="phongban.id" :value="phongban.id" v-model="selectedId" @change="LoadValuesChecked(phongban.id)" />
+                <input type="checkbox" :id="phongban.id" :value="phongban.id" v-model="selectedId" @change="LoadValuesChecked()" />
                 <label :for="phongban.id">{{ phongban.tenPhongBan }}</label>
             </div>
         </div>
@@ -26,7 +30,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { callAuthenticationAPI } from '@/providers/data-provider';
-import { id } from 'date-fns/locale';
 
 const searchQuery = ref<string>("");
 const selectedId = ref<string[]>([]);
@@ -81,7 +84,22 @@ const filterPhongBan = () => {
         responseDataFillter.value.data = responseData.data;
     }
 };
+// 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
+const isAllSelected = computed(() => {
+    return responseDataFillter.value.data.length > 0 &&
+        selectedId.value.length === responseDataFillter.value.data.length;
+});
 
+// 🔥 2️⃣ Hàm "Chọn tất cả"
+const toggleSelectAll = () => {
+    if (isAllSelected.value) {
+        selectedId.value = [];
+        selectedValues.value = [];
+    } else {
+        selectedId.value = responseData.data.map(x => x.id);
+        LoadValuesChecked();
+    }
+};
 const toggleDropdown = () => {
     dropdownOpenNhanSu.value = !dropdownOpenNhanSu.value;
 };
@@ -107,7 +125,7 @@ async function LoadDataAPI() {
     }
 }
 
-function LoadValuesChecked(item :string){
+function LoadValuesChecked(){
     selectedValues.value = [];
     selectedId.value.forEach((itemId) => {
         const phongban = responseData.data.find(x => x.id == itemId);

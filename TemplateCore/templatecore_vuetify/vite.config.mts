@@ -16,6 +16,8 @@ export default defineConfig({
   plugins: [
     VueRouter({
       dts: 'src/typed-router.d.ts',
+      extensions: ['.vue'], // Chỉ load các file Vue
+      exclude: ['src/excluded-folder/**/*.vue'], // Loại bỏ folder không cần thiết
     }),
     Layouts(),
     AutoImport({
@@ -37,7 +39,6 @@ export default defineConfig({
     Vue({
       template: { transformAssetUrls },
     }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({
       autoImport: true,
       styles: {
@@ -46,10 +47,12 @@ export default defineConfig({
     }),
     Fonts({
       google: {
-        families: [ {
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
+        families: [
+          {
+            name: 'Roboto',
+            styles: 'wght@100;300;400;500;700;900',
+          },
+        ],
       },
     }),
   ],
@@ -71,6 +74,16 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    cssCodeSplit: true,
+    outDir: 'dist',
+    assetsInlineLimit: 0, 
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // Tắt chunk splitting
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       sass: {
@@ -78,4 +91,5 @@ export default defineConfig({
       },
     },
   },
+  
 })

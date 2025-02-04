@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TemplateCore.Application;
 using TemplateCore.Application.Interfaces;

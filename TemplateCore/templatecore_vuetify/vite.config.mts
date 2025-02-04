@@ -90,6 +90,4 @@ export default defineConfig({
     },
   },
   base: '/', 
-  // Đảm bảo đường dẫn gốc là "/"
-  
 })

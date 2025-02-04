@@ -5,8 +5,8 @@
         <v-col cols="12" md="6">
 
         </v-col>
-        <v-col cols="12" md="6">
-          <button class="btnAdd btn" v-on:click="LinkAdduser()">
+        <v-col cols="12" md="12">
+          <button class="btnAdd btn" v-on:click="LinkAdduser()" style="float: right;">
             <span class="icon-border">
               <i class="fas fa-plus"></i>
             </span> Thêm mới
@@ -30,7 +30,7 @@
 
               <v-divider></v-divider>
               <v-data-table v-model:search="search" :filter-keys="['maPhongBan', 'tenPhongBan']"
-                :items="responseData.data" :headers="headers" item-value="id">
+                :items="responseData.data" :headers="headers" item-value="id"  class="custom-table">
                 <template v-slot:header.STT>
                   <div class="HeaderTable FontDefault">STT</div>
                 </template>
@@ -83,8 +83,6 @@
                     </button>
                   </div>
                 </template>
-
-
               </v-data-table>
             </v-card>
           </div>
@@ -178,4 +176,15 @@ onMounted(() => {
 
 </script>
 
-<style></style>
+<style>
+/* Định dạng bảng có đường kẻ dọc và ngang */
+.custom-table td,
+.custom-table th {
+  border: 1px solid #ddd !important; /* Đường kẻ màu xám nhạt */
+  text-align: center;
+}
+
+.custom-table {
+  border-collapse: collapse; /* Gộp đường kẻ */
+}
+</style>

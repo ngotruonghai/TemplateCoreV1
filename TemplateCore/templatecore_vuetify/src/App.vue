@@ -12,17 +12,28 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-onMounted(() => {
-  const token = LocalStorageService.GetToken();
-  const url = router.currentRoute.value.fullPath;
+function test(name: string) {
+  console.log(name);
 
-  if(token == null){
-    router.push('/login');
+}
+
+onMounted(() => {
+  const Url = localStorage.getItem("Url") || '';
+  const token = localStorage.getItem("Token");
+
+  if (token === null || token === "") {
+    router.push('/');
+  } else {
+    router.push(Url);
   }
-  else{
-    router.push(localStorage.getItem("Url")??"/");
-  }
- 
+
+  /* cấu hình .NET
+    app.UseEndpoints(endpoints =>
+  {
+      endpoints.MapFallbackToFile("index.html"); // Điều hướng tất cả request về index.html
+  });
+  
+  */
 });
 
 </script>

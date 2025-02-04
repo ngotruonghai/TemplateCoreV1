@@ -7,11 +7,9 @@ import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
-// Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     VueRouter({
@@ -91,5 +89,7 @@ export default defineConfig({
       },
     },
   },
+  base: '/', 
+  // Đảm bảo đường dẫn gốc là "/"
   
 })

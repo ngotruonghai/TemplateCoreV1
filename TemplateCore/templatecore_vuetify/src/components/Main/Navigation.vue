@@ -83,7 +83,7 @@ export default {
             ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
         ],
         CauHinhs: [
-            ['Đăng xuất', 'mdi-plus-outline', '/Login'],
+            ['Đăng xuất', 'mdi-plus-outline', '/'],
         ],
         QuyTrinh: [
             ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],

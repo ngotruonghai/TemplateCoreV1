@@ -1,11 +1,17 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory,createWebHashHistory  } from 'vue-router'
 
 
 const routess = [
   {
+    path: '/',
+    name: 'Đăng nhập',
+    component:  () => import('../router/Login/loginPage.vue')
+  },
+  {
     path: '/home',
     name: 'Home',
     component:  () => import('../router/MainHome/MainHomePage.vue'),
+     redirect: '/home',
     children: [
       {
         path: 'account',
@@ -54,16 +60,11 @@ const routess = [
         props: true
       }
     ]
-  },
-  {
-    path: '/login',
-    name: 'Đăng nhập',
-    component:  () => import('../router/Login/loginPage.vue')
-  },
+  }, 
 ];
 
 const router = createRouter({
-  history: createWebHistory('/'), // ✅ Sử dụng biến môi trường
+  history: createWebHistory("/"), // ✅ Sử dụng biến môi trường
   routes: routess,//setupLayouts(routes),
 })
 

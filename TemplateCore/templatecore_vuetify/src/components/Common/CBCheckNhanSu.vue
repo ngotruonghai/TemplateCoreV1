@@ -109,6 +109,10 @@ const handleOutsideClick = (event: MouseEvent) => {
 
 function LoadValuesChecked() {
   selectedValues.value = [];
+  if (isAllSelected.value == true) {
+        selectedValues.value.push("Tất cả");
+        return;
+    }
   selectedId.value.forEach((itemId) => {
     const nhansu = responseData.data.find(x => x.id == itemId);
     if (nhansu) {

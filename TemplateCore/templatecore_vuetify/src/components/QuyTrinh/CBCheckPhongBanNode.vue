@@ -1,7 +1,7 @@
 <template>
-    <div class="multi-select-phongban FontDefault">
+    <div class="multi-select-phongbannode FontDefault">
         <!-- Hiển thị nút dropdown -->
-        <div class="dropdown-header-phongban" @click="toggleDropdown">
+        <div class="dropdown-header-phongbannode" @click="toggleDropdown">
             <span :class="{ 'placeholder': selectedId.length === 0 }">
                 {{ selectedValues.length > 0
                     ? selectedValues.join(", ")
@@ -11,17 +11,17 @@
         </div>
 
         <!-- Dropdown danh sách -->
-        <div v-if="dropdownOpenNhanSu" class="dropdown-phongban">
-            <div class="dropdown-item-phongban">
+        <div v-if="dropdownOpenNhanSu" class="dropdown-phongbannode">
+            <div class="dropdown-item-phongbannode">
                 <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
                 <label for="checkAll"><strong>Chọn tất cả</strong></label>
             </div>
             <!-- Trường tìm kiếm -->
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
                 @input="filterPhongBan"/>
-            <div v-for="phongban in responseDataFillter.data" :key="phongban.id" class="dropdown-item-phongban">
-                <input type="checkbox" :value="phongban.id" v-model="selectedId" @change="LoadValuesChecked()" />
-                <label >{{ phongban.tenPhongBan }}</label>
+            <div v-for="phongbannode in responseDataFillter.data" :key="phongbannode.id" class="dropdown-item-phongbannode">
+                <input type="checkbox" :value="phongbannode.id" v-model="selectedId" @change="LoadValuesChecked()" />
+                <label >{{ phongbannode.tenPhongBan }}</label>
             </div>
         </div>
     </div>
@@ -35,6 +35,10 @@ const searchQuery = ref<string>("");
 const selectedId = ref<number[]>([]);
 const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
+
+const props = defineProps<{
+    refresh: boolean;
+}>();
 
 
 interface data {
@@ -66,6 +70,12 @@ const responseDataFillter = ref<APIResponse>({
     message: null,
     errors: null,
     data: []
+});
+
+let nodeSttings = ref({
+    keyNode: "",
+    nhanSuNodeModels: [],
+    phongBanNodeModels: []
 });
 
 const emit = defineEmits<{
@@ -105,7 +115,7 @@ const toggleDropdown = () => {
 };
 
 const handleOutsideClick = (event: MouseEvent) => {
-    const dropdownElement = document.querySelector(".multi-select-phongban");
+    const dropdownElement = document.querySelector(".multi-select-phongbannode");
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
         dropdownOpenNhanSu.value = false; // Đóng dropdown nếu click ra ngoài
     }
@@ -115,11 +125,11 @@ const handleOutsideClick = (event: MouseEvent) => {
 // Tải dữ liệu API
 async function LoadDataAPI() {
     try {
-        const response = await callAuthenticationAPI('/api/quanlythongtin/PhongBan/DanhSachPhongBan', 'GET', {}, { timeout: 15000 });
+        const response = await callAuthenticationAPI('/api/quanlythongtin/phongban/DanhSachPhongBan', 'GET', {}, { timeout: 15000 });
+        console.log(response);
         responseData = response as APIResponse;
         responseData.data.sort((a,b) => a.id - b.id);
         responseDataFillter.value = { ...responseData, data: [...responseData.data] };
-
     } catch (error) {
         console.log("Lỗi combobox phòng ban: " + error);
     }
@@ -132,13 +142,21 @@ function LoadValuesChecked(){
         return;
     }
     selectedId.value.forEach((itemId) => {
-        const phongban = responseData.data.find(x => x.id == itemId);
+        const phongbannode = responseData.data.find(x => x.id == itemId);
 
-        if(phongban){
-            selectedValues.value.push(phongban.tenPhongBan);
+        if(phongbannode){
+            selectedValues.value.push(phongbannode.tenPhongBan);
         }
     });
 }
+watch(
+    () => props.refresh, // Dùng getter để theo dõi prop
+    (newVal, oldVal) => {
+        selectedId.value = [];
+        selectedValues.value = [];
+        responseDataFillter.value.data = responseData.data;
+    },
+);
 
 // Gọi khi component được mount
 onMounted(() => {
@@ -158,13 +176,13 @@ onUnmounted(() => {
 }
 
 /* CSS tùy chỉnh */
-.multi-select-phongban {
+.multi-select-phongbannode {
     width: 100%;
     position: relative;
     font-family: Arial, sans-serif;
 }
 
-.dropdown-header-phongban {
+.dropdown-header-phongbannode {
     border: 1px solid #ccc;
     padding: 8px;
     border-radius: 5px;
@@ -179,7 +197,7 @@ onUnmounted(() => {
     font-size: 12px;
 }
 
-.dropdown-phongban {
+.dropdown-phongbannode {
     position: absolute;
     top: 100%;
     left: 0;
@@ -201,19 +219,19 @@ onUnmounted(() => {
     border-radius: 5px;
 }
 
-.dropdown-item-phongban {
+.dropdown-item-phongbannode {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-.dropdown-item-phongban input[type="checkbox"] {
+.dropdown-item-phongbannode input[type="checkbox"] {
     margin: 0;
     margin-right: 8px;
     cursor: pointer;
 }
 
-.dropdown-item-phongban label {
+.dropdown-item-phongbannode label {
     margin: 0;
     cursor: pointer;
     white-space: nowrap;

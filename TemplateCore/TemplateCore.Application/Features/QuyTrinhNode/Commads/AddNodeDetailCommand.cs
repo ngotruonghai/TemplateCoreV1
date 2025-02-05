@@ -21,14 +21,12 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
         public string? GhiChu {  get; set; }
 
         public DateTime? NgayBatDau {  get; set; }
-
         public ICollection<ListNodeModel>? NodeMapModels { get; set; }
-
         public ICollection<ListDiagramModel>? DiagramNodeModels { get; set; }
-
         public ICollection<NextStepModel>? NextStepNodeModels { get; set; }
         public ICollection<string>? NhanSuIds { get; set; }
         public ICollection<int>? PhongBanIds { get; set; }
+        public ICollection<ListNodeSettingModel>? NodeSttings { get; set; }
 
         public class AddNodeDetailCommandHandler : IRequestHandler<AddNodeDetailCommand, Response<int>>
         {

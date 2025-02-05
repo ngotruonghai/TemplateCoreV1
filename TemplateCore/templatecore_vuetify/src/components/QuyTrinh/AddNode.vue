@@ -148,13 +148,13 @@
                         <label class="FontDefault">
                             Người tiếp nhận
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <CBCheckPhongBanNode :refresh="_refresh" @emit_phonganId="handlePhongBan" />
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Phòng ban tiếp nhận
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <CBCheckNhanSuNode :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSuNode>
                     </v-col>
 
                     <v-col cols="12" md="12">
@@ -230,6 +230,8 @@ let _selectNodeId = ref(""); // chọn bước để trả về
 let _isShowListNode = ref(false); // list control các bước
 let _isShoeMessError = ref(false); // ẩn hiên thông báo lỗi
 let _meesageError = ref(''); // Mess thông báo lỗi
+let _phongbanId = ref<number[]>([]);
+let _refresh = ref<boolean>(false);
 
 
 /* biến ẩn hiển các bước trên màn hình */
@@ -640,9 +642,6 @@ function CauHinhBuoc() {
     hideContextMenu();
 }
 
-
-
-
 function btnXacNhanDialog(status: boolean) {
     if (status == false) {
         dialog.value = false;
@@ -688,6 +687,8 @@ function btnAddNode(type: string) { // Add node  khi xác nhận trong popup
 
 function btncauHinhXacNhan(status: boolean) {
     isPanelOpen.value = false;
+    _phongbanId.value = [];
+    _refresh.value=!_refresh.value;
 }
 
 function CheckLogicAddNode(SelectNode: string) {
@@ -815,6 +816,14 @@ function CheckLogicAddNode(SelectNode: string) {
         }
     }
 }
+
+const handlePhongBan = (phongbanId: number[]) => {
+    _phongbanId.value = phongbanId;
+};
+const handleNhanSu = (nhansuId: string[]) => {
+
+};
+
 </script>
 
 <style scoped>

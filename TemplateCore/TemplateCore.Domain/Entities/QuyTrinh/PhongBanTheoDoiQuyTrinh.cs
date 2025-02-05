@@ -2,8 +2,7 @@
 {
     public class PhongBanTheoDoiQuyTrinh: AuditableBaseEntity
     {
-        [MaxLength(100)]
-        public string PhongbanId { get; set; }
+        public int PhongbanId { get; set; }
 
         [MaxLength(250)]
         public string? TenPhongBan { get; set; }

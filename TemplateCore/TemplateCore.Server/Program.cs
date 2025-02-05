@@ -28,6 +28,7 @@ namespace TemplateCore.Server
             _services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             _services.AddPersistenceRepositories();
             _services.AddApplicationLayer();
+
             #region Swagger
 
             _services.AddSwaggerGen(c =>

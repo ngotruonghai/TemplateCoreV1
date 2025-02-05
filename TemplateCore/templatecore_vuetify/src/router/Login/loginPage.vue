@@ -69,8 +69,8 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"></path>
                 :type="showPassword ? 'text' : 'password'" class="input" required
                 oninvalid="this.setCustomValidity('Vui lòng nhập tên mật khẩu')" oninput="this.setCustomValidity('')" />
 
-              <v-checkbox label="Hiển thị mật khẩu" v-model="value" value="value"
-                v-on:click="togglePasswordVisibility()" style="height: 50px; margin-top: 10px;"></v-checkbox>
+              <v-checkbox label="Hiển thị mật khẩu" value="value"
+                 v-model="isChecked" @change="togglePasswordVisibility()" style="height: 50px; margin-top: 10px;"></v-checkbox>
 
               <span class="forgot-password"><a href="#">Quên tài khoản mật khẩu ?</a></span>
               <input value="Đăng nhập" type="submit" class="login-button" v-on:click="LoginEvent" />
@@ -113,6 +113,7 @@ export default defineComponent({
         text: 'Invalid username or password. Please try again.', // Nội dung thông báo
       },
       username: '',
+      isChecked: false,
       password: '',
       showPassword: false,
       value: '',
@@ -155,7 +156,12 @@ export default defineComponent({
   },
   methods: {
     togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
+      if(this.isChecked){
+        this.showPassword = true;
+      }
+      else{
+        this.showPassword = false;
+      }
     },
 
     // Phương thức LoginEvent sử dụng callApi

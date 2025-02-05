@@ -836,7 +836,7 @@ function CheckLogicAddNode(SelectNode: string) {
 
 .context-menu {
     position: absolute;
-    z-index: 100;
+    z-index: 500;
     background: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -886,15 +886,13 @@ function CheckLogicAddNode(SelectNode: string) {
     background-color: #333;
     box-shadow: 15px 0 30px black;
     transform: translateX(100%);
-    transition: transform 0.5s ease-in-out;
     background-color: white;
-    z-index: 10;
+    z-index: 200;
 }
 
 .sliding-panel.open {
     transform: translateX(0);
     overflow: auto;
-
 }
 
 .sliding-panel .close-button {
@@ -909,7 +907,8 @@ function CheckLogicAddNode(SelectNode: string) {
 }
 
 .sliding-panel-content {
-    padding: 20px;
+    padding: 15px;
+    margin-top: 60px;
 }
 
 .overlay {

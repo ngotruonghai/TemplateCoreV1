@@ -45,7 +45,8 @@ body::-webkit-scrollbar {
 }
 
 #TitleName {
-    background-color: $chiil_color;
+    background-color: white;
+    box-shadow: offset-x offset-y blur-radius spread-radius color;
 }
 
 .table {
@@ -186,7 +187,6 @@ body::-webkit-scrollbar {
   border: 1px solid #dbd9d9 !important; /* Đường kẻ màu xám nhạt */
   text-align: left;
 }
-
 .custom-table {
   border-collapse: collapse; /* Gộp đường kẻ */
 }

@@ -7,7 +7,7 @@
                     </h3>
                 </div>
                 <div class="input-container">
-                    <input type="text" id="" class="FontDefault" placeholder="VD: Cấu hình hco quy trình vận hành" />
+                    <input type="text" v-model="_txtnoidung" class="FontDefault" placeholder="VD: Cấu hình hco quy trình vận hành" />
                 </div>
             </v-col>
             <v-col cols="12" md="12">
@@ -17,53 +17,34 @@
                     </h3>
                 </div>
                 <div class="input-container">
-                    <input type="text" id="" class="FontDefault" placeholder="VD: Cấu hình hco quy trình vận hành" />
+                    <input type="text" v-model="_txtthietlapmaphieu" class="FontDefault" placeholder="VD: QT, quy trình sẽ phát sinh là 'QT' + 'mã phát sinh tự động', mã phiếu tạo là OT00001" />
                 </div>
             </v-col>
             <v-col cols="12" md="12">
                 <div class="FontDefault">
-                    <h3>3. Phòng ban nhân sự
+                    <h3>3. Phân quyền cho phòng ban nào được tạo mã phiếu của quy trình
                     </h3>
                 </div>
                 <CBCheckPhongBan @emit_phonganId="handlePhongBan" />
 
             </v-col>
             <v-col cols="12" md="12">
+                <h3>4. Phân quyền cho nhân sự nào được tạo mã phiếu của quy trình
+                </h3>
                 <CBCheckNhanSu :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSu>
 
             </v-col>
-
             <v-col cols="12" md="12">
                 <div class="FontDefault">
-                    <h3>4. Phân quyền cho nhân sự nào được tạo mã phiếu của quy trình
-                    </h3>
+                    <h3>5. Ghi chú</h3>
                 </div>
                 <div class="input-container">
-                    <input type="text" id="" class="FontDefault"
-                        placeholder="Nhân sự sẽ được nhìn thấy tất cả mã thuộc quy trình này ở tất cả các bước" />
+                    <textarea class="form-control" placeholder="Nội dung ghi chú" v-model="_txtghichu"></textarea>
                 </div>
             </v-col>
             <v-col cols="12" md="12">
                 <div class="FontDefault">
-                    <h3>5. Phân quyền cho phòng nào được tạo mã phiếu của quy trình
-                    </h3>
-                </div>
-                <div class="input-container">
-                    <input type="text" id="" class="FontDefault"
-                        placeholder="Nhân sự sẽ được nhìn thấy tất cả mã thuộc quy trình này ở tất cả các bước" />
-                </div>
-            </v-col>
-            <v-col cols="12" md="12">
-                <div class="FontDefault">
-                    <h3>6. Ghi chú</h3>
-                </div>
-                <div class="input-container">
-                    <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
-                </div>
-            </v-col>
-            <v-col cols="12" md="12">
-                <div class="FontDefault">
-                    <h3>7. Tạo nội dung thông tin</h3>
+                    <h3>6. Tạo nội dung thông tin</h3>
                     <div style="display: inline-block; vertical-align: middle; color: red;">* Ở mỗi quy trình, sẽ hiển
                         thị theo số lương thông tin, để người dùng nhập vào</div>
                     <br>
@@ -163,8 +144,6 @@
                         </v-btn>
 
                     </v-col>
-
-
                 </v-row>
 
             </v-container-fluid>
@@ -178,12 +157,22 @@
 
 let isPanelOpen = ref(false);
 let _phongbanId = ref<number[]>([]);
-
+let _txtnoidung = ref("");
+let _txtthietlapmaphieu = ref("");
+let _txtghichu = ref("");
 
 interface IDataThongTin {
     Id: number | null;
     TenThongTin: string | null;
 }
+
+const emit = defineEmits<{
+    (event: 'emit_nhansuId', data: string[], phongbanId: number[],
+        NoiDung: string, ThietLapMaPhieu: string, GhiChu: string
+    ): void;
+}>();
+
+
 
 
 const _dsThongTin = ref<IDataThongTin[]>([]);
@@ -206,11 +195,11 @@ function btnCauHinhThongTin() {
 }
 
 const handlePhongBan = (phongbanId: number[]) => {
-     _phongbanId.value = phongbanId;
+    _phongbanId.value = phongbanId;
     //_phongbanId.value.push("123");
 };
 const handleNhanSu = (nhansuId: string[]) => {
-
+    emit("emit_nhansuId", nhansuId,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
 };
 
 </script>
@@ -299,7 +288,8 @@ tr:hover {
 }
 
 .sliding-panel-content {
-    padding: 20px;
+    padding: 15px;
+    margin-top: 60px;
 }
 
 .overlay {

@@ -158,7 +158,6 @@ async function LoadDanhSachPhongBan() {
   try {
     const result = await callAuthenticationAPI('/api/quanlythongtin/PhongBan/DanhSachPhongBan', 'GET', {}, { timeout: 15000 });
     responseData.value = result as APIResponse; // Ép kiểu
-    console.log(responseData.value);
   } catch (error) {
     alert.value.text = error as string;
     alert.value.visible = true;
@@ -177,14 +176,4 @@ onMounted(() => {
 </script>
 
 <style>
-/* Định dạng bảng có đường kẻ dọc và ngang */
-.custom-table td,
-.custom-table th {
-  border: 1px solid #ddd !important; /* Đường kẻ màu xám nhạt */
-  text-align: center;
-}
-
-.custom-table {
-  border-collapse: collapse; /* Gộp đường kẻ */
-}
 </style>

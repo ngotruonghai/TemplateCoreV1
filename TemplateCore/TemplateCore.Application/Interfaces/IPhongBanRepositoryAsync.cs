@@ -5,5 +5,7 @@
         Task<IEnumerable<PhongBan>> DanhSachPhongBan();
 
         Task<PhongBan> GetPhongBanId(int Id);
+
+        public Task<string> GetNamePhongBanById(int phongId);
     }
 }

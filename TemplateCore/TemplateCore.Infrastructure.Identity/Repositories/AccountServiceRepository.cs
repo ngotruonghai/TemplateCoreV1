@@ -23,71 +23,8 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             _authenticatedUserService = authenticatedUserService;
         }
 
-        public async Task<Response<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
-        {
-            var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) throw new Exception($"No Accounts Registered with {request.UserName}.");
-
-            if (request.Password != "admin@12345")
-            {
-                var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
-                if (!isPasswordValid) throw new Exception("Invalid Password.");
-            }
-
-            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
-            AuthenticationResponse response = new AuthenticationResponse();
-            response.Id = user.Id;
-            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            response.Email = user.Email;
-            response.UserName = user.UserName;
-            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
-            response.Roles = rolesList.ToList();
-            response.IsVerified = user.EmailConfirmed;
-            response.Permission = await GetActionsWithResourcesAsync1(response.Roles[0]);
-            var refreshToken = GenerateRefreshToken(ipAddress);
-            response.RefreshToken = refreshToken.Token;
-            return new Response<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
-        }
-
-        public async Task<IEnumerable<object>> GetAllAcount()
-        {
-            if (_authenticatedUserService.CheckUserSupperAdmin == true)
-            {
-                var user = await _userManager.Users.ToListAsync();
-                return user;
-            }
-            else
-            {
-                var user = await _userManager.Users.Where(x => x.MaPhongBan == _authenticatedUserService.maphongban && x.UserName != "superadmin")
-                                            .ToListAsync();
-                return user;
-            }
-
-        }
-
-        public async Task<IEnumerable<object>> GetAllUserPermission()
-        {
-            string userparentId = _authenticatedUserService.parentUserId;
-
-            var userPermissions = await (from user in _context.Users
-                                         where user.ParentUserId == userparentId
-                                         select new
-                                         {
-                                             user.FirstName,
-                                             user.LastName,
-                                             user.Id,
-                                             user.MaNhanVien,
-                                             user.PhoneNumber,
-                                             user.PhongBanId,
-                                             user.Email,
-                                             user.UserName,
-                                         }).ToListAsync(); // Chỉ lấy một bản ghi
-
-            return userPermissions;
-        }
-
-
         #region Function
+
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -178,6 +115,71 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             };
         }
 
+        #endregion
+
+        public async Task<Response<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user == null) throw new Exception($"No Accounts Registered with {request.UserName}.");
+
+            if (request.Password != "admin@12345")
+            {
+                var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+                if (!isPasswordValid) throw new Exception("Invalid Password.");
+            }
+
+            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.Id = user.Id;
+            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            response.Email = user.Email;
+            response.UserName = user.UserName;
+            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            response.Roles = rolesList.ToList();
+            response.IsVerified = user.EmailConfirmed;
+            response.Permission = await GetActionsWithResourcesAsync1(response.Roles[0]);
+            var refreshToken = GenerateRefreshToken(ipAddress);
+            response.RefreshToken = refreshToken.Token;
+            return new Response<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
+        }
+
+        public async Task<IEnumerable<object>> GetAllAcount()
+        {
+            if (_authenticatedUserService.CheckUserSupperAdmin == true)
+            {
+                var user = await _userManager.Users.ToListAsync();
+                return user;
+            }
+            else
+            {
+                var user = await _userManager.Users.Where(x => x.MaPhongBan == _authenticatedUserService.maphongban && x.UserName != "superadmin")
+                                            .ToListAsync();
+                return user;
+            }
+
+        }
+
+        public async Task<IEnumerable<object>> GetAllUserPermission()
+        {
+            string userparentId = _authenticatedUserService.parentUserId;
+
+            var userPermissions = await (from user in _context.Users
+                                         where user.ParentUserId == userparentId
+                                         select new
+                                         {
+                                             user.FirstName,
+                                             user.LastName,
+                                             user.Id,
+                                             user.MaNhanVien,
+                                             user.PhoneNumber,
+                                             user.PhongBanId,
+                                             user.Email,
+                                             user.UserName,
+                                         }).ToListAsync(); // Chỉ lấy một bản ghi
+
+            return userPermissions;
+        }
+
         public async Task<object> GetAccountById(string UserId)
         {
             var user = await _userManager.FindByIdAsync(UserId);
@@ -207,6 +209,10 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
             return role;
         }
 
-        #endregion
+        public async Task<string> GetUserNameById(string UserId)
+        {
+            var username = await _userManager.FindByIdAsync(UserId);
+            return username == null ? null : (username.FirstName + username.LastName);
+        }      
     }
 }

@@ -19,6 +19,12 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
             else return await _phongban.Where(x => x.UserParentId == _authenticatedUserService.parentUserId).ToListAsync();
         }
 
+        public async Task<string> GetNamePhongBanById(int phongId)
+        {
+            var phongban = await _phongban.Where(x => x.Id == phongId).FirstOrDefaultAsync();
+            return phongban == null ? "" : phongban.TenPhongBan;
+        }
+
         public async Task<PhongBan> GetPhongBanId(int Id)
         {
             string parentUserId = _authenticatedUserService.parentUserId;

@@ -29,7 +29,7 @@ namespace TemplateCore.Application.Features.PhongBan.Commands
 
                     await _phongBanRepository.AddAsync(new Domain.Entities.PhongBan.PhongBan()
                     {
-                        TenPhongBan = request.MaPhongBan,
+                        TenPhongBan = request.TenPhongBan,
                         MaPhongBan = request.MaPhongBan,
                         GhiChu = request.GhiChu
                     });

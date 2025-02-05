@@ -2,14 +2,18 @@
 {
     public enum EnumCauHinhNhanSuQuyTrinh
     {
-        NhanSuTheoDoi = 1,
+        NhanSuTheoDoiQuyTrinh = 1,
         NhanSuTao = 2,
         NhanSuHienThiThongTin = 3,
+        NhanSuTheoDoiThongTin = 4,
+        NhanSuTheoDoiNode = 5
     }
 
     public enum EnumCauHinhPhongBanQuyTrinh
     {
-        PhongBanTheoDoi = 1,
+        PhongBanTheoDoiQuyTrinh = 1,
         PhongBanTao = 2,
+        PhongBanTheoDoiThongTin = 3,
+        PhongBanTheoDoiNode = 4
     }
 }

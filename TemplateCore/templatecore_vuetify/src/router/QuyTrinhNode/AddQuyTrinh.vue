@@ -5,7 +5,8 @@
                 <div v-show="flang == 0">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <label for="" class="FontDefault" style="font-size: 20px; color: #0099FF; font-weight: bold;">
+                            <label for="" class="FontDefault"
+                                style="font-size: 20px; color: #0099FF; font-weight: bold;">
                                 {{ title }}
                             </label>
                         </v-col>
@@ -20,7 +21,8 @@
                                     <div style="display: inline-block; vertical-align: middle; color: red;">*</div>
                                     Tên quy trình
                                 </label>
-                                <input type="text" v-model="tenquytrinh" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" />
+                                <input type="text" v-model="tenquytrinh" class="FontDefault"
+                                    placeholder="VD: Quy trình duyệt đơn" />
                             </div>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -30,7 +32,7 @@
                                     Ngày bắt đầu
                                 </label>
                                 <!-- <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" /> -->
-                                <Datetimepicker></Datetimepicker>
+                                <Datetimepicker @emit_datetime="handDatTime"></Datetimepicker>
                             </div>
                         </v-col>
                     </v-row>
@@ -40,11 +42,12 @@
 
                     <v-row>
                         <v-col cols="12" md="12">
-                            <label for="" class="FontDefault" style="font-size: 20px; color: #0099FF; font-weight: bold;">
+                            <label for="" class="FontDefault"
+                                style="font-size: 20px; color: #0099FF; font-weight: bold;">
                                 {{ title }}
                             </label>
                         </v-col>
-                        <AddCauHinhQuyTrinh></AddCauHinhQuyTrinh>
+                        <AddCauHinhQuyTrinh @emit_nhansuId="handleNhanSu"></AddCauHinhQuyTrinh>
                     </v-row>
 
                 </div>
@@ -66,8 +69,8 @@
                         </button>
                     </v-col>
                     <v-col cols="12" md="6" v-show="btnHide == true">
-                        <button class="btnAdd btn" style="float: right;">
-                            Tạo quy trình  <span class="icon-border">
+                        <button class="btnAdd btn" style="float: right;" @click="ClickAddQuyTrinh()">
+                            Tạo quy trình <span class="icon-border">
                                 <i class="fa fa-plus"></i>
                             </span>
                         </button>
@@ -76,7 +79,7 @@
             </div>
             <div v-show="flang == 0">
 
-                <AddNode  @emit_Node='handleDataSent'></AddNode>
+                <AddNode @emit_Node='handleDataSent'></AddNode>
 
             </div>
         </v-container>
@@ -87,9 +90,15 @@
 <script lang="ts" setup>
 import { callAuthenticationAPI } from "@/providers/data-provider";
 let flang = ref(0);
-let title= ref("");
+let title = ref("");
 let btnHide = ref(false);
 let tenquytrinh = "";
+let _nhansuId = ref<string[]>([]);
+let _phongbanId = ref<number[]>([]);
+let _txtnoidung = "";
+let _txtthietlapmaphieu = "";
+let _txtghichu = "";
+let _datetime: Date = new Date();
 
 
 interface INodeMap {
@@ -123,7 +132,7 @@ interface IDanhSachQuyTrinh {
     NoiDung: string | null;
 }
 
-function btnTiepThep(status : boolean) {
+function btnTiepThep(status: boolean) {
     flang.value = flang.value + 1
     LoadTitle();
     btnHide.value = true;
@@ -136,12 +145,12 @@ function btnTraVe() {
     btnHide.value = false;
 }
 
-function LoadTitle(){
-    if(flang.value == 0){
+function LoadTitle() {
+    if (flang.value == 0) {
         title.value = "Cấu hình thông tin quy trình"
     }
-    else if(flang.value ==  1){
-         title.value = "Cấu hình thiết kế quy trình"
+    else if (flang.value == 1) {
+        title.value = "Cấu hình thiết kế quy trình"
     }
 }
 
@@ -150,10 +159,10 @@ const IDiagrams = ref<IDiagram[]>([]);
 const INextSteps = ref<INextStep[]>([]);
 
 // Hàm xử lý sự kiện nhận dữ liệu
-function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[]}) {
-  INodeMaps.value = data.INodeMap; // Cập nhật dữ liệu Nodes
-  IDiagrams.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
-  INextSteps.value = data.INextStep;
+function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[] }) {
+    INodeMaps.value = data.INodeMap; // Cập nhật dữ liệu Nodes
+    IDiagrams.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
+    INextSteps.value = data.INextStep;
 }
 async function API_AddQuyTrinh() {
     try {
@@ -162,14 +171,37 @@ async function API_AddQuyTrinh() {
             userName: localStorage.getItem("UserName"),
             nodeMapModels: INodeMaps.value,
             diagramNodeModels: IDiagrams.value,
-            nextStepNodeModels:INextSteps.value
+            nextStepNodeModels: INextSteps.value,
+            nhanSuIds: _nhansuId.value,
+            phongBanIds: _phongbanId.value,
+            ghiChu:_txtghichu,
+            thietLapMaPhieu:_txtthietlapmaphieu,
+            noiDung: _txtnoidung,
+            ngayBatDau: _datetime
         }, {
             timeout: 15000
         });
     } catch (error) {
-       
+
     }
 }
+
+function ClickAddQuyTrinh() {
+    API_AddQuyTrinh();
+}
+
+const handleNhanSu = (nhansuId: string[], phongbanId: number[], NoiDung: string, ThietLapMaPhieu: string, GhiChu: string) => {
+    _nhansuId.value = nhansuId;
+    _phongbanId.value = phongbanId;
+    _txtnoidung = NoiDung,
+    _txtghichu = GhiChu,
+    _txtthietlapmaphieu = ThietLapMaPhieu
+};
+
+const handDatTime = (datetime: Date) => {
+    _datetime = datetime
+}
+
 onMounted(() => {
     LoadTitle();
 });

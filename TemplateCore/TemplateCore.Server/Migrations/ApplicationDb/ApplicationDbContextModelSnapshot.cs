@@ -538,6 +538,57 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.ToTable("NhanSuTheoDoiQuyTrinhs", "tempplate");
                 });
 
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NhanSuTiepNhanNode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("HoTen")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LoaiNhanSu")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NodeSettingId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserParentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NodeSettingId");
+
+                    b.ToTable("NhanSuTiepNhanNodes", "tempplate");
+                });
+
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
                 {
                     b.Property<int>("Id")
@@ -611,6 +662,9 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CauHinhMailNhacNho")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -618,12 +672,28 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("GhiChu")
+                        .HasMaxLength(350)
+                        .HasColumnType("nvarchar(350)");
+
+                    b.Property<bool>("IsGuiMailNhacNho")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGuiMailPhongBanTiepNhan")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaoTaskBaoCao")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("NoodeId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -634,7 +704,7 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("NodeSetting", "tempplate");
+                    b.ToTable("NodeSettings", "tempplate");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTheoDoiQuyTrinh", b =>
@@ -665,10 +735,8 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.Property<int>("LoaiPhongBan")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhongbanId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("PhongbanId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -686,6 +754,55 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.HasIndex("DanhSachQuyTrinhId");
 
                     b.ToTable("PhongBanTheoDoiQuyTrinhs", "tempplate");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTiepNhanNode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("LoaiPhongBan")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NodeSettingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhongbanId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenPhongBan")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UserParentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NodeSettingId");
+
+                    b.ToTable("PhongBanTiepNhanNodes", "tempplate");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.ThongTinNoiDungQuyTrinh", b =>
@@ -779,6 +896,13 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .HasForeignKey("ThongTinNoiDungQuyTrinhId");
                 });
 
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NhanSuTiepNhanNode", b =>
+                {
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", null)
+                        .WithMany("NhanSuTiepNhanNodes")
+                        .HasForeignKey("NodeSettingId");
+                });
+
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
                 {
                     b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.DanhSachQuyTrinh", null)
@@ -803,6 +927,13 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTiepNhanNode", b =>
+                {
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", null)
+                        .WithMany("PhongBanTiepNhanNodes")
+                        .HasForeignKey("NodeSettingId");
+                });
+
             modelBuilder.Entity("TemplateCore.Domain.Entities.DanhMuc.DanhMuc", b =>
                 {
                     b.Navigation("DanhMucPhanQuyens");
@@ -819,6 +950,13 @@ namespace TemplateCore.Server.Migrations.ApplicationDb
                     b.Navigation("Nodes");
 
                     b.Navigation("PhongBanTheoDoiQuyTrinhs");
+                });
+
+            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", b =>
+                {
+                    b.Navigation("NhanSuTiepNhanNodes");
+
+                    b.Navigation("PhongBanTiepNhanNodes");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.ThongTinNoiDungQuyTrinh", b =>

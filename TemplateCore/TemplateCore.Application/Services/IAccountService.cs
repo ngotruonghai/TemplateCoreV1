@@ -15,5 +15,7 @@ namespace TemplateCore.Application.Services
         Task<IEnumerable<object>> GetAllRole();
 
         Task<IEnumerable<object>> GetAllUserPermission();
+
+        Task<string> GetUserNameById(string UserId);
     }
 }

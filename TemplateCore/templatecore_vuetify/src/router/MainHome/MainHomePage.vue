@@ -8,11 +8,11 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- <v-app-bar title="" id="TitleName" app>
+    <v-app-bar title="" id="TitleName" app>
       <div id="TitleChillName">
-        {{ receivedData }}
+        <!-- test -->
       </div>
-    </v-app-bar> -->
+    </v-app-bar>
 
     <v-main style="height: 100%; overflow-y: auto;">
       <router-view />

@@ -11,8 +11,9 @@
     </v-card-title>
 
     <v-divider></v-divider>
-    <v-data-table v-model:search="search" :filter-keys="['firstName', 'lastName', 'userName', 'email', 'lockoutEnabled']"
-      :items="dataResponse ?? []" :headers="headers" item-value="id" class="custom-table">
+    <v-data-table v-model:search="search"
+      :filter-keys="['firstName', 'lastName', 'userName', 'email', 'lockoutEnabled']" :items="dataResponse ?? []"
+      :headers="headers" item-value="id" class="custom-table">
       <template v-slot:header.STT>
         <div class="HeaderTable FontDefault">STT</div>
       </template>
@@ -41,11 +42,12 @@
       </template>
       <template v-slot:item.lockoutEnabled="{ item }: { item: { lockoutEnabled: boolean } }">
         <div>
-          <span v-if="item.lockoutEnabled" class="status-badge status-active">
-            Đã kích hoạt
-          </span>
-          <span v-else class="status-badge status-locked">
+          <span v-if="item.lockoutEnabled" class="status-badge status-locked">
             Chưa kích hoạt
+
+          </span>
+          <span v-else class="status-badge status-active">
+            Đã kích hoạt
           </span>
         </div>
       </template>
@@ -89,7 +91,7 @@ const props = defineProps<{
 let search = ref('');
 let dataResponse = ref([]); // Ban đầu để rỗng, sẽ được cập nhật qua `watch`
 let headers = [
-  { text: 'STT', value: 'STT', width: '30px', sortable: true},
+  { text: 'STT', value: 'STT', width: '30px', sortable: true },
   { text: 'Tên người dùng', value: 'userName' },
   { text: 'Mã nhân viên', value: 'maNhanVien' },
   { text: 'Quyền', value: 'normalizedUserName' },
@@ -117,6 +119,4 @@ watch(
 );
 
 </script>
-<style>
-
-</style>
+<style></style>

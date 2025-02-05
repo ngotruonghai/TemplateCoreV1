@@ -122,9 +122,7 @@ async function LoadDataAPI() {
   try {
     const response = await callAuthenticationAPI('/api/account/GetAllUser', 'GET', {}, { timeout: 15000 });
     responseData = response as APIResponse;
-
-    console.log(responseData);
-
+    
     // coppy data
     responseDataFiller.value = { ...responseData, data: [...responseData.data] }
   } catch (error) {
@@ -144,7 +142,7 @@ const toggleSelectAll = () => {
     selectedId.value = [];
     selectedValues.value = [];
   } else {
-    selectedId.value = responseData.data.map(x => x.id);
+    selectedId.value = responseDataFiller.value.data.map(x => x.id);
     LoadValuesChecked();
   }
 };
@@ -172,9 +170,7 @@ watch(
       responseDataFiller.value.data = responseDataFiller.value.data.filter(x =>
         newVal.includes(x.phongBanId)
       );
-
     }
-
   },
   { deep: true, immediate: true }
 );

@@ -35,6 +35,9 @@ namespace TemplateCore.Infrastructure.Persistence
             services.AddScoped<INextStepRepositoryAsync, NextStepRepositoryAsync>();
             services.AddScoped<INhanSuTheoDoiQuyTrinhRepositoryAsync, NhanSuTheoDoiQuyTrinhRepositoryAsync>();
             services.AddScoped<IPhongBanTheoDoiQuyTrinhRepositoryAsync, PhongBanTheoDoiQuyTrinhRepositoryAsync>();
+            services.AddScoped<INhanSuTiepNhanNodeRepositoRyAsync, NhanSuTiepNhanNodeRepositoRyAsync>();
+            services.AddScoped<IPhongBanTiepNhanNodeRepositoryAsync, PhongBanTiepNhanNodeRepositoryAsync>();
+            services.AddScoped<INodeSettingRepositoryAsync, NodeSettingRepositoryAsync>();
         }
     }
 }

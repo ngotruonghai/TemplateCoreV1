@@ -131,6 +131,16 @@ interface IDanhSachQuyTrinh {
     NgayBatDau: string | null;
     NoiDung: string | null;
 }
+interface InodeSttings {
+    keyNode: string,
+    ghiChu: string | null,
+    isTaoTaskBaoCao: boolean,
+    isGuiMailPhongBanTiepNhan: boolean,
+    isGuiMailNhacNho: boolean,
+    nhanSuNodeModels: string[],
+    phongBanNodeModels: number[],
+    cauHinhMailNhacNho:number
+}
 
 function btnTiepThep(status: boolean) {
     flang.value = flang.value + 1
@@ -157,12 +167,19 @@ function LoadTitle() {
 const INodeMaps = ref<INodeMap[]>([]);
 const IDiagrams = ref<IDiagram[]>([]);
 const INextSteps = ref<INextStep[]>([]);
+const InodeSttings = ref<InodeSttings[]>([]);
 
 // Hàm xử lý sự kiện nhận dữ liệu
-function handleDataSent(data: { INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[] }) {
+function handleDataSent(data: {
+    INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[],
+    InodeSttings: InodeSttings[]
+}) {
     INodeMaps.value = data.INodeMap; // Cập nhật dữ liệu Nodes
     IDiagrams.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
     INextSteps.value = data.INextStep;
+    InodeSttings.value = data.InodeSttings;
+
+    console.log(InodeSttings.value )
 }
 async function API_AddQuyTrinh() {
     try {
@@ -174,10 +191,11 @@ async function API_AddQuyTrinh() {
             nextStepNodeModels: INextSteps.value,
             nhanSuIds: _nhansuId.value,
             phongBanIds: _phongbanId.value,
-            ghiChu:_txtghichu,
-            thietLapMaPhieu:_txtthietlapmaphieu,
+            ghiChu: _txtghichu,
+            thietLapMaPhieu: _txtthietlapmaphieu,
             noiDung: _txtnoidung,
-            ngayBatDau: _datetime
+            ngayBatDau: _datetime,
+            nodeSttings: InodeSttings.value
         }, {
             timeout: 15000
         });
@@ -194,8 +212,8 @@ const handleNhanSu = (nhansuId: string[], phongbanId: number[], NoiDung: string,
     _nhansuId.value = nhansuId;
     _phongbanId.value = phongbanId;
     _txtnoidung = NoiDung,
-    _txtghichu = GhiChu,
-    _txtthietlapmaphieu = ThietLapMaPhieu
+        _txtghichu = GhiChu,
+        _txtthietlapmaphieu = ThietLapMaPhieu
 };
 
 const handDatTime = (datetime: Date) => {

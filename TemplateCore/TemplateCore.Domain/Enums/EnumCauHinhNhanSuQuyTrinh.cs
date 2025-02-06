@@ -6,7 +6,7 @@
         NhanSuTao = 2,
         NhanSuHienThiThongTin = 3,
         NhanSuTheoDoiThongTin = 4,
-        NhanSuTheoDoiNode = 5
+        NhanSuTiepNhanNode = 5
     }
 
     public enum EnumCauHinhPhongBanQuyTrinh
@@ -14,6 +14,6 @@
         PhongBanTheoDoiQuyTrinh = 1,
         PhongBanTao = 2,
         PhongBanTheoDoiThongTin = 3,
-        PhongBanTheoDoiNode = 4
+        PhongBanTiepNhanNode = 4
     }
 }

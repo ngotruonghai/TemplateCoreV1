@@ -18,10 +18,11 @@
             </div>
             <!-- Trường tìm kiếm -->
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
-                @input="filterPhongBan"/>
-            <div v-for="phongbannode in responseDataFillter.data" :key="phongbannode.id" class="dropdown-item-phongbannode">
+                @input="filterPhongBan" />
+            <div v-for="phongbannode in responseDataFillter.data" :key="phongbannode.id"
+                class="dropdown-item-phongbannode">
                 <input type="checkbox" :value="phongbannode.id" v-model="selectedId" @change="LoadValuesChecked()" />
-                <label >{{ phongbannode.tenPhongBan }}</label>
+                <label>{{ phongbannode.tenPhongBan }}</label>
             </div>
         </div>
     </div>
@@ -37,7 +38,7 @@ const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
 
 const props = defineProps<{
-    refresh: boolean;
+    phognbanId: number[],
 }>();
 
 
@@ -72,14 +73,8 @@ const responseDataFillter = ref<APIResponse>({
     data: []
 });
 
-let nodeSttings = ref({
-    keyNode: "",
-    nhanSuNodeModels: [],
-    phongBanNodeModels: []
-});
-
 const emit = defineEmits<{
-    (event: 'emit_phonganId',data: number[]): void;
+    (event: 'emit_phonganId', data: number[]): void;
 }>();
 
 // Lọc thành phố dựa trên tìm kiếm
@@ -119,23 +114,22 @@ const handleOutsideClick = (event: MouseEvent) => {
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
         dropdownOpenNhanSu.value = false; // Đóng dropdown nếu click ra ngoài
     }
-    emit("emit_phonganId",selectedId.value)
+    emit("emit_phonganId", selectedId.value)
 };
 
 // Tải dữ liệu API
 async function LoadDataAPI() {
     try {
         const response = await callAuthenticationAPI('/api/quanlythongtin/phongban/DanhSachPhongBan', 'GET', {}, { timeout: 15000 });
-        console.log(response);
         responseData = response as APIResponse;
-        responseData.data.sort((a,b) => a.id - b.id);
+        responseData.data.sort((a, b) => a.id - b.id);
         responseDataFillter.value = { ...responseData, data: [...responseData.data] };
     } catch (error) {
         console.log("Lỗi combobox phòng ban: " + error);
     }
 }
 
-function LoadValuesChecked(){
+function LoadValuesChecked() {
     selectedValues.value = [];
     if (isAllSelected.value == true) {
         selectedValues.value.push("Tất cả");
@@ -144,18 +138,26 @@ function LoadValuesChecked(){
     selectedId.value.forEach((itemId) => {
         const phongbannode = responseData.data.find(x => x.id == itemId);
 
-        if(phongbannode){
+        if (phongbannode) {
             selectedValues.value.push(phongbannode.tenPhongBan);
         }
     });
 }
+
 watch(
-    () => props.refresh, // Dùng getter để theo dõi prop
+    () => props.phognbanId, // Dùng getter để theo dõi prop
     (newVal, oldVal) => {
-        selectedId.value = [];
-        selectedValues.value = [];
-        responseDataFillter.value.data = responseData.data;
+        if (newVal.length > 0) {
+            selectedId.value = newVal;
+            LoadValuesChecked();
+        }
+        else{
+            selectedId.value = [];
+            selectedValues.value = [];
+            responseDataFillter.value.data = responseData.data;
+        }
     },
+    { deep: true, immediate: true }
 );
 
 // Gọi khi component được mount
@@ -168,6 +170,7 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener("click", handleOutsideClick);
 });
+
 </script>
 
 <style>

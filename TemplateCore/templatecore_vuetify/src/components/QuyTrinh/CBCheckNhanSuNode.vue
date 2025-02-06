@@ -22,6 +22,7 @@
             <div v-for="item in responseDataFiller.data" :key="item.id" class="dropdown-item-nhansunode">
                 <input type="checkbox" :id="item.id" :value="item.id" v-model="selectedId"
                     @change="LoadValuesChecked()" />
+
                 <label :for="item.id">{{ item.firstName + item.lastName }}</label>
             </div>
         </div>
@@ -39,9 +40,11 @@ const searchQuery = ref<string>("");
 const selectedId = ref<string[]>([]);
 const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
+let _nhansuIdMap = ref<string[]>([]);
 
 const props = defineProps<{
     ListPhongBanId: number[];
+    nhansuIdMap: string[];
 }>();
 
 interface User {
@@ -163,22 +166,19 @@ onUnmounted(() => {
 });
 
 
-watch(
-    () => props.ListPhongBanId, // Dùng getter để theo dõi prop
-    (newVal, oldVal) => {
-        selectedId.value = [];
-        selectedValues.value = [];
-        responseDataFiller.value.data = responseData.data;
+watch([() => props.ListPhongBanId, () => props.nhansuIdMap], ([newListPhongBanId, newNhansuIdMap], [oldListPhongBanId, oldNhansuIdMap]) => {
+    selectedValues.value = [];
+    responseDataFiller.value.data = responseData.data;
+    responseDataFiller.value.data = responseDataFiller.value.data.filter(x =>
+            newListPhongBanId.includes(x.phongBanId)
+        );
+    if(newNhansuIdMap){
+        selectedId.value =newNhansuIdMap;
+        LoadValuesChecked();
+    }
 
-        if (newVal.length > 0) {
-            responseDataFiller.value.data = responseDataFiller.value.data.filter(x =>
-                newVal.includes(x.phongBanId)
-            );
-        }
-    },
-    { deep: true, immediate: true }
-);
-
+   
+});
 </script>
 
 <style>

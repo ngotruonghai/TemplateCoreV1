@@ -47,10 +47,11 @@
                 </span>
                 Cấu hình bước
             </li>
-            <li @click="deleteNode" v-if="_xXoaNode"> 
+            <li @click="deleteNode" v-if="_xXoaNode">
                 <span class="icon-border2">
                     <i class="fas fa-trash-alt"></i>
-                </span> Xóa</li>
+                </span> Xóa
+            </li>
             <li @click="hideContextMenu">Hủy</li>
         </ul>
     </div>
@@ -85,8 +86,8 @@
                         <div class="combobox-container">
                             <select class="combobox" v-model="_selectNodeId">
                                 <option value="" key="0"></option>
-                                <option v-for="(item, index) in _dataTraVe.INodeMap"
-                                    :key="item.keyId || ''" :value="item.keyId || ''">
+                                <option v-for="(item, index) in _dataTraVe.INodeMap" :key="item.keyId || ''"
+                                    :value="item.keyId || ''">
                                     {{ item.tenNode }}
                                 </option>
                             </select>
@@ -141,20 +142,23 @@
             <v-container-fluid>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <h3>Cấu hình bước: ...</h3>
+                        <h3>Cấu hình bước: {{ _txttitlecauhinh }}</h3>
                     </v-col>
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Người tiếp nhận
                         </label>
-                        <CBCheckPhongBanNode :refresh="_refresh" @emit_phonganId="handlePhongBan" />
+                        <CBCheckPhongBanNode  :phognbanId="_phongbanIdMap"
+                            @emit_phonganId="handlePhongBan" @change="changeSelectPhongBan" />
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Phòng ban tiếp nhận
                         </label>
-                        <CBCheckNhanSuNode :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSuNode>
+                        <CBCheckNhanSuNode :nhansuIdMap="_nhansuIdMap"
+                            :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu">
+                        </CBCheckNhanSuNode>
                     </v-col>
 
                     <v-col cols="12" md="12">
@@ -162,7 +166,7 @@
                             <label for="" class="FontDefault">
                                 Ghi chú
                             </label>
-                            <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
+                            <textarea v-model="_txtghichuNodeSetting" class="form-control" placeholder="Nội dung ghi chú"></textarea>
                         </div>
                     </v-col>
 
@@ -172,18 +176,16 @@
                         </label>
                         <input type="number" id="" class="FontDefault"
                             placeholder="Số mỗi lần gửi mail cách nhau bao nhiêu phút" style="width: 100%;" min="0"
-                            max="1440" />
+                            max="1440" v-model="_txtCauhinhmailnhacnhonodesetting"/>
                     </v-col>
 
 
                     <v-col cols="12" md="12">
-                        <v-checkbox label="Tạo báo cáo tự động khi hoàn thành." class="FontDefault"></v-checkbox>
+                        <v-checkbox label="Tạo báo cáo tự động khi hoàn thành." class="FontDefault" v-model="_isTaoTaskBaoCao"></v-checkbox>
                         <v-checkbox label="Gửi mail cho người/phòng ban tiếp nhận." class="FontDefault"
-                            style="margin-top: -50px;"></v-checkbox>
+                            style="margin-top: -50px;" v-model="_isGuiMailPhongBanTiepNhan"></v-checkbox>
                         <v-checkbox label="Gửi mail nhắc nhở nếu có (có cấu hình)." class="FontDefault"
-                            style="margin-top: -50px;"></v-checkbox>
-                        <v-checkbox label="Tích hợp trình ký." class="FontDefault"
-                            style="margin-top: -50px;"></v-checkbox>
+                            style="margin-top: -50px;" v-model="_isGuiMailNhacNho"></v-checkbox>
                     </v-col>
 
                     <!-- button xác nhận -->
@@ -226,12 +228,20 @@ let tenNode = ref("");
 let _ActionName = ref("");
 let isPanelOpen = ref(false);
 let _indexNode = ref(0); // index khi add ndoe
-let _selectNodeId = ref(""); // chọn bước để trả về
+let _selectNodeId = ref(""); // chọn bước trên combobox để trả về
 let _isShowListNode = ref(false); // list control các bước
 let _isShoeMessError = ref(false); // ẩn hiên thông báo lỗi
 let _meesageError = ref(''); // Mess thông báo lỗi
-let _phongbanId = ref<number[]>([]);
-let _refresh = ref<boolean>(false);
+let _phongbanId = ref<number[]>([]); // phòng ban Id select
+let _phongbanIdMap = ref<number[]>([]);// phòng ban Id để map data
+let _txttitlecauhinh = ref("");
+let _nhansuId = ref<string[]>([]);
+let _nhansuIdMap = ref<string[]>([]);
+let _txtghichuNodeSetting = ref("");
+let _txtCauhinhmailnhacnhonodesetting = ref("");
+let _isTaoTaskBaoCao = ref(false);
+let _isGuiMailPhongBanTiepNhan = ref(false);
+let _isGuiMailNhacNho = ref(false);
 
 
 /* biến ẩn hiển các bước trên màn hình */
@@ -286,22 +296,33 @@ interface INextStep {
     action: number,
     typeNextStep: number
 }
+interface InodeSttings {
+    keyNode: string,
+    ghiChu: string | null,
+    isTaoTaskBaoCao: boolean,
+    isGuiMailPhongBanTiepNhan: boolean,
+    isGuiMailNhacNho: boolean,
+    nhanSuNodeModels: string[],
+    phongBanNodeModels: number[],
+    cauHinhMailNhacNho:number
+}
 const request = ref({
     INodeMap: [] as INodeMap[],
     IDiagram: [] as IDiagram[],
-    INextStep: [] as INextStep[]
+    INextStep: [] as INextStep[],
+    InodeSttings: [] as InodeSttings[]
 });
 let positions: { x: number; y: number }[] = [];
 let _dataTraVe = ref({
     INodeMap: [] as INodeMap[]
 });
 
-
 const emit = defineEmits<{
     (event: 'emit_Node', data: {
         INodeMap: INodeMap[],
         IDiagram: IDiagram[],
         INextStep: INextStep[];
+        InodeSttings: InodeSttings[]
     }): void;
 }>();
 
@@ -352,7 +373,7 @@ onMounted(() => {
             isContextMenuVisible.value = true;
 
             // Gọi hàm với chuỗi rỗng
-        _xCauHinhBuoc.value = false;
+            _xCauHinhBuoc.value = false;
             CheckLogicAddNode("");
         }
     });
@@ -582,6 +603,7 @@ const deleteNode = () => {
         request.value.IDiagram = request.value.IDiagram.filter(x => x.source != _selectedNode?.id);
         request.value.INextStep = request.value.INextStep.filter(x => x.nodeIdStart != _selectedNode?.id);
         request.value.INextStep = request.value.INextStep.filter(x => x.nodeIdEnd != _selectedNode?.id);
+        request.value.InodeSttings = request.value.InodeSttings.filter(x => x.keyNode != _selectedNode?.id);
         _selectedNode = null;
         emit('emit_Node', request.value);
     } else {
@@ -637,11 +659,40 @@ function btnTraVe() {
     hideContextMenu();
 }
 
+/* btn popup cấu hình từng node dev01*/
 function CauHinhBuoc() {
     isPanelOpen.value = !isPanelOpen.value;
     hideContextMenu();
+    debugger;
+    const data_Node = request.value.INodeMap.find(x => x.keyId == _selectedNode?.id);
+    //const data_Diagram = request.value.IDiagram;
+    //const data_nextStep = request.value.INextStep;
+    if (data_Node == null) return;
+    _txttitlecauhinh.value = data_Node?.tenNode?.toString() ?? "";
+
+    const data_nodesetting = request.value.InodeSttings.find(x => x.keyNode == _selectedNode?.id);
+    if (data_nodesetting == null) {
+        _phongbanIdMap.value = [];
+        _nhansuIdMap.value = [];
+        _txtghichuNodeSetting.value = "";
+        _txtCauhinhmailnhacnhonodesetting.value ="";
+        _isTaoTaskBaoCao.value = false;
+        _isGuiMailPhongBanTiepNhan.value = false;
+        _isGuiMailNhacNho.value = false;
+    }
+    else {
+        _phongbanIdMap.value = data_nodesetting.phongBanNodeModels;
+        _nhansuIdMap.value = data_nodesetting.nhanSuNodeModels;
+        _txtghichuNodeSetting.value = data_nodesetting.ghiChu??"";
+        _txtCauhinhmailnhacnhonodesetting.value = data_nodesetting.cauHinhMailNhacNho.toString();
+        _isTaoTaskBaoCao.value = data_nodesetting.isTaoTaskBaoCao;
+        _isGuiMailPhongBanTiepNhan.value = data_nodesetting.isGuiMailPhongBanTiepNhan;
+        _isGuiMailNhacNho.value = data_nodesetting.isGuiMailNhacNho;
+    }
+
 }
 
+/* btn xác nhận dialog tạo node */
 function btnXacNhanDialog(status: boolean) {
     if (status == false) {
         dialog.value = false;
@@ -685,10 +736,34 @@ function btnAddNode(type: string) { // Add node  khi xác nhận trong popup
     hideContextMenu();
 }
 
+/* xác nhận cài đặt  cấu hình từng node */
 function btncauHinhXacNhan(status: boolean) {
     isPanelOpen.value = false;
-    _phongbanId.value = [];
-    _refresh.value=!_refresh.value;
+    if (status) {
+        const dataNode = request.value.InodeSttings.find(x => x.keyNode == _selectedNode?.id);
+        if (dataNode != null) {
+            request.value.InodeSttings = request.value.InodeSttings.filter(x => x.keyNode != _selectedNode?.id);
+        }
+
+        request.value.InodeSttings.push({
+            keyNode: _selectedNode?.id?.toString() ?? "",
+            nhanSuNodeModels: _nhansuId.value,
+            phongBanNodeModels: _phongbanId.value,
+            ghiChu: _txtghichuNodeSetting.value,
+            isTaoTaskBaoCao: _isTaoTaskBaoCao.value,
+            isGuiMailPhongBanTiepNhan: _isGuiMailPhongBanTiepNhan.value,
+            isGuiMailNhacNho: _isGuiMailNhacNho.value,
+            cauHinhMailNhacNho : parseInt(_txtCauhinhmailnhacnhonodesetting.value)
+        });
+
+        emit('emit_Node', request.value);
+    }
+    else{
+        _nhansuIdMap.value = [];
+        _phongbanIdMap.value = [];
+    }
+
+
 }
 
 function CheckLogicAddNode(SelectNode: string) {
@@ -738,22 +813,22 @@ function CheckLogicAddNode(SelectNode: string) {
                     stepNode.forEach((item) => {
                         /* đang lỗi ở đây, chỉ dc chọn 3 bước trong điề kiện */
                         switch (item?.typeNextStep) {
-                            case 1:{
-                                    _xbuoc.value = false;
-                                    break;
-                                }
-                                case 3:{
-                                    _xduyet.value = false;
-                                    break;
-                                }
-                                case 4:{
-                                    _xketthuc.value = false;
-                                    break;
-                                }
-                                case 6:{
-                                    _xtrave.value = false;
-                                    break;
-                                }
+                            case 1: {
+                                _xbuoc.value = false;
+                                break;
+                            }
+                            case 3: {
+                                _xduyet.value = false;
+                                break;
+                            }
+                            case 4: {
+                                _xketthuc.value = false;
+                                break;
+                            }
+                            case 6: {
+                                _xtrave.value = false;
+                                break;
+                            }
                             default:
                                 _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
                                 break;
@@ -768,20 +843,20 @@ function CheckLogicAddNode(SelectNode: string) {
                     ko trả về cùng bước
                     ko trả về cho bước tiếp theo
                 */
-               const buoctieptheo = data_nextStep.find(x => x.nodeIdStart == SelectNode);
+                const buoctieptheo = data_nextStep.find(x => x.nodeIdStart == SelectNode);
                 _dataTraVe.value.INodeMap = data_Node.filter(x => x.type != 2 && x.type != 5 && x.keyId != buoctieptheo?.nodeIdEnd);
 
                 break;
             }
-            case 3:{
+            case 3: {
                 _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
-                _xXoaNode.value=true;
+                _xXoaNode.value = true;
                 break;
             }
             case 4: {
                 // Từ chối
                 _xbuoc.value = _xdieukien.value = _xketthuc.value = _xduyet.value = _xtrave.value = false;
-                _xXoaNode.value=true;
+                _xXoaNode.value = true;
             }
             default: {
                 break;
@@ -789,16 +864,16 @@ function CheckLogicAddNode(SelectNode: string) {
         }
 
         /* kiểm tra nếu là ước cuối thì cho xóa */
-        if(data_Node.length == 1){
+        if (data_Node.length == 1) {
             _xXoaNode.value = true;
         }
-        else if(data_nextStep.filter(x => x.nodeIdStart == SelectNode).length ==1 && data_nextStep.filter(x => x.typeNextStep == 6).length ==1){
+        else if (data_nextStep.filter(x => x.nodeIdStart == SelectNode).length == 1 && data_nextStep.filter(x => x.typeNextStep == 6).length == 1) {
             _xXoaNode.value = true;
         }
-        else if(data_nextStep.filter(x => x.nodeIdStart == SelectNode).length >= 1){
+        else if (data_nextStep.filter(x => x.nodeIdStart == SelectNode).length >= 1) {
             _xXoaNode.value = false;
         }
-        else{
+        else {
             _xXoaNode.value = true;
         }
 
@@ -821,8 +896,11 @@ const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
 };
 const handleNhanSu = (nhansuId: string[]) => {
-
+    _nhansuId.value = nhansuId;
 };
+function changeSelectPhongBan() {
+    _nhansuIdMap.value = [];
+}
 
 </script>
 

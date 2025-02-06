@@ -82,14 +82,14 @@ const emit = defineEmits<{
 
 // Lọc thành phố dựa trên tìm kiếm
 const filterCities = () => {
-  const query = searchQuery.value.toLowerCase();
-  responseDataFiller.value.data = responseData.data;
-  if (query.length >= 1) {
-    responseDataFiller.value.data = responseDataFiller.value.data.filter(x => (x.firstName + x.lastName).toLocaleLowerCase().includes(query));
-  }
-  else {
+    const query = searchQuery.value.toLowerCase();
     responseDataFiller.value.data = responseData.data;
-  }
+    if (query.length >= 1) {
+        responseDataFiller.value.data = responseData.data.filter(x => (x.firstName + x.lastName).toLocaleLowerCase().includes(query));
+    }
+    else {
+        responseDataFiller.value.data = responseData.data;
+    }
 };
 
 // Toggle trạng thái dropdown
@@ -108,17 +108,17 @@ const handleOutsideClick = (event: MouseEvent) => {
 
 
 function LoadValuesChecked() {
-  selectedValues.value = [];
-  if (isAllSelected.value == true) {
+    selectedValues.value = [];
+    if (isAllSelected.value == true) {
         selectedValues.value.push("Tất cả");
         return;
     }
-  selectedId.value.forEach((itemId) => {
-    const nhansu = responseData.data.find(x => x.id == itemId);
-    if (nhansu) {
-      selectedValues.value.push(nhansu.firstName + " " + nhansu.lastName);
-    }
-  });
+    selectedId.value.forEach((itemId) => {
+        const nhansu = responseData.data.find(x => x.id == itemId);
+        if (nhansu) {
+            selectedValues.value.push(nhansu.firstName + " " + nhansu.lastName);
+        }
+    });
 }
 
 // Tải dữ liệu API
@@ -126,7 +126,7 @@ async function LoadDataAPI() {
   try {
     const response = await callAuthenticationAPI('/api/account/GetAllUser', 'GET', {}, { timeout: 15000 });
     responseData = response as APIResponse;
-    
+
     // coppy data
     responseDataFiller.value = { ...responseData, data: [...responseData.data] }
   } catch (error) {
@@ -136,8 +136,8 @@ async function LoadDataAPI() {
 
 // 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
 const isAllSelected = computed(() => {
-  return responseDataFiller.value.data.length > 0 &&
-    selectedId.value.length === responseDataFiller.value.data.length;
+    return responseData.data.length > 0 &&
+        selectedId.value.length === responseData.data.length;
 });
 
 // 🔥 2️⃣ Hàm "Chọn tất cả"
@@ -146,7 +146,7 @@ const toggleSelectAll = () => {
     selectedId.value = [];
     selectedValues.value = [];
   } else {
-    selectedId.value = responseDataFiller.value.data.map(x => x.id);
+    selectedId.value = responseData.data.map(x => x.id);
     LoadValuesChecked();
   }
 };

@@ -88,7 +88,7 @@ const filterCities = () => {
     const query = searchQuery.value.toLowerCase();
     responseDataFiller.value.data = responseData.data;
     if (query.length >= 1) {
-        responseDataFiller.value.data = responseDataFiller.value.data.filter(x => (x.firstName + x.lastName).toLocaleLowerCase().includes(query));
+        responseDataFiller.value.data = responseData.data.filter(x => (x.firstName + x.lastName).toLocaleLowerCase().includes(query));
     }
     else {
         responseDataFiller.value.data = responseData.data;
@@ -139,8 +139,8 @@ async function LoadDataAPI() {
 
 // 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
 const isAllSelected = computed(() => {
-    return responseDataFiller.value.data.length > 0 &&
-        selectedId.value.length === responseDataFiller.value.data.length;
+    return responseData.data.length > 0 &&
+        selectedId.value.length === responseData.data.length;
 });
 
 // 🔥 2️⃣ Hàm "Chọn tất cả"
@@ -149,7 +149,7 @@ const toggleSelectAll = () => {
         selectedId.value = [];
         selectedValues.value = [];
     } else {
-        selectedId.value = responseDataFiller.value.data.map(x => x.id);
+        selectedId.value = responseData.data.map(x => x.id);
         LoadValuesChecked();
     }
 };
@@ -169,15 +169,15 @@ onUnmounted(() => {
 watch([() => props.ListPhongBanId, () => props.nhansuIdMap], ([newListPhongBanId, newNhansuIdMap], [oldListPhongBanId, oldNhansuIdMap]) => {
     selectedValues.value = [];
     responseDataFiller.value.data = responseData.data;
-    responseDataFiller.value.data = responseDataFiller.value.data.filter(x =>
+    if (newNhansuIdMap.length > 0 || newListPhongBanId.length > 0) {
+        responseDataFiller.value.data = responseData.data.filter(x =>
             newListPhongBanId.includes(x.phongBanId)
         );
-    if(newNhansuIdMap){
-        selectedId.value =newNhansuIdMap;
+        selectedId.value = newNhansuIdMap;
         LoadValuesChecked();
     }
 
-   
+
 });
 </script>
 

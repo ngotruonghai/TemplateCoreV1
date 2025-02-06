@@ -86,8 +86,8 @@ const filterPhongBan = () => {
 };
 // 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
 const isAllSelected = computed(() => {
-    return responseDataFillter.value.data.length > 0 &&
-        selectedId.value.length === responseDataFillter.value.data.length;
+    return responseData.data.length > 0 &&
+        selectedId.value.length === responseData.data.length;
 });
 
 // 🔥 2️⃣ Hàm "Chọn tất cả"

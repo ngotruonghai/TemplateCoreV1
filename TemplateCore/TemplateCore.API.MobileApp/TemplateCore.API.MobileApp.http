@@ -1,0 +1,6 @@
+@TemplateCore.API.MobileApp_HostAddress = http://localhost:5022
+
+GET {{TemplateCore.API.MobileApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

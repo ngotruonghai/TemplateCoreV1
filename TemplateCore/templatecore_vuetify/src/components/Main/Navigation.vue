@@ -21,8 +21,8 @@
                 <!-- <v-list-item prepend-icon="mdi-home" title="Home"></v-list-item> -->
                 <v-list-group value="Admin">
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog"
-                            style="font-size: 15px;" class="FontDefaault">Thông tin</v-list-item>
+                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog" style="font-size: 15px;"
+                            class="FontDefaault">Thông tin</v-list-item>
                     </template>
 
                     <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in admins"
@@ -33,8 +33,8 @@
 
                 <v-list-group value="PhanQuyen" no-action>
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog"
-                            style="font-size: 15px;" class="FontDefaault">Phân quyền</v-list-item>
+                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog" style="font-size: 15px;"
+                            class="FontDefaault">Phân quyền</v-list-item>
                     </template>
 
                     <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in PhanQuyen"
@@ -45,8 +45,8 @@
 
                 <v-list-group value="QuyTrinh" no-action>
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog"
-                            style="font-size: 15px;" class="FontDefault">Quy trình</v-list-item>
+                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog" style="font-size: 15px;"
+                            class="FontDefault">Quy trình</v-list-item>
                     </template>
 
                     <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in QuyTrinh"
@@ -58,8 +58,8 @@
 
                 <v-list-group value="CauHinh" no-action>
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog"
-                            style="font-size: 15px;" class="FontDefault">Cấu hình</v-list-item>
+                        <v-list-item v-bind="props" title="" prepend-icon="mdi-cog" style="font-size: 15px;"
+                            class="FontDefault">Cấu hình</v-list-item>
                     </template>
 
                     <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in CauHinhs"
@@ -67,7 +67,7 @@
                         <div>{{ title }}</div>
                     </v-list-item>
                 </v-list-group>
-              
+
             </v-list>
         </v-card>
     </div>
@@ -88,17 +88,24 @@ export default {
         QuyTrinh: [
             ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],
         ],
-        PhanQuyen:[
-            ['Phòng ban','mdi-plus-outline','/home/phongban']
+        PhanQuyen: [
+            ['Phòng ban', 'mdi-plus-outline', '/home/phongban']
         ],
         userName: ""
     }),
     methods: {
         navigateTo(route: string, Name: string) {
             if (route) {
-                localStorage.setItem("Url", route)
-                this.$emit('dataSent', Name);
-                this.$router.push(route); // Điều hướng đến route
+                if (route == "/") {
+                    localStorage.clear();
+                    this.$router.push(route); 
+                }
+                else {
+                    localStorage.setItem("Url", route)
+                    this.$emit('dataSent', Name);
+                    this.$router.push(route); // Điều hướng đến route
+                }
+
             } else {
                 //alert('Route không tồn tại'); // Hiển thị cảnh báo nếu không có route
             }

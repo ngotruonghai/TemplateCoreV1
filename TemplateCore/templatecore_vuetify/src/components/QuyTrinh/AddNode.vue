@@ -663,7 +663,6 @@ function btnTraVe() {
 function CauHinhBuoc() {
     isPanelOpen.value = !isPanelOpen.value;
     hideContextMenu();
-    debugger;
     const data_Node = request.value.INodeMap.find(x => x.keyId == _selectedNode?.id);
     //const data_Diagram = request.value.IDiagram;
     //const data_nextStep = request.value.INextStep;

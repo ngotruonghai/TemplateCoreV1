@@ -4,6 +4,6 @@
     {
         public string UserId {  get; set; }
 
-        public string DanhMucId { get; set; }
+        public int DanhMucId { get; set; }
     }
 }

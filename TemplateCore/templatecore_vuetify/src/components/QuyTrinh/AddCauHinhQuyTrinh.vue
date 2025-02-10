@@ -8,7 +8,7 @@
                 </div>
                 <div class="input-container">
                     <input type="text" v-model="_txtnoidung" class="FontDefault"
-                        placeholder="VD: Cấu hình hco quy trình vận hành" />
+                        placeholder="VD: Cấu hình cho quy trình vận hành" />
                 </div>
             </v-col>
             <v-col cols="12" md="12">
@@ -58,16 +58,18 @@
                         <tr>
                             <th width="50px">STT</th>
                             <th>Tên thông tin</th>
+                            <th>Tình trạng</th>
                             <th width="100px">Cấu hình</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in _dsThongTin" :key="item.Id ?? 0">
+                        <tr v-for="(item, index) in _dsThongTin" :key="item.index ?? 0">
                             <td> {{ index + 1 }} </td>
-                            <td>{{ item.TenThongTin }}</td>
+                            <td>{{ item.tenThonTin }}</td>
+                            <td></td>
                             <td style="text-align: center;">
                                 <div class="tooltip">
-                                    <span class="tooltip" @click="btnCauHinhThongTin()">
+                                    <span class="tooltip" @click="btnCauHinhThongTin(item.index)">
                                         <i class="fa fa-gear"></i>
                                     </span>
                                     <span class="tooltiptext">Cấu hình thông tin</span>
@@ -75,8 +77,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="text-align: center;cursor: default;">
-                                <div @click="TaoQuyTrinh">
+                            <td colspan="4" style="text-align: center;cursor: default;">
+                                <div @click="TaoThongTIn">
                                     <span class="tooltip">
                                         <i class="fa fa-plus"></i>
                                     </span>
@@ -96,26 +98,27 @@
             <v-container-fluid>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <h3>Cấu hình thông tin: số 1</h3>
+                        <h3>Cấu hình thông tin:  {{ _txttenthongtinDL }}</h3>
                     </v-col>
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Tên thông tin
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <input type="text" v-model="_txttenthongtinDL" class="FontDefault" placeholder="" style="width: 100%;" />
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Nôi dung
                         </label>
-                        <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
+                        <textarea class="form-control" placeholder="Nội dung ghi chú" v-model="_txtnoidungDL"></textarea>
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Cấu hình hiển thị ở bước
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <CBCheckDanhSachNode :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode"></CBCheckDanhSachNode>
+
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
@@ -127,15 +130,14 @@
                     </v-col>
                     <v-col cols="12" md="6">
                         <label class="FontDefault">
-                            Loại 
+                            Loại
                         </label>
-
                         <div class="combobox-container">
-                            <select id="email" class="combobox">
+                            <select id="email" class="combobox" v-model="_loaiThongTin">
                                 <option value="0">
                                     Nhập tự do
                                 </option>
-                                <option value="0">
+                                <option value="1">
                                     Nhập số
                                 </option>
                             </select>
@@ -152,21 +154,21 @@
 
 
                     <v-col cols="12" md="12">
-                        <v-checkbox label="Bắt buộc nhập." class="FontDefault"></v-checkbox>
+                        <v-checkbox label="Bắt buộc nhập." class="FontDefault" v-model="_isBatBuocnhap"></v-checkbox>
                         <v-checkbox label="Có File đính kèm." class="FontDefault"
-                            style="margin-top: -50px;"></v-checkbox>
+                            style="margin-top: -50px;" v-model="_isFileDinhKem"></v-checkbox>
                     </v-col>
 
                     <!-- button xác nhận -->
                     <v-col cols="12" md="12">
-                        <v-btn class="btnAdd btn no-uppercase" @click="btncauHinhXacNhan(true)" style="float: right;">
+                        <v-btn class="btnAdd btn no-uppercase" @click="btncauHinhXacNhan" style="float: right;">
                             Xác nhận
                         </v-btn>
-                        <v-btn @click="btncauHinhXacNhan(false)" class="btnCancel no-uppercase"
+                        <v-btn @click="btnXoaThongTin" class="btnCancel no-uppercase"
                             style="float: right; margin-right: 10px;">
                             Xóa
                         </v-btn>
-                        <v-btn @click="btncauHinhXacNhan(false)" class="btnCancel no-uppercase"
+                        <v-btn @click="btncauHinhXacNhan" class="btnCancel no-uppercase"
                             style="float: right; margin-right: 10px;">
                             Hủy
                         </v-btn>
@@ -182,54 +184,102 @@
 </template>
 
 <script lang="ts" setup>
+import type { IDataThongTin, IDanhSachNode } from "@/interface/QuyTrinh/IAddCauHinhQuyTrinh";
 
 let isPanelOpen = ref(false);
 let _phongbanId = ref<number[]>([]);
 let _txtnoidung = ref("");
 let _txtthietlapmaphieu = ref("");
 let _txtghichu = ref("");
-
-interface IDataThongTin {
-    Id: number | null;
-    TenThongTin: string | null;
-}
+let _txttenthongtinDL = ref("");
+let _txtnoidungDL = ref("");
+const _selectedThongTinId = ref<number | null>();
+let _selectThongTinCauHinhBuocDL=ref<string[] | null>([]);
+let _loaiThongTin=ref<number>(0);
+let _isBatBuocnhap=ref<boolean>(false);
+let _isFileDinhKem=ref<boolean>(false);
 
 const emit = defineEmits<{
-    (event: 'emit_nhansuId', data: string[], phongbanId: number[],
-        NoiDung: string, ThietLapMaPhieu: string, GhiChu: string
+    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[]
     ): void;
 }>();
 
-
-
+const props = defineProps<{
+    DanhSachNode: IDanhSachNode[],
+}>();
 
 const _dsThongTin = ref<IDataThongTin[]>([]);
+const _dsNode = ref<IDanhSachNode[]>([]);
 
 // Thêm dữ liệu mới
 const addDataToArray = (data: IDataThongTin) => {
     _dsThongTin.value.push(data);
 };
 
-function TaoQuyTrinh() {
-    addDataToArray({ Id: 1, TenThongTin: 'Thông tin 1' });
+function TaoThongTIn() {
+    addDataToArray({
+        index: (_dsThongTin.value.length), tenThonTin: 'Chưa cấu hình', noiDung: "",
+        thongBao: null,
+        loaiThongTin: 0,
+        kichThuocKyTu: 0,
+        isBatBuocnhap: false,
+        isFileDinhKem: false,
+        danhSachCauHinhBuoc: []
+    });
 }
 
-function btncauHinhXacNhan(status: boolean) {
+// btn xác nhận trong cấu hình
+function btncauHinhXacNhan() {
+    const index = _dsThongTin.value.findIndex(x => x.index == _selectedThongTinId.value);
+    _dsThongTin.value[index].tenThonTin = _txttenthongtinDL.value;
+    _dsThongTin.value[index].noiDung = _txtnoidungDL.value;
+    _dsThongTin.value[index].danhSachCauHinhBuoc = _selectThongTinCauHinhBuocDL.value??[];
+    _dsThongTin.value[index].loaiThongTin = _loaiThongTin.value;
+    _dsThongTin.value[index].isBatBuocnhap = _isBatBuocnhap.value;
+    _dsThongTin.value[index].isFileDinhKem = _isFileDinhKem.value;
+
     isPanelOpen.value = false;
+    _selectedThongTinId.value = null;
+    _txttenthongtinDL.value="";
+    _txtnoidung.value="";
+    _selectThongTinCauHinhBuocDL.value= null;
+}
+// btn xóa trong cấu hình
+function btnXoaThongTin(){
+    _dsThongTin.value = _dsThongTin.value.filter(x => x.index != _selectedThongTinId.value);
+    isPanelOpen.value = false;
+    _selectedThongTinId.value = null;
 }
 
-function btnCauHinhThongTin() {
+// Cấu hình trong danh sách thông tin
+function btnCauHinhThongTin(Id: number) {
     isPanelOpen.value = true;
+    _selectedThongTinId.value = Id;
+
+    const data_thongtin = _dsThongTin.value.find(x => x.index == Id);
+    if(data_thongtin == null) return;
+    
+    _txttenthongtinDL.value = data_thongtin.tenThonTin??"";
+    _txtnoidungDL.value = data_thongtin.noiDung??"";
+    _isBatBuocnhap.value = data_thongtin.isBatBuocnhap;
+    _loaiThongTin.value = data_thongtin.loaiThongTin;
+    _isFileDinhKem.value = data_thongtin.isFileDinhKem;
 }
 
 const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
-    //_phongbanId.value.push("123");
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_nhansuId", nhansuId, _phongbanId.value, _txtnoidung.value, _txtthietlapmaphieu.value, _txtghichu.value);
+    emit("emit_DanhSachCauHinh",_dsThongTin.value);
 };
 
+const handleDanhSachNode = (DanhsachId: string[]) => {
+    _selectThongTinCauHinhBuocDL.value = DanhsachId;
+};
+
+watch(() => props.DanhSachNode, (newVal, oldVal) => {
+    _dsNode.value = newVal;
+}, { deep: true });
 </script>
 
 <style>
@@ -333,5 +383,57 @@ tr:hover {
 
 .overlay.show {
     display: block;
+}
+
+.placeholder {
+    color: #aaa;
+}
+
+/* CSS tùy chỉnh */
+.multi-select-danhsachnode {
+    width: 100%;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+.dropdown-header-danhsachnode {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.arrow {
+    font-size: 12px;
+}
+
+.placeholder {
+    color: #aaa;
+}
+
+/* CSS tùy chỉnh */
+.multi-select-danhsachNode {
+    width: 100%;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+.dropdown-header-danhsachNode {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.arrow {
+    font-size: 12px;
 }
 </style>

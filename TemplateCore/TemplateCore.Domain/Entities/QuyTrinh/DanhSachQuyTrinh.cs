@@ -37,5 +37,7 @@
         public virtual ICollection<PhongBanTheoDoiQuyTrinh>? PhongBanTheoDoiQuyTrinhs { get; set; }
 
         public virtual ICollection<NextStep>? NextSteps { get; set; }
+
+        public virtual ICollection<ThongTinCauHinh>? ThongTinCauHinhs { get; set; }
     }
 }

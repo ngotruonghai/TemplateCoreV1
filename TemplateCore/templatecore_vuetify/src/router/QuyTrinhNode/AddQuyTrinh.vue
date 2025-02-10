@@ -47,7 +47,8 @@
                                 {{ title }}
                             </label>
                         </v-col>
-                        <AddCauHinhQuyTrinh @emit_nhansuId="handleNhanSu"></AddCauHinhQuyTrinh>
+                        <AddCauHinhQuyTrinh :DanhSachNode="_dsNode" @emit_DanhSachCauHinh="handleDanhSachCauHinh">
+                        </AddCauHinhQuyTrinh>
                     </v-row>
 
                 </div>
@@ -89,6 +90,8 @@
 
 <script lang="ts" setup>
 import { callAuthenticationAPI } from "@/providers/data-provider";
+import type { IDataThongTin, IDanhSachNode } from "@/interface/QuyTrinh/IAddCauHinhQuyTrinh";
+
 let flang = ref(0);
 let title = ref("");
 let btnHide = ref(false);
@@ -139,8 +142,15 @@ interface InodeSttings {
     isGuiMailNhacNho: boolean,
     nhanSuNodeModels: string[],
     phongBanNodeModels: number[],
-    cauHinhMailNhacNho:number
+    cauHinhMailNhacNho: number
 }
+
+const INodeMaps = ref<INodeMap[]>([]);
+const IDiagrams = ref<IDiagram[]>([]);
+const INextSteps = ref<INextStep[]>([]);
+const InodeSttings = ref<InodeSttings[]>([]);
+const _dsNode = ref<IDanhSachNode[]>([]);
+const _dsThongTin = ref<IDataThongTin[]>([]);
 
 function btnTiepThep(status: boolean) {
     flang.value = flang.value + 1
@@ -164,22 +174,18 @@ function LoadTitle() {
     }
 }
 
-const INodeMaps = ref<INodeMap[]>([]);
-const IDiagrams = ref<IDiagram[]>([]);
-const INextSteps = ref<INextStep[]>([]);
-const InodeSttings = ref<InodeSttings[]>([]);
-
 // Hàm xử lý sự kiện nhận dữ liệu
 function handleDataSent(data: {
     INodeMap: INodeMap[], IDiagram: IDiagram[], INextStep: INextStep[],
     InodeSttings: InodeSttings[]
 }) {
-    INodeMaps.value = data.INodeMap; // Cập nhật dữ liệu Nodes
-    IDiagrams.value = data.IDiagram; // Cập nhật dữ liệu Diagrams
+    INodeMaps.value = data.INodeMap;
+    IDiagrams.value = data.IDiagram;
     INextSteps.value = data.INextStep;
     InodeSttings.value = data.InodeSttings;
 
-    console.log(InodeSttings.value )
+    /* Lấy danh sách node cho cấu hình lớn */
+    _dsNode.value = data.INodeMap
 }
 async function API_AddQuyTrinh() {
     try {
@@ -195,7 +201,8 @@ async function API_AddQuyTrinh() {
             thietLapMaPhieu: _txtthietlapmaphieu,
             noiDung: _txtnoidung,
             ngayBatDau: _datetime,
-            nodeSttings: InodeSttings.value
+            nodeSttings: InodeSttings.value,
+            cauHinhThongTins: _dsThongTin.value
         }, {
             timeout: 15000
         });
@@ -205,15 +212,12 @@ async function API_AddQuyTrinh() {
 }
 
 function ClickAddQuyTrinh() {
+  
     API_AddQuyTrinh();
 }
 
-const handleNhanSu = (nhansuId: string[], phongbanId: number[], NoiDung: string, ThietLapMaPhieu: string, GhiChu: string) => {
-    _nhansuId.value = nhansuId;
-    _phongbanId.value = phongbanId;
-    _txtnoidung = NoiDung,
-        _txtghichu = GhiChu,
-        _txtthietlapmaphieu = ThietLapMaPhieu
+const handleDanhSachCauHinh = (data: IDataThongTin[]) => {
+    _dsThongTin.value = data;
 };
 
 const handDatTime = (datetime: Date) => {

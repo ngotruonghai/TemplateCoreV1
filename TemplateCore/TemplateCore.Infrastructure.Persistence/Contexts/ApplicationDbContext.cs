@@ -26,6 +26,8 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
         public DbSet<PhongBanTiepNhanNode> PhongBanTiepNhanNodes { get; set; }
         public DbSet<NhanSuTiepNhanNode> NhanSuTiepNhanNodes { get; set; }
         public DbSet<NodeSetting> NodeSettings { get; set; }
+        public DbSet<ThongTinCauHinh> ThongTinCauHinhs { get; set; }
+        public DbSet<ThongTinCauHinhBuoc> ThongTinCauHinhBuocs { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

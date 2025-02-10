@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "TemplateCore.Server.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\TemplateCore.Client\\TemplateCore.Client.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

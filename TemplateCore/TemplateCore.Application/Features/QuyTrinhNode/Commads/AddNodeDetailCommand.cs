@@ -27,6 +27,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
         public ICollection<string>? NhanSuIds { get; set; }
         public ICollection<int>? PhongBanIds { get; set; }
         public ICollection<ListNodeSettingModel>? NodeSttings { get; set; }
+        public ICollection<ListCauHingThongTinModel>? CauHinhThongTins { get; set; }
 
         public class AddNodeDetailCommandHandler : IRequestHandler<AddNodeDetailCommand, Response<int>>
         {

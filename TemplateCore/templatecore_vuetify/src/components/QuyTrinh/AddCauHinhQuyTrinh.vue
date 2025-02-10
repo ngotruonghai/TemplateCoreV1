@@ -7,7 +7,8 @@
                     </h3>
                 </div>
                 <div class="input-container">
-                    <input type="text" v-model="_txtnoidung" class="FontDefault" placeholder="VD: Cấu hình hco quy trình vận hành" />
+                    <input type="text" v-model="_txtnoidung" class="FontDefault"
+                        placeholder="VD: Cấu hình hco quy trình vận hành" />
                 </div>
             </v-col>
             <v-col cols="12" md="12">
@@ -17,7 +18,8 @@
                     </h3>
                 </div>
                 <div class="input-container">
-                    <input type="text" v-model="_txtthietlapmaphieu" class="FontDefault" placeholder="VD: QT, quy trình sẽ phát sinh là 'QT' + 'mã phát sinh tự động', mã phiếu tạo là OT00001" />
+                    <input type="text" v-model="_txtthietlapmaphieu" class="FontDefault"
+                        placeholder="VD: QT, quy trình sẽ phát sinh là 'QT' + 'mã phát sinh tự động', mã phiếu tạo là OT00001" />
                 </div>
             </v-col>
             <v-col cols="12" md="12">
@@ -107,7 +109,7 @@
                         <label class="FontDefault">
                             Nôi dung
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <textarea class="form-control" placeholder="Nội dung ghi chú"></textarea>
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
@@ -117,9 +119,35 @@
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
-                            Cấu hình hiển thị cho nhân sự
+                            Thông báo khi không nhập
+                            <div></div>
+                            <div style="display: inline-block; color: red;"> * Sử dụng khi chọn bắt buộc nhập</div>
                         </label>
                         <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <label class="FontDefault">
+                            Loại 
+                        </label>
+
+                        <div class="combobox-container">
+                            <select id="email" class="combobox">
+                                <option value="0">
+                                    Nhập tự do
+                                </option>
+                                <option value="0">
+                                    Nhập số
+                                </option>
+                            </select>
+                            <span class="combobox-icon">▼</span>
+                        </div>
+
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <label class="FontDefault">
+                            Kích thước ký tự
+                        </label>
+                        <input type="number" id="" class="FontDefault" placeholder="" style="width: 100%;" />
                     </v-col>
 
 
@@ -199,7 +227,7 @@ const handlePhongBan = (phongbanId: number[]) => {
     //_phongbanId.value.push("123");
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_nhansuId", nhansuId,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
+    emit("emit_nhansuId", nhansuId, _phongbanId.value, _txtnoidung.value, _txtthietlapmaphieu.value, _txtghichu.value);
 };
 
 </script>

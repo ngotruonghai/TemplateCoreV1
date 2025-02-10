@@ -105,6 +105,7 @@ const toggleSelectAll = () => {
         LoadValuesChecked();
     }
 };
+
 const toggleDropdown = () => {
     dropdownOpenNhanSu.value = !dropdownOpenNhanSu.value;
 };

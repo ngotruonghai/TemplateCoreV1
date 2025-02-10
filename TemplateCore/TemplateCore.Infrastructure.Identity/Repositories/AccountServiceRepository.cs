@@ -54,7 +54,6 @@ namespace TemplateCore.Infrastructure.Identity.Repositories
                 audience: _jwtSettings.Audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-                //expires: DateTime.UtcNow.AddSeconds(10),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }

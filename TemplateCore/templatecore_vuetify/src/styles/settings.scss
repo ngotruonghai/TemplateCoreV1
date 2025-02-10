@@ -275,3 +275,42 @@ textarea.form-control:focus {
   border-color: #007bff; /* Màu viền khi focus */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng focus */
 }
+
+select {
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+}
+
+.combobox-container {
+  position: relative;
+  width: 100%;
+}
+
+.combobox {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: white;
+}
+
+.combobox:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 3px #007bff;
+}
+
+.combobox-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 14px;
+  color: #aaa;
+}

@@ -20,6 +20,7 @@ namespace TemplateCore.Infrastructure.Identity
                     b =>
                     {
                         b.MigrationsAssembly(assembly);
+                        b.MigrationsHistoryTable("__EFMigrationsHistory", "tempplate");
                     }
                 )
                 );

@@ -98,26 +98,29 @@
             <v-container-fluid>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <h3>Cấu hình thông tin:  {{ _txttenthongtinDL }}</h3>
+                        <h3>Cấu hình thông tin: {{ _txttenthongtinDL }}</h3>
                     </v-col>
 
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Tên thông tin
                         </label>
-                        <input type="text" v-model="_txttenthongtinDL" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <input type="text" v-model="_txttenthongtinDL" class="FontDefault" placeholder=""
+                            style="width: 100%;" />
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Nôi dung
                         </label>
-                        <textarea class="form-control" placeholder="Nội dung ghi chú" v-model="_txtnoidungDL"></textarea>
+                        <textarea class="form-control" placeholder="Nội dung ghi chú"
+                            v-model="_txtnoidungDL"></textarea>
                     </v-col>
                     <v-col cols="12" md="12">
                         <label class="FontDefault">
                             Cấu hình hiển thị ở bước
                         </label>
-                        <CBCheckDanhSachNode :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode"></CBCheckDanhSachNode>
+                        <CBCheckDanhSachNode :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode">
+                        </CBCheckDanhSachNode>
 
                     </v-col>
                     <v-col cols="12" md="12">
@@ -126,7 +129,8 @@
                             <div></div>
                             <div style="display: inline-block; color: red;"> * Sử dụng khi chọn bắt buộc nhập</div>
                         </label>
-                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <input type="text" id="" class="FontDefault" placeholder="" style="width: 100%;"
+                            v-model="_thongBao" />
                     </v-col>
                     <v-col cols="12" md="6">
                         <label class="FontDefault">
@@ -155,8 +159,8 @@
 
                     <v-col cols="12" md="12">
                         <v-checkbox label="Bắt buộc nhập." class="FontDefault" v-model="_isBatBuocnhap"></v-checkbox>
-                        <v-checkbox label="Có File đính kèm." class="FontDefault"
-                            style="margin-top: -50px;" v-model="_isFileDinhKem"></v-checkbox>
+                        <v-checkbox label="Có File đính kèm." class="FontDefault" style="margin-top: -50px;"
+                            v-model="_isFileDinhKem"></v-checkbox>
                     </v-col>
 
                     <!-- button xác nhận -->
@@ -194,10 +198,11 @@ let _txtghichu = ref("");
 let _txttenthongtinDL = ref("");
 let _txtnoidungDL = ref("");
 const _selectedThongTinId = ref<number | null>();
-let _selectThongTinCauHinhBuocDL=ref<string[] | null>([]);
-let _loaiThongTin=ref<number>(0);
-let _isBatBuocnhap=ref<boolean>(false);
-let _isFileDinhKem=ref<boolean>(false);
+let _selectThongTinCauHinhBuocDL = ref<string[] | null>([]);
+let _loaiThongTin = ref<number>(0);
+let _isBatBuocnhap = ref<boolean>(false);
+let _isFileDinhKem = ref<boolean>(false);
+let _thongBao = ref<string>("");
 
 const emit = defineEmits<{
     (event: 'emit_DanhSachCauHinh', data: IDataThongTin[]
@@ -233,19 +238,20 @@ function btncauHinhXacNhan() {
     const index = _dsThongTin.value.findIndex(x => x.index == _selectedThongTinId.value);
     _dsThongTin.value[index].tenThonTin = _txttenthongtinDL.value;
     _dsThongTin.value[index].noiDung = _txtnoidungDL.value;
-    _dsThongTin.value[index].danhSachCauHinhBuoc = _selectThongTinCauHinhBuocDL.value??[];
+    _dsThongTin.value[index].danhSachCauHinhBuoc = _selectThongTinCauHinhBuocDL.value ?? [];
     _dsThongTin.value[index].loaiThongTin = _loaiThongTin.value;
     _dsThongTin.value[index].isBatBuocnhap = _isBatBuocnhap.value;
     _dsThongTin.value[index].isFileDinhKem = _isFileDinhKem.value;
+    _dsThongTin.value[index].thongBao = _thongBao.value;
 
     isPanelOpen.value = false;
     _selectedThongTinId.value = null;
-    _txttenthongtinDL.value="";
-    _txtnoidung.value="";
-    _selectThongTinCauHinhBuocDL.value= null;
+    _txttenthongtinDL.value = "";
+    _txtnoidung.value = "";
+    _selectThongTinCauHinhBuocDL.value = null;
 }
 // btn xóa trong cấu hình
-function btnXoaThongTin(){
+function btnXoaThongTin() {
     _dsThongTin.value = _dsThongTin.value.filter(x => x.index != _selectedThongTinId.value);
     isPanelOpen.value = false;
     _selectedThongTinId.value = null;
@@ -257,20 +263,31 @@ function btnCauHinhThongTin(Id: number) {
     _selectedThongTinId.value = Id;
 
     const data_thongtin = _dsThongTin.value.find(x => x.index == Id);
-    if(data_thongtin == null) return;
-    
-    _txttenthongtinDL.value = data_thongtin.tenThonTin??"";
-    _txtnoidungDL.value = data_thongtin.noiDung??"";
-    _isBatBuocnhap.value = data_thongtin.isBatBuocnhap;
-    _loaiThongTin.value = data_thongtin.loaiThongTin;
-    _isFileDinhKem.value = data_thongtin.isFileDinhKem;
+
+    if (data_thongtin?.danhSachCauHinhBuoc.length == 0) {
+        _txttenthongtinDL.value = "";
+        _isBatBuocnhap.value = false;
+        _loaiThongTin.value = 0;
+        _isFileDinhKem.value = false;
+        _thongBao.value = "";
+    }
+    else {
+        _txttenthongtinDL.value = data_thongtin?.tenThonTin ?? "";
+        _txtnoidungDL.value = data_thongtin?.noiDung ?? "";
+        _isBatBuocnhap.value = data_thongtin?.isBatBuocnhap ?? false;
+        _loaiThongTin.value = data_thongtin?.loaiThongTin ?? 0;
+        _isFileDinhKem.value = data_thongtin?.isFileDinhKem ?? false;
+        _thongBao.value = data_thongtin?.thongBao ?? "";
+    }
+
+
 }
 
 const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_DanhSachCauHinh",_dsThongTin.value);
+    emit("emit_DanhSachCauHinh", _dsThongTin.value);
 };
 
 const handleDanhSachNode = (DanhsachId: string[]) => {

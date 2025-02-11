@@ -7,19 +7,12 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
     public class AddNodeDetailCommand : IRequest<Response<int>>
     {
         public string? MaQuyTrinh { get; set; }
-
         public string? TenQuyTrinh { get; set; }
-
         public string? UserId { get; set; }
-
         public string? UserName { get; set; }
-
         public string? NoiDung {  get; set; }
-
         public string? ThietLapMaPhieu {  get; set; }
-
         public string? GhiChu {  get; set; }
-
         public DateTime? NgayBatDau {  get; set; }
         public ICollection<ListNodeModel>? NodeMapModels { get; set; }
         public ICollection<ListDiagramModel>? DiagramNodeModels { get; set; }

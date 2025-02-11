@@ -76,13 +76,11 @@ function LoadValuesChecked() {
 }
 
 
-// 🔥 1️⃣ Computed: Kiểm tra xem tất cả checkbox đã chọn hay chưa
 const isAllSelected = computed(() => {
     return responseDataFiller.value.length > 0 &&
         selectedId.value.length === responseDataFiller.value.length;
 });
 
-// 🔥 2️⃣ Hàm "Chọn tất cả"
 const toggleSelectAll = () => {
     if (isAllSelected.value) {
         selectedId.value = [];

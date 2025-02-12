@@ -12,6 +12,6 @@
 
         public int? DanhSachQuyTrinhId {  get; set; }
 
-        public int? ThongTinNoiDungQuyTrinhId { get; set; }
+        //public int? ThongTinNoiDungQuyTrinhId { get; set; }
     }
 }

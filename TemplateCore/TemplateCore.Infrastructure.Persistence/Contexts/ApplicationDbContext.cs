@@ -22,7 +22,7 @@ namespace TemplateCore.Infrastructure.Persistence.Contexts
         public DbSet<DanhMuc> DanhMucs { get; set; }
         public DbSet<NhanSuTheoDoiQuyTrinh> NhanSuTheoDoiQuyTrinhs { get; set; }
         public DbSet<PhongBanTheoDoiQuyTrinh> PhongBanTheoDoiQuyTrinhs { get; set; }
-        public DbSet<ThongTinNoiDungQuyTrinh> ThongTinNoiDungQuyTrinhs { get; set; }
+        //public DbSet<ThongTinNoiDungQuyTrinh> ThongTinNoiDungQuyTrinhs { get; set; } Đang không sử dụng
         public DbSet<PhongBanTiepNhanNode> PhongBanTiepNhanNodes { get; set; }
         public DbSet<NhanSuTiepNhanNode> NhanSuTiepNhanNodes { get; set; }
         public DbSet<NodeSetting> NodeSettings { get; set; }

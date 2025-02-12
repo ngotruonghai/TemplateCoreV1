@@ -212,26 +212,13 @@ async function API_AddQuyTrinh() {
 }
 
 function ClickAddQuyTrinh() {
-console.log({
-            tenQuyTrinh: tenquytrinh,
-            userName: localStorage.getItem("UserName"),
-            nodeMapModels: INodeMaps.value,
-            diagramNodeModels: IDiagrams.value,
-            nextStepNodeModels: INextSteps.value,
-            nhanSuIds: _nhansuId.value,
-            phongBanIds: _phongbanId.value,
-            ghiChu: _txtghichu,
-            thietLapMaPhieu: _txtthietlapmaphieu,
-            noiDung: _txtnoidung,
-            ngayBatDau: _datetime,
-            nodeSttings: InodeSttings.value,
-            cauHinhThongTins: _dsThongTin.value
-        });
     API_AddQuyTrinh();
 }
 
-const handleDanhSachCauHinh = (data: IDataThongTin[]) => {
+const handleDanhSachCauHinh = (data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[]) => {
     _dsThongTin.value = data;
+    _phongbanId.value = PhongBanId;
+    _nhansuId.value = NhanSuId;
 };
 
 const handDatTime = (datetime: Date) => {

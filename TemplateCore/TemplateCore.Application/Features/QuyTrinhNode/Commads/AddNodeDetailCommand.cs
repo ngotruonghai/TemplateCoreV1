@@ -209,33 +209,33 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                             });
                         }
 
-                        /* Add cấu hình bước */
-                        foreach(var data_thongtin in request.CauHinhThongTins)
-                        {
-                          var thongtincauhinh =  await _thongtincauhinhRepository.AddAsync(new ThongTinCauHinh()
-                            {
-                                Index = data_thongtin.Index,
-                                IsBatBuocnhap = data_thongtin.IsBatBuocnhap,
-                                DanhSachQuyTrinhId = danhsachquytrinh.Id,
-                                KichThuocKyTu = data_thongtin.KichThuocKyTu,
-                                IsFileDinhKem = data_thongtin.IsFileDinhKem,
-                                TenThonTin = data_thongtin.TenThonTin,
-                                LoaiThongTin = data_thongtin.LoaiThongTin,
-                                NoiDung = data_thongtin.NoiDung,
-                                ThongBao = data_thongtin.ThongBao,
-                            });
-                            foreach(var data in data_thongtin.DanhSachCauHinhBuoc)
-                            {
-                                await _thongtincauhinhbuocrepository.AddAsync(new ThongTinCauHinhBuoc()
-                                {
-                                    ThongTinCauHinhId = thongtincauhinh.Id,
-                                    KeyNode = data
-                                });
-                            }
-                        }
+                       
                     }
 
-
+                    /* Add cấu hình bước */
+                    foreach (var data_thongtin in request.CauHinhThongTins)
+                    {
+                        var thongtincauhinh = await _thongtincauhinhRepository.AddAsync(new ThongTinCauHinh()
+                        {
+                            Index = data_thongtin.Index,
+                            IsBatBuocnhap = data_thongtin.IsBatBuocnhap,
+                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
+                            KichThuocKyTu = data_thongtin.KichThuocKyTu,
+                            IsFileDinhKem = data_thongtin.IsFileDinhKem,
+                            TenThonTin = data_thongtin.TenThonTin,
+                            LoaiThongTin = data_thongtin.LoaiThongTin,
+                            NoiDung = data_thongtin.NoiDung,
+                            ThongBao = data_thongtin.ThongBao,
+                        });
+                        foreach (var data in data_thongtin.DanhSachCauHinhBuoc)
+                        {
+                            await _thongtincauhinhbuocrepository.AddAsync(new ThongTinCauHinhBuoc()
+                            {
+                                ThongTinCauHinhId = thongtincauhinh.Id,
+                                KeyNode = data
+                            });
+                        }
+                    }
                     _transaction.Commit();
 
                     return new Response<int>(danhsachquytrinh.Id);

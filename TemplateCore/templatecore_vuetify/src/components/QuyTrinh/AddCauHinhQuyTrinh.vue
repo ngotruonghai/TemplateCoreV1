@@ -207,7 +207,7 @@ let _txtkichthuockytuDL = ref<string>("");
 let _LoadNode = ref<string[]>([]);
 
 const emit = defineEmits<{
-    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[]
+    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[],NhanSuId: string[],PhongBanId: number[]
     ): void;
 }>();
 
@@ -298,7 +298,7 @@ const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_DanhSachCauHinh", _dsThongTin.value);
+    emit("emit_DanhSachCauHinh", _dsThongTin.value,nhansuId,_phongbanId.value);
 };
 
 const handleDanhSachNode = (DanhsachId: string[]) => {

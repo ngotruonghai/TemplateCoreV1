@@ -25,6 +25,7 @@ namespace TemplateCore.Infrastructure.Persistence
 
         public static void AddPersistenceRepositories(this IServiceCollection services)
         {
+            #region Repositories
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddScoped<IDanhSachQuyTrinhRepositoryAsync, DanhSachQuyTrinhRepositoryAsync>();
@@ -38,6 +39,9 @@ namespace TemplateCore.Infrastructure.Persistence
             services.AddScoped<INhanSuTiepNhanNodeRepositoRyAsync, NhanSuTiepNhanNodeRepositoRyAsync>();
             services.AddScoped<IPhongBanTiepNhanNodeRepositoryAsync, PhongBanTiepNhanNodeRepositoryAsync>();
             services.AddScoped<INodeSettingRepositoryAsync, NodeSettingRepositoryAsync>();
+            services.AddScoped<IThongTinCauHinhRepositoryAsync, ThongTinCauHinhRepositoryAsync>();
+            services.AddScoped<IThongTinCauHinhBuocRepositoryAsync, ThongTinCauHinhBuocRepositoryAsync>();
+            #endregion
         }
     }
 }

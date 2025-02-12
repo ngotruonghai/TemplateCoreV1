@@ -29,7 +29,6 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import type { IDanhSachNode } from "@/interface/QuyTrinh/IAddCauHinhQuyTrinh";
 
-const searchQuery = ref<string>("");
 const selectedId = ref<string[]>([]);
 const selectedValues = ref<string[]>([]);
 const dropdownOpenNhanSu = ref<boolean>(false);
@@ -43,6 +42,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
     DanhSachNode: IDanhSachNode[],
+    LoadNode: string[]
 }>();
 
 
@@ -100,9 +100,16 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener("click", handleOutsideClick);
 });
+
 watch(() => props.DanhSachNode, (newVal, oldVal) => {
    responseDataFiller.value = newVal;
 
+}, { deep: true });
+
+
+watch(() => props.LoadNode, (newVal, oldVal) => {
+    selectedId.value = newVal
+    LoadValuesChecked();
 }, { deep: true });
 
 </script>

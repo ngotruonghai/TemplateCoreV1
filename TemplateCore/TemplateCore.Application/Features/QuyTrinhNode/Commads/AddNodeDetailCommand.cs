@@ -24,6 +24,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
 
         public class AddNodeDetailCommandHandler : IRequestHandler<AddNodeDetailCommand, Response<int>>
         {
+            #region RepositoryAsync
             private readonly IDanhSachQuyTrinhRepositoryAsync _danhSachQuyTrinhRepository;
             private readonly IDiagramNodeRepositoryAsync _diagramNodeRepository;
             private readonly INodeRepositoryAsync _nodeRepositoryAsync;
@@ -38,6 +39,9 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
             private readonly INhanSuTiepNhanNodeRepositoRyAsync _nhanSuTiepNhanNodeRepository;
             private readonly IPhongBanTiepNhanNodeRepositoryAsync _phongBanTiepNhanNodeRepository;
             private readonly INodeSettingRepositoryAsync _nodeSettingRepository;
+            private readonly IThongTinCauHinhBuocRepositoryAsync _thongtincauhinhbuocrepository;
+            private readonly IThongTinCauHinhRepositoryAsync _thongtincauhinhRepository;
+            #endregion
 
             public AddNodeDetailCommandHandler(IDanhSachQuyTrinhRepositoryAsync danhSachQuyTrinhRepositoryAsync,
                 IDiagramNodeRepositoryAsync diagramNodeRepository,
@@ -52,7 +56,9 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                 IPhongBanRepositoryAsync phongBanRepository,
                 INhanSuTiepNhanNodeRepositoRyAsync nhanSuTiepNhanNodeRepository,
                 IPhongBanTiepNhanNodeRepositoryAsync phongBanTiepNhanNodeRepository,
-                INodeSettingRepositoryAsync nodeSettingRepository)
+                INodeSettingRepositoryAsync nodeSettingRepository,
+                IThongTinCauHinhBuocRepositoryAsync thongtincauhinhbuocrepository,
+                IThongTinCauHinhRepositoryAsync thongtincauhinhRepository)
             {
                 _danhSachQuyTrinhRepository = danhSachQuyTrinhRepositoryAsync;
                 _diagramNodeRepository = diagramNodeRepository;
@@ -68,6 +74,8 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                 _nhanSuTiepNhanNodeRepository = nhanSuTiepNhanNodeRepository;
                 _phongBanTiepNhanNodeRepository = phongBanTiepNhanNodeRepository;
                 _nodeSettingRepository = nodeSettingRepository;
+                _thongtincauhinhbuocrepository = thongtincauhinhbuocrepository;
+                _thongtincauhinhRepository = thongtincauhinhRepository;
             }
 
             public async Task<Response<int>> Handle(AddNodeDetailCommand request, CancellationToken cancellationToken)
@@ -82,7 +90,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                     var danhsachquytrinh = _mapper.Map<DanhSachQuyTrinh>(request);
                     await _danhSachQuyTrinhRepository.AddAsync(danhsachquytrinh);
 
-                    CheckValid();
+                    //CheckValid();
 
                     List<Node> lsNode = new List<Node>();
                     List<DiagramNode> lsDiagram = new List<DiagramNode>();
@@ -201,6 +209,30 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                             });
                         }
 
+                        /* Add cấu hình bước */
+                        foreach(var data_thongtin in request.CauHinhThongTins)
+                        {
+                          var thongtincauhinh =  await _thongtincauhinhRepository.AddAsync(new ThongTinCauHinh()
+                            {
+                                Index = data_thongtin.Index,
+                                IsBatBuocnhap = data_thongtin.IsBatBuocnhap,
+                                DanhSachQuyTrinhId = danhsachquytrinh.Id,
+                                KichThuocKyTu = data_thongtin.KichThuocKyTu,
+                                IsFileDinhKem = data_thongtin.IsFileDinhKem,
+                                TenThonTin = data_thongtin.TenThonTin,
+                                LoaiThongTin = data_thongtin.LoaiThongTin,
+                                NoiDung = data_thongtin.NoiDung,
+                                ThongBao = data_thongtin.ThongBao,
+                            });
+                            foreach(var data in data_thongtin.DanhSachCauHinhBuoc)
+                            {
+                                await _thongtincauhinhbuocrepository.AddAsync(new ThongTinCauHinhBuoc()
+                                {
+                                    ThongTinCauHinhId = thongtincauhinh.Id,
+                                    KeyNode = data
+                                });
+                            }
+                        }
                     }
 
 

@@ -119,7 +119,7 @@
                         <label class="FontDefault">
                             Cấu hình hiển thị ở bước
                         </label>
-                        <CBCheckDanhSachNode :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode">
+                        <CBCheckDanhSachNode :LoadNode="_LoadNode" :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode">
                         </CBCheckDanhSachNode>
 
                     </v-col>
@@ -153,7 +153,7 @@
                         <label class="FontDefault">
                             Kích thước ký tự
                         </label>
-                        <input type="number" id="" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <input type="number" v-model="_txtkichthuockytuDL" class="FontDefault" placeholder="" style="width: 100%;" />
                     </v-col>
 
 
@@ -203,6 +203,8 @@ let _loaiThongTin = ref<number>(0);
 let _isBatBuocnhap = ref<boolean>(false);
 let _isFileDinhKem = ref<boolean>(false);
 let _thongBao = ref<string>("");
+let _txtkichthuockytuDL = ref<string>("");
+let _LoadNode = ref<string[]>([]);
 
 const emit = defineEmits<{
     (event: 'emit_DanhSachCauHinh', data: IDataThongTin[]
@@ -239,10 +241,11 @@ function btncauHinhXacNhan() {
     _dsThongTin.value[index].tenThonTin = _txttenthongtinDL.value;
     _dsThongTin.value[index].noiDung = _txtnoidungDL.value;
     _dsThongTin.value[index].danhSachCauHinhBuoc = _selectThongTinCauHinhBuocDL.value ?? [];
-    _dsThongTin.value[index].loaiThongTin = _loaiThongTin.value;
+    _dsThongTin.value[index].loaiThongTin = parseInt(_loaiThongTin.value.toString());
     _dsThongTin.value[index].isBatBuocnhap = _isBatBuocnhap.value;
     _dsThongTin.value[index].isFileDinhKem = _isFileDinhKem.value;
     _dsThongTin.value[index].thongBao = _thongBao.value;
+    _dsThongTin.value[index].kichThuocKyTu = parseInt(_txtkichthuockytuDL.value);
 
     isPanelOpen.value = false;
     _selectedThongTinId.value = null;
@@ -270,6 +273,10 @@ function btnCauHinhThongTin(Id: number) {
         _loaiThongTin.value = 0;
         _isFileDinhKem.value = false;
         _thongBao.value = "";
+        _txtnoidungDL.value="";
+        _txtkichthuockytuDL.value = "0";
+        _selectThongTinCauHinhBuocDL.value = [];
+        _LoadNode.value = [];
     }
     else {
         _txttenthongtinDL.value = data_thongtin?.tenThonTin ?? "";
@@ -278,6 +285,10 @@ function btnCauHinhThongTin(Id: number) {
         _loaiThongTin.value = data_thongtin?.loaiThongTin ?? 0;
         _isFileDinhKem.value = data_thongtin?.isFileDinhKem ?? false;
         _thongBao.value = data_thongtin?.thongBao ?? "";
+        _txtnoidung.value = data_thongtin?.noiDung??"";
+        _txtkichthuockytuDL.value =  data_thongtin?.kichThuocKyTu.toString()??""
+        _selectThongTinCauHinhBuocDL.value = data_thongtin?.danhSachCauHinhBuoc??[];
+        _LoadNode.value = data_thongtin?.danhSachCauHinhBuoc??[];
     }
 
 

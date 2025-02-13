@@ -58,7 +58,13 @@ const routess = [
         name:'TaoQuyTrinh',
         component:() => import('../router/QuyTrinhNode/AddQuyTrinh.vue'), // Component con cho /main/home
         props: true
-      }
+      },
+      {
+        path:'quytrinh/:id',
+        name:'QuyTrinhId',
+        component:() => import('../router/QuyTrinhNode/UpdateQuyTrinh.vue'), // Component con cho /main/home
+        props: true
+      },
     ]
   }, 
 ];

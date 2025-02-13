@@ -4,10 +4,20 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
     public class DanhSachQuyTrinhRepositoryAsync : GenericRepositoryAsync<DanhSachQuyTrinh>, IDanhSachQuyTrinhRepositoryAsync
     {
         private readonly DbSet<DanhSachQuyTrinh> _danhSachQuyTrinhs;
+        private readonly IAuthenticatedUserService _authenticatedUserService;
 
-        public DanhSachQuyTrinhRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
+        public DanhSachQuyTrinhRepositoryAsync(ApplicationDbContext dbContext
+            , IAuthenticatedUserService authenticatedUserService) : base(dbContext)
         {
             _danhSachQuyTrinhs = dbContext.Set<DanhSachQuyTrinh>();
+            _authenticatedUserService = authenticatedUserService;
+        }
+
+        public async Task<IEnumerable<DanhSachQuyTrinh>> GetAllDanhSachQuyTrinh()
+        {
+            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.UserParentId == _authenticatedUserService.parentUserId).ToListAsync();
+
+            return quytrinh;
         }
 
         public async Task<IEnumerable<DanhSachQuyTrinh>> GetQuyTrinhId(int QuyTrinhId)

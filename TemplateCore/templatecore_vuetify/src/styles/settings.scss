@@ -189,6 +189,7 @@ body::-webkit-scrollbar {
 }
 .custom-table {
   border-collapse: collapse; /* Gộp đường kẻ */
+  max-width: 100%;
 }
 input:focus {
     border-color: #007BFF;

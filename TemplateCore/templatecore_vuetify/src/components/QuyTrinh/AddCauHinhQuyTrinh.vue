@@ -31,8 +31,7 @@
 
             </v-col>
             <v-col cols="12" md="12">
-                <h3>4. Phân quyền cho nhân sự nào được tạo mã phiếu của quy trình
-                </h3>
+                <h4>4. Phân quyền cho nhân sự nào được tạo mã phiếu của quy trình</h4>
                 <CBCheckNhanSu :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSu>
 
             </v-col>

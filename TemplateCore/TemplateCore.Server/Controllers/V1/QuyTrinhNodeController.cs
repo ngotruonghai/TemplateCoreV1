@@ -13,17 +13,32 @@ namespace TemplateCore.Server.Controllers.V1
         public QuyTrinhNodeController() { }
 
 
-        
+        /// <summary>
+        /// Add quy trình
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost("AddQuyTrinhNode")]
         public async Task<IActionResult> AddQuyTrinhNode(AddNodeDetailCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
 
-        [HttpGet("GetQuyTrinhById")]
-        public async Task<IActionResult> GetQuyTrinhById(int QuyTringId)
+        /// <summary>
+        /// lấy danh sách quy trình thuộc cty
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpGet("GetDanhSachQuyTinh")]
+        public async Task<IActionResult> GetDanhSachQuyTinh()
         {
-            return Ok(await Mediator.Send(new GetNodeDetailByIdQuery() { QuyTrinhId = QuyTringId }));
+            return Ok(await Mediator.Send(new GetAllDanhSachQuyTrinh()));
+        }
+
+        [HttpGet("GetQuyTrinhById")]
+        public async Task<IActionResult> GetQuyTrinhById(int quytrinhId)
+        {
+            return Ok(await Mediator.Send(new GetQuyTrinhByIdQuery() { QuytrinhId = quytrinhId }));
         }
     }
 }

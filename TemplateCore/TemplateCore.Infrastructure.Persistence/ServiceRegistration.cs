@@ -1,10 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TemplateCore.Infrastructure.Persistence
 {
     public static class ServiceRegistration
     {
-
         public static void AddSqlServerPersistenceInfrastructure(this IServiceCollection services, string assembly)
         {
             var sp = services.BuildServiceProvider();
@@ -17,8 +17,9 @@ namespace TemplateCore.Infrastructure.Persistence
                 //.AddInterceptors(serviceProvider.GetRequiredService<StatusUpdateInterceptor>())
                 .UseSqlServer(
                 appConnStr,
-                b => b.MigrationsAssembly(assembly)
-                ));
+                b => b.MigrationsAssembly(assembly))
+                //.UseLazyLoadingProxies()
+                );
             }
         }
 
@@ -26,7 +27,7 @@ namespace TemplateCore.Infrastructure.Persistence
         public static void AddPersistenceRepositories(this IServiceCollection services)
         {
             #region Repositories
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddScoped<IDanhSachQuyTrinhRepositoryAsync, DanhSachQuyTrinhRepositoryAsync>();
             services.AddScoped<IDiagramNodeRepositoryAsync, DiagramNodeRepositoryAsync>();

@@ -6,7 +6,7 @@ using TemplateCore.Application.Features.QuyTrinhNode.Queries;
 namespace TemplateCore.Server.Controllers.V1
 {
     [Route("api/quanlythongtin/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class QuyTrinhNodeController : BaseApiController
     {
         [Obsolete]

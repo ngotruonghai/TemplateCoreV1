@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,17 +12,16 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213164432_UpdateNodeSetting")]
+    partial class UpdateNodeSetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("tempplate")
                 .HasAnnotation("ProductVersion", "8.0.11")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -616,6 +616,9 @@ namespace TemplateCore.Server.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int?>("NodeSettingId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -639,6 +642,8 @@ namespace TemplateCore.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DanhSachQuyTrinhId");
+
+                    b.HasIndex("NodeSettingId");
 
                     b.ToTable("Nodes", "tempplate");
                 });
@@ -681,9 +686,6 @@ namespace TemplateCore.Server.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("NodeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -692,8 +694,6 @@ namespace TemplateCore.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NodeId");
 
                     b.ToTable("NodeSettings", "tempplate");
                 });
@@ -953,15 +953,12 @@ namespace TemplateCore.Server.Migrations
                         .HasForeignKey("DanhSachQuyTrinhId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", b =>
-                {
-                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.Node", "Node")
-                        .WithMany("NodeSettings")
-                        .HasForeignKey("NodeId");
+                    b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", "NodeSettings")
+                        .WithMany()
+                        .HasForeignKey("NodeSettingId");
 
-                    b.Navigation("Node");
+                    b.Navigation("NodeSettings");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.PhongBanTheoDoiQuyTrinh", b =>
@@ -1016,11 +1013,6 @@ namespace TemplateCore.Server.Migrations
                     b.Navigation("PhongBanTheoDoiQuyTrinhs");
 
                     b.Navigation("ThongTinCauHinhs");
-                });
-
-            modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.Node", b =>
-                {
-                    b.Navigation("NodeSettings");
                 });
 
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", b =>

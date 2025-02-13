@@ -3,7 +3,7 @@
     public class NhanSuTheoDoiQuyTrinh: AuditableBaseEntity
     {
         [MaxLength(100)]
-        public string UserId {  get; set; } = string.Empty;
+        public string UserId {  get; set; }
 
         [MaxLength(250)]
         public string? HoTen {  get; set; }

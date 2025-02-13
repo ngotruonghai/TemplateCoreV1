@@ -18,8 +18,6 @@
 
         public int DanhSachQuyTrinhId { get; set; }
 
-        public int? NodeSettingId {  get; set; }
-
-        public virtual NodeSetting? NodeSettings { get; set; }
+        public virtual ICollection<NodeSetting>? NodeSettings { get; set; }
     }
 }

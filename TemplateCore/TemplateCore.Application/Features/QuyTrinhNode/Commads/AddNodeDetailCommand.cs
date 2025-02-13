@@ -10,10 +10,10 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
         public string? TenQuyTrinh { get; set; }
         public string? UserId { get; set; }
         public string? UserName { get; set; }
-        public string? NoiDung {  get; set; }
-        public string? ThietLapMaPhieu {  get; set; }
-        public string? GhiChu {  get; set; }
-        public DateTime? NgayBatDau {  get; set; }
+        public string? NoiDung { get; set; }
+        public string? ThietLapMaPhieu { get; set; }
+        public string? GhiChu { get; set; }
+        public DateTime? NgayBatDau { get; set; }
         public ICollection<ListNodeModel>? NodeMapModels { get; set; }
         public ICollection<ListDiagramModel>? DiagramNodeModels { get; set; }
         public ICollection<NextStepModel>? NextStepNodeModels { get; set; }
@@ -88,154 +88,150 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                     request.MaQuyTrinh = "QT" + now.ToString("yyMMddHHmmss");
 
                     var danhsachquytrinh = _mapper.Map<DanhSachQuyTrinh>(request);
-                    await _danhSachQuyTrinhRepository.AddAsync(danhsachquytrinh);
 
-                    //CheckValid();
-
-                    List<Node> lsNode = new List<Node>();
+                    #region khai báo biến
+                    List<NhanSuTheoDoiQuyTrinh> lsNhanSuTheoDoiQuyTring = new List<NhanSuTheoDoiQuyTrinh>();
+                    List<PhongBanTheoDoiQuyTrinh> lsPhongBanTheoDoiQuyTrinh = new List<PhongBanTheoDoiQuyTrinh>();
+                    List<NextStep> lsNextStep = new List<NextStep>();
                     List<DiagramNode> lsDiagram = new List<DiagramNode>();
-                    List<NextStep> lsnextSteps = new List<NextStep>();
-                    List<NhanSuTheoDoiQuyTrinh> lsnhansutheodoiquytrinh = new List<NhanSuTheoDoiQuyTrinh>();
-                    List<PhongBanTheoDoiQuyTrinh> lsphongbantheodoiquytrinh = new List<PhongBanTheoDoiQuyTrinh>();
-                    List<NhanSuTiepNhanNode> lsnhanSuTiepNhanNodes = new List<NhanSuTiepNhanNode>();
-                    List<PhongBanTiepNhanNode> lsphongbantiepnhaNodes = new List<PhongBanTiepNhanNode>();
-                    List<NodeSetting> lsNodeSetting = new List<NodeSetting>();
+                    List<NhanSuTiepNhanNode> lsNhanSuTiepNhanNode = new List<NhanSuTiepNhanNode>();
+                    List<Node> lsNode = new List<Node>();
+                    List<NhanSuTiepNhanNode> lsnhansutieonhannode = new List<NhanSuTiepNhanNode>();
+                    List<PhongBanTiepNhanNode> lsphongbantiepnhannode = new List<PhongBanTiepNhanNode>();
+                    List<NodeSetting> nodeST = new List<NodeSetting>();
+                    List<ThongTinCauHinh> lsThongTinCauHinh = new List<ThongTinCauHinh>();
+                    List<ThongTinCauHinhBuoc> lsThongTinCauHingBuoc = new List<ThongTinCauHinhBuoc>();
 
-                    /* Add Node */
-                    foreach (var data in request.NodeMapModels)
-                    {
-                        lsNode.Add(new Node()
-                        {
-                            KeyId = data.KeyId,
-                            X = data.X,
-                            Y = data.Y,
-                            Index = data.Index,
-                            Type = data.Type,
-                            TenNode = data.TenNode,
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id
-                        });
-                    }
-                   var node =  await _nodeRepositoryAsync.AddRangeAsync(lsNode);
+                    #endregion
 
-                    /* Add DiagramNode */
-                    foreach (var item in request.DiagramNodeModels)
-                    {
-                        lsDiagram.Add(new DiagramNode()
-                        {
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
-                            KeyId = item.KeyId,
-                            Source = item.Source,
-                            Target = item.Target,
-                        });
-                    }
-                    await _diagramNodeRepository.AddRangeAsync(lsDiagram);
 
-                    /* Add NextStep */
-                    foreach (var item in request.NextStepNodeModels)
-                    {
-                        lsnextSteps.Add(new NextStep()
-                        {
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
-                            NodeIdStart = item.NodeIdStart,
-                            NodeIdEnd = item.NodeIdEnd,
-                            DiagramId = item.DiagramId,
-                            TypeNextStep = item.TypeNextStep,
-                            ActionName = item.ActionName,
-                            Action = item.Action,
-                            
-                        });
-                    }
-                    await _nextStepRepositoryAsync.AddRangeAsync(lsnextSteps);
-
-                    /* Add nhân sự theo dõi */
+                    /* Add Nhân sự theo dõi quy trình */
                     foreach (var data in request.NhanSuIds)
                     {
-                        lsnhansutheodoiquytrinh.Add(new NhanSuTheoDoiQuyTrinh()
+                        lsNhanSuTheoDoiQuyTring.Add(new NhanSuTheoDoiQuyTrinh()
                         {
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
                             HoTen = await _accountService.GetUserNameById(data),
                             UserId = data,
                             LoaiNhanSu = EnumCauHinhNhanSuQuyTrinh.NhanSuTheoDoiQuyTrinh,
+                            Created = DateTime.Now,
                         });
                     }
-                    await _nhanSuTheoDoiQuyTrinhRepository.AddRangeAsync(lsnhansutheodoiquytrinh);
+                    danhsachquytrinh.NhanSuTheoDoiQuyTrinhs = lsNhanSuTheoDoiQuyTring;
 
-                    /* Add phòng ban theo dõi */
+                    /* Add phòng ban theo dõi quy trình */
                     foreach (var data in request.PhongBanIds)
                     {
-                        lsphongbantheodoiquytrinh.Add(new PhongBanTheoDoiQuyTrinh()
+                        lsPhongBanTheoDoiQuyTrinh.Add(new PhongBanTheoDoiQuyTrinh()
                         {
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
                             PhongbanId = data,
                             LoaiPhongBan = EnumCauHinhPhongBanQuyTrinh.PhongBanTheoDoiQuyTrinh,
                             TenPhongBan = await _phongBanRepository.GetNamePhongBanById(data),
                         });
                     }
-                    await _phongBanTheoDoiQuyTrinhRepository.AddRangeAsync(lsphongbantheodoiquytrinh);
+                    danhsachquytrinh.PhongBanTheoDoiQuyTrinhs = lsPhongBanTheoDoiQuyTrinh;
 
-                    /* Add cấu hình node */
-                    foreach (var itemnodesetting in request.NodeSttings)
+
+                    /* Add DiagramNodes */
+                    foreach (var data in request.DiagramNodeModels)
                     {
-                        var nodesetting = await _nodeSettingRepository.AddAsync(new NodeSetting()
+                        lsDiagram.Add(new DiagramNode()
                         {
-                            NoodeId = node.Where(x => x.KeyId == itemnodesetting.KeyNode).Select(x => x.Id).FirstOrDefault(),
-                            GhiChu = itemnodesetting.GhiChu,
-                            CauHinhMailNhacNho = itemnodesetting.CauHinhMailNhacNho,
-                            IsGuiMailNhacNho = itemnodesetting.IsGuiMailNhacNho,
-                            IsGuiMailPhongBanTiepNhan = itemnodesetting.IsGuiMailPhongBanTiepNhan,
-                            IsTaoTaskBaoCao = itemnodesetting.IsTaoTaskBaoCao,
+                            KeyId = data.KeyId,
+                            Source = data.Source,
+                            Target = data.Target,
                         });
+                    }
+                    danhsachquytrinh.DiagramNodes = lsDiagram;
 
-                        /* Add nhan sự tiếp nhận node */
-                        foreach(var data in itemnodesetting.nhanSuNodeModels)
+                    /* Add NextSteps */
+                    foreach (var data in request.NextStepNodeModels)
+                    {
+                        lsNextStep.Add(new NextStep()
                         {
-                            await _nhanSuTiepNhanNodeRepository.AddAsync(new NhanSuTiepNhanNode()
+                            NodeIdStart = data.NodeIdStart,
+                            NodeIdEnd = data.NodeIdEnd,
+                            DiagramId = data.DiagramId,
+                            TypeNextStep = data.TypeNextStep,
+                            ActionName = data.ActionName,
+                            Action = data.Action,
+                        });
+                    }
+                    danhsachquytrinh.NextSteps = lsNextStep;
+                    /* Add node => NodeSetting */
+                    foreach (var node in request.NodeMapModels)
+                    {
+                        var lsnodesetting = request.NodeSttings.FirstOrDefault(x => x.KeyNode == node.KeyId);
+
+                        foreach (var data in lsnodesetting.nhanSuNodeModels)
+                        {
+                            lsnhansutieonhannode.Add(new NhanSuTiepNhanNode()
                             {
                                 HoTen = await _accountService.GetUserNameById(data),
-                                NodeSettingId = nodesetting.Id,
                                 LoaiNhanSu = EnumCauHinhNhanSuQuyTrinh.NhanSuTiepNhanNode,
                                 UserId = data
                             });
                         }
-                        /* Add phòng ban tiếp nhận node */
-                        foreach (var data in itemnodesetting.PhongBanNodeModels)
+
+                        foreach (var data in lsnodesetting.PhongBanNodeModels)
                         {
-                            await _phongBanTiepNhanNodeRepository.AddAsync(new PhongBanTiepNhanNode()
+                            lsphongbantiepnhannode.Add(new PhongBanTiepNhanNode()
                             {
                                 TenPhongBan = await _phongBanRepository.GetNamePhongBanById(data),
-                                NodeSettingId = nodesetting.Id,
                                 LoaiPhongBan = EnumCauHinhPhongBanQuyTrinh.PhongBanTiepNhanNode,
                                 PhongbanId = data
                             });
                         }
-
-                       
-                    }
-
-                    /* Add cấu hình bước */
-                    foreach (var data_thongtin in request.CauHinhThongTins)
-                    {
-                        var thongtincauhinh = await _thongtincauhinhRepository.AddAsync(new ThongTinCauHinh()
+                        nodeST.Add(new NodeSetting()
                         {
-                            Index = data_thongtin.Index,
-                            IsBatBuocnhap = data_thongtin.IsBatBuocnhap,
-                            DanhSachQuyTrinhId = danhsachquytrinh.Id,
-                            KichThuocKyTu = data_thongtin.KichThuocKyTu,
-                            IsFileDinhKem = data_thongtin.IsFileDinhKem,
-                            TenThonTin = data_thongtin.TenThonTin,
-                            LoaiThongTin = data_thongtin.LoaiThongTin,
-                            NoiDung = data_thongtin.NoiDung,
-                            ThongBao = data_thongtin.ThongBao,
+                            GhiChu = lsnodesetting.GhiChu,
+                            CauHinhMailNhacNho = lsnodesetting.CauHinhMailNhacNho,
+                            IsGuiMailNhacNho = lsnodesetting.IsGuiMailNhacNho,
+                            IsGuiMailPhongBanTiepNhan = lsnodesetting.IsGuiMailPhongBanTiepNhan,
+                            IsTaoTaskBaoCao = lsnodesetting.IsTaoTaskBaoCao,
+                            NhanSuTiepNhanNodes = lsnhansutieonhannode,
+                            PhongBanTiepNhanNodes = lsphongbantiepnhannode
                         });
-                        foreach (var data in data_thongtin.DanhSachCauHinhBuoc)
+
+                        lsNode.Add(new Node()
                         {
-                            await _thongtincauhinhbuocrepository.AddAsync(new ThongTinCauHinhBuoc()
+                            KeyId = node.KeyId,
+                            X = node.X,
+                            Y = node.Y,
+                            Index = node.Index,
+                            Type = node.Type,
+                            TenNode = node.TenNode,
+                            NodeSettings = nodeST
+                        });
+                    }
+                    danhsachquytrinh.Nodes = lsNode;
+
+                    foreach (var data in request.CauHinhThongTins)
+                    {
+                        foreach (var buoc in data.DanhSachCauHinhBuoc)
+                        {
+                            lsThongTinCauHingBuoc.Add(new ThongTinCauHinhBuoc()
                             {
-                                ThongTinCauHinhId = thongtincauhinh.Id,
-                                KeyNode = data
+                                KeyNode = buoc,
                             });
                         }
+
+                        lsThongTinCauHinh.Add(new ThongTinCauHinh()
+                        {
+                            Index = data.Index,
+                            IsBatBuocnhap = data.IsBatBuocnhap,
+                            IsFileDinhKem = data.IsFileDinhKem,
+                            TenThonTin = data.TenThonTin,
+                            KichThuocKyTu = data.KichThuocKyTu,
+                            NoiDung = data.NoiDung,
+                            LoaiThongTin = data.LoaiThongTin,
+                            ThongBao = data.ThongBao,
+                            ThongTinCauHinhBuocs = lsThongTinCauHingBuoc
+                        });
                     }
+                    danhsachquytrinh.ThongTinCauHinhs = lsThongTinCauHinh;
+
+                    await _danhSachQuyTrinhRepository.AddAsync(danhsachquytrinh);
+
                     _transaction.Commit();
 
                     return new Response<int>(danhsachquytrinh.Id);

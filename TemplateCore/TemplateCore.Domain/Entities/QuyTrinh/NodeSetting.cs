@@ -5,7 +5,6 @@
         [MaxLength(350)]
         public string? GhiChu {  get; set; }
 
-        public int? NoodeId { get; set; }
 
         /// <summary>
         /// Số phút nhắc nhở qua mail
@@ -20,5 +19,7 @@
 
         public virtual ICollection<NhanSuTiepNhanNode>? NhanSuTiepNhanNodes { get; set; }
         public virtual ICollection<PhongBanTiepNhanNode>? PhongBanTiepNhanNodes { get; set; }
+
+        public int? NodeId { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TemplateCore.Infrastructure.Persistence.Contexts;
 
@@ -11,17 +12,16 @@ using TemplateCore.Infrastructure.Persistence.Contexts;
 namespace TemplateCore.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213164741_UpdateNodeSetting1")]
+    partial class UpdateNodeSetting1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("tempplate")
                 .HasAnnotation("ProductVersion", "8.0.11")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -693,7 +693,9 @@ namespace TemplateCore.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NodeId");
+                    b.HasIndex("NodeId")
+                        .IsUnique()
+                        .HasFilter("[NodeId] IS NOT NULL");
 
                     b.ToTable("NodeSettings", "tempplate");
                 });
@@ -958,8 +960,8 @@ namespace TemplateCore.Server.Migrations
             modelBuilder.Entity("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", b =>
                 {
                     b.HasOne("TemplateCore.Domain.Entities.QuyTrinh.Node", "Node")
-                        .WithMany("NodeSettings")
-                        .HasForeignKey("NodeId");
+                        .WithOne("NodeSettings")
+                        .HasForeignKey("TemplateCore.Domain.Entities.QuyTrinh.NodeSetting", "NodeId");
 
                     b.Navigation("Node");
                 });

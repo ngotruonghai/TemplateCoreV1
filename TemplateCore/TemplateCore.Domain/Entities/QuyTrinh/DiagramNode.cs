@@ -6,7 +6,7 @@
         /// ID của Node
         /// </summary>
         [MaxLength(150)]
-        public string KeyId { get; set; }
+        public string KeyId { get; set; } = string.Empty;
 
         [MaxLength(150)]
         public string? Source { get; set; }

@@ -3,7 +3,7 @@
     public class Node : AuditableBaseEntity
     {
         [MaxLength(250)]
-        public string KeyId { get; set; }
+        public string KeyId { get; set; } = string.Empty;
 
         public EnumStepQuyTrinh? Type { get; set; }
 

@@ -15,7 +15,7 @@
         public string? UserId {  get; set; }
 
         [MaxLength(100)]
-        public string UserName {  get; set; }
+        public string UserName {  get; set; } = string.Empty;
 
         [MaxLength(500)]
         public string? GhiChu {  get; set; }

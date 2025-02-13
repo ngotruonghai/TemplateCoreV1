@@ -23,6 +23,6 @@
 
         public int DanhSachQuyTrinhId {  get; set; }
 
-        public virtual ICollection<ThongTinCauHinhBuoc> ThongTinCauHinhBuocs {  get; set; }
+        public virtual ICollection<ThongTinCauHinhBuoc>? ThongTinCauHinhBuocs {  get; set; }
     }
 }

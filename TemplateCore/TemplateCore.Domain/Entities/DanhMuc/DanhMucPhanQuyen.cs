@@ -2,7 +2,7 @@
 {
     public class DanhMucPhanQuyen: AuditableBaseEntity
     {
-        public string UserId {  get; set; }
+        public string UserId {  get; set; } = string.Empty;
 
         public int DanhMucId { get; set; }
     }

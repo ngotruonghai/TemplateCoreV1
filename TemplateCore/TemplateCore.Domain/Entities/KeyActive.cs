@@ -3,7 +3,7 @@
     public class KeyActive: AuditableBaseEntity
     {
         [MaxLength(150)]
-        public string KeyACtiveCode { get; set; }
+        public string KeyACtiveCode { get; set; } = string.Empty;
 
         /// <summary>
         /// Ngày bắt đầu kích hoạt
@@ -20,6 +20,6 @@
         /// </summary>
         public EnumKeyActive TypeKey {  get; set; }
 
-        public int Status { get; set; } = 1;
+        public new EnumStatus Status { get; set; } = EnumStatus.HoarDong;
     }
 }

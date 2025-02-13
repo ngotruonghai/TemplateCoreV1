@@ -3,7 +3,7 @@
     public class PhongBan: AuditableBaseEntity
     {
         [MaxLength(50)]
-        public string MaPhongBan {  get; set; }
+        public string MaPhongBan {  get; set; } = string.Empty;
 
         [MaxLength(150)]
         public string? TenPhongBan { get; set; }

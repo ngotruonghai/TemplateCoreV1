@@ -3,10 +3,10 @@
     public class DanhMuc : AuditableBaseEntity
     {
         [MaxLength(150)]
-        public string TenDanhMuc { get; set; }
+        public string TenDanhMuc { get; set; } = string.Empty;
 
         [MaxLength(50)]
-        public string UrlLink { get; set; }
+        public string UrlLink { get; set; } = string.Empty;
 
         [MaxLength(350)]
         public string? GhiChu {  get; set; }

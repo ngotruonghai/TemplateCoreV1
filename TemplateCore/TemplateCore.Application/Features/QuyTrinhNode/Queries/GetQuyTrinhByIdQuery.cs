@@ -64,12 +64,12 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Queries
 
             public async Task<Response<object>> Handle(GetQuyTrinhByIdQuery request, CancellationToken cancellationToken)
             {
-
+                var quytrinh = await _danhSachQuyTrinhRepository.GetDanhSachQuyTrinhByid(request.QuytrinhId);
                 object response = new 
                 {
                     dsdsa = "123456"
                 };
-                return new Response<object>(response);
+                return new Response<object>(quytrinh);
             }
         }
     }

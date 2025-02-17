@@ -27,7 +27,8 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
         /// <returns></returns>
         public async Task<DanhSachQuyTrinh> GetDanhSachQuyTrinhByid(int QuyTrinhId)
         {
-            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.UserParentId == _authenticatedUserService.parentUserId && x.Id == QuyTrinhId)
+            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.UserParentId == _authenticatedUserService.parentUserId 
+                                         && x.Id == QuyTrinhId && x.Status == true)
                                         .Include(x => x.NhanSuTheoDoiQuyTrinhs)
                                         .Include(x => x.PhongBanTheoDoiQuyTrinhs)
                                         .Include(x => x.Nodes).ThenInclude(x => x.NodeSettings).ThenInclude(x => x.NhanSuTiepNhanNodes)

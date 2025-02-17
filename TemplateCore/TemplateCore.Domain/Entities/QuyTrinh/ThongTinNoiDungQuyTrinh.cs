@@ -18,6 +18,9 @@
 
         public bool FileDinhKem { get; set; } = true;
 
+        [MaxLength(500)]
+        public string GhiChu {  get; set; } = string.Empty;
+
         public virtual ICollection<NhanSuTheoDoiQuyTrinh>? NhanSuTheoDoiQuyTrinhs { get; set; }
 
     }

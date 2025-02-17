@@ -257,7 +257,6 @@ let _xXoaNode = ref(false);
 let _xCauHinhBuoc = ref(false);
 /* biến ẩn hiển các bước trên màn hình */
 
-
 // Quản lý trạng thái của context menu
 const isContextMenuVisible = ref(false);
 const contextMenuPosition = reactive({ x: 0, y: 0 });
@@ -280,7 +279,7 @@ interface INodeMap {
     keyId: string | null,
     type: number,
     index: number,
-    tenNode: String | null
+    tenNode: string | null
     x: number,
     y: number
 }
@@ -327,6 +326,13 @@ const emit = defineEmits<{
         InodeSttings: InodeSttings[]
     }): void;
 }>();
+
+const props = defineProps<{
+    INodeMap: INodeMap[],
+    IDiagram: IDiagram[],
+    INextStep: INextStep[]
+}>();
+
 
 onMounted(() => {
     graph = new dia.Graph({}, { cellNamespace: shapes });
@@ -375,19 +381,8 @@ onMounted(() => {
             isContextMenuVisible.value = true;
 
             // Gọi hàm với chuỗi rỗng
-            _xCauHinhBuoc.value = false; CheckLogicAddNode("");
-
-        }
-    });
-
-    /* Sự kiện khi thay đổi vị trí node */
-    graph!.on("change:position", (cell: dia.Cell) => {
-        if (cell.isElement()) {
-            const ndoeUpdate = request.value.INodeMap?.find(x => x.keyId == cell.id);
-            if (ndoeUpdate) {
-                ndoeUpdate.x = cell.position().x;
-                ndoeUpdate.y = cell.position().y;
-            }
+            _xCauHinhBuoc.value = false;
+            CheckLogicAddNode("");
         }
     });
 
@@ -526,6 +521,7 @@ const createNode = (type: string) => {
     //     body: { fill: 'orange' },
     //     label: { text: type === 'tron' ? 'Hình vuông' : 'Hình 2', fill: 'white' },
     // });
+
     graph.addCell(newNode);
 
     request.value.INodeMap.push({
@@ -570,8 +566,8 @@ const createNode = (type: string) => {
         // Tạo Diagram
         request.value.IDiagram.push({
             keyId: link.id as string,
-            source: sourceNode.id.toString(),
-            target: newNode.id as string,
+            source: newNode.id as string,
+            target: link.id as string,
             tenDiagram: _ActionName.value
         });
     }
@@ -608,6 +604,164 @@ const createNode = (type: string) => {
     hideContextMenu();
 };
 
+const createMapNode = (type: string, nx: number, ny: number, ntennode: string, ntendigram: string, nodeId: string) => {
+    let newNode;
+    let titleNode = ntennode;
+    if (type === '1') {
+        // Tạo node hình vuông bước
+        newNode = new shapes.standard.Rectangle({id: nodeId });
+        newNode.attr({
+            body: {
+                fill: '#0099CC', // Màu nền
+                stroke: 'black',  // Màu viền
+                strokeWidth: 1, // Độ dày viền
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+            },
+        });
+        newNode.resize(50, 50); // Kích thước hình vuông
+    } else if (type === '2') {
+        // Điều kiện 
+        newNode = new shapes.standard.Polygon({id: nodeId });
+        newNode.attr({
+            body: {
+
+                refPoints: '50,0 100,50 50,100 0,50',
+                fill: '#FFE4B5', // Màu nền
+                stroke: 'black',  // Màu viền
+                strokeWidth: 1, // Độ dày viền
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: 80, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+            },
+        });
+        newNode.resize(70, 70);
+    } else if (type === '3') {
+        // kết thúc
+        newNode = new shapes.standard.Polygon({id: nodeId });
+        newNode.attr({
+            body: {
+                refPoints: '50,0 100,50 50,100 0,50',
+                fill: '#B5EAD7', // Màu nền
+                stroke: 'black',  // Màu viền
+                strokeWidth: 1, // Độ dày viền
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: 80, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+            },
+        });
+        newNode.resize(70, 70);
+    }
+    else if (type === '4') {
+        // từ chối
+        newNode = new shapes.standard.Polygon({id: nodeId });
+        newNode.attr({
+            body: {
+                refPoints: '50,0 100,50 50,100 0,50', // Hình dạng 2
+                fill: '#CC0033', // Màu nền
+                stroke: 'black', // Màu viền
+                strokeWidth: 1, // Độ dày viền
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: '100%',
+                refY2: 10, // Dịch chuyển tương đối
+                textAnchor: 'middle', // Căn giữa theo chiều ngang
+                yAlignment: 'middle', // Căn giữa theo chiều dọc
+            },
+        });
+        newNode.resize(70, 70);
+    } else if (type === '5') {
+        // bắt đầu
+        newNode = new shapes.standard.Ellipse({id: nodeId });
+        newNode.attr({
+            body: {
+                fill: '#87CEFA', // Màu nền hình bầu dục
+                stroke: 'black',  // Màu viền
+                strokeWidth: 1, // Độ dày viền
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+            },
+        });
+        newNode.resize(70, 50);
+    } else if (type === 'tron') {
+        newNode = new shapes.standard.Circle({id: nodeId });
+        newNode.attr({
+            body: {
+                fill: 'lightblue', // Màu nền hình bầu dục
+            },
+            label: {
+                text: titleNode,
+                fill: 'black',
+                refY: 60, // Đặt vị trí văn bản phía dưới (1.5 = dưới phần node)
+            },
+        });
+        newNode.resize(50, 50);
+    }
+
+
+    if (!newNode) return;
+    newNode.position(
+        nx, ny
+    );
+
+    graph.addCell(newNode);
+
+    request.value.INodeMap.push({
+        index: _indexNode.value,
+        x: nx,
+        keyId: newNode.id as string,
+        type: parseInt(type),
+        tenNode: titleNode,
+        y: ny
+    });
+    _indexNode.value++;
+};
+
+function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: string, type: number) {
+    const link = new joint.shapes.standard.Link();
+    link.source({ id: startnodeiD }); // Từ node
+    link.target({ id: endnodeId }); // đến node
+    link.attr({
+        line: { stroke: 'black', strokeWidth: 1 },
+    });
+    link.appendLabel({
+        attrs: {
+            text: {
+                text: actionname, // Nội dung nhãn
+                fill: 'black', // Màu chữ
+                fontSize: 14, // Kích thước chữ
+            },
+        },
+        position: {
+            distance: 0.5, // Vị trí nhãn nằm giữa đường nối
+        },
+    });
+    link.router('orthogonal');
+    link.connector('straight', { cornerType: 'line' });
+    graph.addCell(link);
+
+    request.value.INextStep.push({
+        nodeIdStart: startnodeiD,
+        nodeIdEnd: endnodeId,
+        diagramId: link.id as string,
+        actionName: actionname,
+        action: 0,
+        typeNextStep: type
+    })
+}
+
 const deleteNode = () => {
     if (_selectedNode) {
         _selectedNode.remove();
@@ -623,6 +777,39 @@ const deleteNode = () => {
     }
     hideContextMenu();
 };
+
+function MapTraVe(startnodeiD: string, endnodeId: string, actionname: string) {
+    const link = new joint.shapes.standard.Link();
+    link.source({ id: startnodeiD }); // Từ node
+    link.target({ id: endnodeId }); // đến node
+    link.attr({
+        line: { stroke: 'black', strokeWidth: 1 },
+    });
+    link.appendLabel({
+        attrs: {
+            text: {
+                text: actionname, // Nội dung nhãn
+                fill: 'black', // Màu chữ
+                fontSize: 14, // Kích thước chữ
+            },
+        },
+        position: {
+            distance: 0.5, // Vị trí nhãn nằm giữa đường nối
+        },
+    });
+    link.router('orthogonal');
+    link.connector('straight', { cornerType: 'line' });
+    graph.addCell(link);
+
+    request.value.INextStep.push({
+        nodeIdStart: startnodeiD,
+        nodeIdEnd: endnodeId,
+        diagramId: link.id as string,
+        actionName: _ActionName.value,
+        action: 0,
+        typeNextStep: 6
+    })
+}
 
 function btnTraVe() {
     if (_selectedNode) {
@@ -664,12 +851,6 @@ function btnTraVe() {
             action: 0,
             typeNextStep: 6
         })
-        request.value.IDiagram.push({
-            keyId: link.id as string,
-            source: _selectedNode.id.toString(),
-            target: _selectNodeId.value,
-            tenDiagram: _ActionName.value
-        });
 
     } else {
         alert('Vui lòng chọn click chuột phải để chọn bước thực hiện');
@@ -787,6 +968,10 @@ function CheckLogicAddNode(SelectNode: string) {
     const data_Node = request.value.INodeMap;
     const data_Diagram = request.value.IDiagram;
     const data_nextStep = request.value.INextStep;
+
+    const position = _selectedNode?.position(); // Lấy tọa độ
+    console.log("Tọa độ của node:", position?.x, position?.y);
+
 
     if (SelectNode.length > 0) { // sự kiện click chọn node
         let typeNode = data_Node.find(x => x.keyId == SelectNode);
@@ -915,9 +1100,27 @@ const handlePhongBan = (phongbanId: number[]) => {
 const handleNhanSu = (nhansuId: string[]) => {
     _nhansuId.value = nhansuId;
 };
+
 function changeSelectPhongBan() {
     _nhansuIdMap.value = [];
 }
+
+
+watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep], ([newNodeMap, newDiagram, newNExtStep], [oldNodeMap, oldDiagramm, oldNExtStep]) => {
+    newNodeMap.forEach((node, index) => {
+        const diagram = newDiagram?.find(x => x.keyId == node.keyId)
+        createMapNode(node.type.toString(), node.x, node.y, node.tenNode ?? "", diagram?.tenDiagram ?? "", node.keyId ?? "");
+    });
+
+
+    console.log(request.value.INodeMap);
+    console.log(newNodeMap);
+
+    newDiagram.forEach((diagram, index) => {
+        createMapDiagram(diagram.source ?? "", diagram.target ?? "", diagram.tenDiagram ?? "", 1)
+    });
+
+});
 
 </script>
 

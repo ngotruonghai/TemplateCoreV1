@@ -15,7 +15,7 @@
         public string? Target { get; set; }
 
         [MaxLength(150)]
-        public string? TenDiagram { get; set; }
+        public string? TenDiagram { get; set; } = string.Empty ;
 
         public int DanhSachQuyTrinhId { get; set; }
     }

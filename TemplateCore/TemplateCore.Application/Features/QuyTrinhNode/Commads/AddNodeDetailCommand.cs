@@ -88,6 +88,8 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                     request.MaQuyTrinh = "QT" + now.ToString("yyMMddHHmmss");
 
                     var danhsachquytrinh = _mapper.Map<DanhSachQuyTrinh>(request);
+                    danhsachquytrinh.TrangThaiQuyTrinh = EnumTrangThaiQuyTrinh.TaoMoi;
+
                     await _danhSachQuyTrinhRepository.AddAsync(danhsachquytrinh);
 
                     //CheckValid();
@@ -125,6 +127,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
                             DanhSachQuyTrinhId = danhsachquytrinh.Id,
                             KeyId = item.KeyId,
                             Source = item.Source,
+                            TenDiagram = item.TenDiagram,
                             Target = item.Target,
                         });
                     }

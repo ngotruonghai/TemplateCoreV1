@@ -1,5 +1,8 @@
 ﻿namespace TemplateCore.Domain.Entities.QuyTrinh
 {
+    /// <summary>
+    /// Table add add Node vào cấu hình
+    /// </summary>
     public class ThongTinCauHinhBuoc: AuditableBaseEntity
     {
         [MaxLength(150)]

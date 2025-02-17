@@ -129,7 +129,6 @@ async function LoadDanhSachQuyTrinh() {
     try {
         const result = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetDanhSachQuyTinh', 'GET', {}, { timeout: 15000 });
         responseData.value = result as DanhSachQuyTrinhResponse;
-        console.log(responseData.value);
     } catch (error) {
 
     }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TemplateCore.Server.Controllers.V1
 {
     [Route("api/accountpermission/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class AccountPermissionController: BaseApiController
     {
         [Obsolete]
@@ -14,6 +14,7 @@ namespace TemplateCore.Server.Controllers.V1
         public async Task<IActionResult> DanhSachUserPhanQuyen()
         {
             return Ok("123");
+
         }
     }
 }

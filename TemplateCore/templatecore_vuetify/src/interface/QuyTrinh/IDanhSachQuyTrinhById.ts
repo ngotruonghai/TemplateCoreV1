@@ -62,8 +62,8 @@ export interface ApiResponse<WorkflowData> {
     isTaoTaskBaoCao: boolean;
     isGuiMailPhongBanTiepNhan: boolean;
     isGuiMailNhacNho: boolean;
-    nhanSuTiepNhanNodes: Personnel[];
-    phongBanTiepNhanNodes: Department[];
+    nhanSuTiepNhanNodes: string[];
+    phongBanTiepNhanNodes: number[];
     nodeId: number;
     id: number;
     createdBy: string;

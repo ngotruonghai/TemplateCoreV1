@@ -330,7 +330,8 @@ const emit = defineEmits<{
 const props = defineProps<{
     INodeMap: INodeMap[],
     IDiagram: IDiagram[],
-    INextStep: INextStep[]
+    INextStep: INextStep[],
+    InodeSttings: InodeSttings[]
 }>();
 
 
@@ -385,7 +386,16 @@ onMounted(() => {
             CheckLogicAddNode("");
         }
     });
-
+     /* Sự kiện khi thay đổi vị trí node */
+     graph!.on("change:position", (cell: dia.Cell) => {
+        if (cell.isElement()) {
+            const ndoeUpdate = request.value.INodeMap?.find(x => x.keyId == cell.id);
+            if (ndoeUpdate) {
+                ndoeUpdate.x = cell.position().x;
+                ndoeUpdate.y = cell.position().y;
+            }
+        }
+    });
 
 });
 
@@ -778,39 +788,6 @@ const deleteNode = () => {
     hideContextMenu();
 };
 
-function MapTraVe(startnodeiD: string, endnodeId: string, actionname: string) {
-    const link = new joint.shapes.standard.Link();
-    link.source({ id: startnodeiD }); // Từ node
-    link.target({ id: endnodeId }); // đến node
-    link.attr({
-        line: { stroke: 'black', strokeWidth: 1 },
-    });
-    link.appendLabel({
-        attrs: {
-            text: {
-                text: actionname, // Nội dung nhãn
-                fill: 'black', // Màu chữ
-                fontSize: 14, // Kích thước chữ
-            },
-        },
-        position: {
-            distance: 0.5, // Vị trí nhãn nằm giữa đường nối
-        },
-    });
-    link.router('orthogonal');
-    link.connector('straight', { cornerType: 'line' });
-    graph.addCell(link);
-
-    request.value.INextStep.push({
-        nodeIdStart: startnodeiD,
-        nodeIdEnd: endnodeId,
-        diagramId: link.id as string,
-        actionName: _ActionName.value,
-        action: 0,
-        typeNextStep: 6
-    })
-}
-
 function btnTraVe() {
     if (_selectedNode) {
         //const nodes = graph.getElements();
@@ -860,15 +837,17 @@ function btnTraVe() {
 
 /* btn popup cấu hình từng node dev01*/
 function CauHinhBuoc() {
+    debugger
     isPanelOpen.value = !isPanelOpen.value;
     hideContextMenu();
     const data_Node = request.value.INodeMap.find(x => x.keyId == _selectedNode?.id);
-    //const data_Diagram = request.value.IDiagram;
-    //const data_nextStep = request.value.INextStep;
     if (data_Node == null) return;
     _txttitlecauhinh.value = data_Node?.tenNode?.toString() ?? "";
 
     const data_nodesetting = request.value.InodeSttings.find(x => x.keyNode == _selectedNode?.id);
+    console.log("dsds");
+    console.log(data_nodesetting?.phongBanNodeModels);
+    console.log("dsds");
     if (data_nodesetting == null) {
         _phongbanIdMap.value = [];
         _nhansuIdMap.value = [];
@@ -882,7 +861,7 @@ function CauHinhBuoc() {
         _phongbanIdMap.value = data_nodesetting.phongBanNodeModels;
         _nhansuIdMap.value = data_nodesetting.nhanSuNodeModels;
         _txtghichuNodeSetting.value = data_nodesetting.ghiChu ?? "";
-        _txtCauhinhmailnhacnhonodesetting.value = data_nodesetting.cauHinhMailNhacNho.toString();
+        _txtCauhinhmailnhacnhonodesetting.value = (data_nodesetting.cauHinhMailNhacNho??0).toString();
         _isTaoTaskBaoCao.value = data_nodesetting.isTaoTaskBaoCao;
         _isGuiMailPhongBanTiepNhan.value = data_nodesetting.isGuiMailPhongBanTiepNhan;
         _isGuiMailNhacNho.value = data_nodesetting.isGuiMailNhacNho;
@@ -970,7 +949,6 @@ function CheckLogicAddNode(SelectNode: string) {
     const data_nextStep = request.value.INextStep;
 
     const position = _selectedNode?.position(); // Lấy tọa độ
-    console.log("Tọa độ của node:", position?.x, position?.y);
 
 
     if (SelectNode.length > 0) { // sự kiện click chọn node
@@ -1106,19 +1084,19 @@ function changeSelectPhongBan() {
 }
 
 
-watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep], ([newNodeMap, newDiagram, newNExtStep], [oldNodeMap, oldDiagramm, oldNExtStep]) => {
+watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep, () => props.InodeSttings], 
+    ([newNodeMap, newDiagram, newNExtStep, newNodeSttings], 
+     [oldNodeMap, oldDiagramm, oldNExtStep, oldNodeSttings]) => {
     newNodeMap.forEach((node, index) => {
         const diagram = newDiagram?.find(x => x.keyId == node.keyId)
         createMapNode(node.type.toString(), node.x, node.y, node.tenNode ?? "", diagram?.tenDiagram ?? "", node.keyId ?? "");
     });
-
-
-    console.log(request.value.INodeMap);
-    console.log(newNodeMap);
-
     newDiagram.forEach((diagram, index) => {
         createMapDiagram(diagram.source ?? "", diagram.target ?? "", diagram.tenDiagram ?? "", 1)
     });
+
+    request.value.InodeSttings = newNodeSttings
+
 
 });
 

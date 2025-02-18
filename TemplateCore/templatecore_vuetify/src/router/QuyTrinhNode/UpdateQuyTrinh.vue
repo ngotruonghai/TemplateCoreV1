@@ -80,7 +80,9 @@
             </div>
             <div v-show="flang == 0">
 
-                <UpdateNode @emit_Node='handleDataSent' :INodeMap="INodeMaps" :IDiagram="IDiagrams" :INextStep="INextSteps"></UpdateNode>
+                <UpdateNode @emit_Node='handleDataSent' :INodeMap="INodeMaps" :IDiagram="IDiagrams"
+                    :INextStep="INextSteps"
+                    :InodeSttings = "InodeSttings"></UpdateNode>
 
             </div>
         </v-container>
@@ -250,6 +252,20 @@ function LoadDataDanhSach() {
     INodeMaps.value = response.value?.nodes ?? []
     IDiagrams.value = response.value?.diagramNodes ?? [];
     INextSteps.value = response.value?.nextSteps ?? [];
+    response.value?.nodes.forEach((node, index) => {
+        node.nodeSettings.forEach((setting, index) => {
+            InodeSttings.value.push({
+                cauHinhMailNhacNho: setting.cauHinhMailNhacNho,
+                keyNode: node.keyId,
+                ghiChu: setting.ghiChu,
+                isTaoTaskBaoCao: setting.isTaoTaskBaoCao,
+                isGuiMailPhongBanTiepNhan: setting.isGuiMailPhongBanTiepNhan,
+                isGuiMailNhacNho: setting.isGuiMailNhacNho,
+                nhanSuNodeModels: setting.nhanSuTiepNhanNodes,
+                phongBanNodeModels: setting.phongBanTiepNhanNodes
+            });
+        })
+    });
 }
 onMounted(async () => {
     await LoadDanhSachQuyTrinh();

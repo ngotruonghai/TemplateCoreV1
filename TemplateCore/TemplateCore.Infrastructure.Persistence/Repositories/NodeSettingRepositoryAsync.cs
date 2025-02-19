@@ -15,6 +15,7 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
             var nodestting = await _nodesetting.Where(x => x.NodeId == nodeid)
                                     .Include(x => x.NhanSuTiepNhanNodes)
                                     .Include(x=> x.PhongBanTiepNhanNodes)
+                                    .AsQueryable()
                                     .ToListAsync();
             return nodestting;
         }

@@ -912,9 +912,11 @@ function CheckLogicAddNode(SelectNode: string) {
 const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
 };
+
 const handleNhanSu = (nhansuId: string[]) => {
     _nhansuId.value = nhansuId;
 };
+
 function changeSelectPhongBan() {
     _nhansuIdMap.value = [];
 }

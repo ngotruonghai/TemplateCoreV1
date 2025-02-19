@@ -74,7 +74,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Queries
                     List<string>? NhanSuIds = new List<string>();
                     List<int>? PhongBanIds = new List<int>();
                     List<ListNodeSettingModel>? NodeSttings=new List<ListNodeSettingModel>();
-                    List<ListCauHingThongTinModel>? CauHinhThongTins;
+                    List<ListCauHingThongTinModel>? CauHinhThongTins = new List<ListCauHingThongTinModel>();
 
                     var quytrinh = await _danhSachQuyTrinhRepository.GetQuyTrinhId(request.QuytrinhId);
                     if (quytrinh == null) throw new Exception("Quy trình không tồn tại");
@@ -104,9 +104,26 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Queries
                                 KeyNode = inode.KeyId,
                             });
                         }
-                        
-
                     }
+                    var nextstep = await _nextStepRepositoryAsync.GetbextStepBtQuyTrinhId(request.QuytrinhId);
+                    var thongtincauhinh = await _thongtincauhinhRepository.GetThongTinCauHinhByQuyTrinhId(request.QuytrinhId);
+
+                    foreach(var ithongtincauhinh in thongtincauhinh)
+                    {
+                        CauHinhThongTins.Add(new ListCauHingThongTinModel()
+                        {
+                            Index = ithongtincauhinh.Index,
+                            IsBatBuocnhap = ithongtincauhinh.IsBatBuocnhap,
+                            IsFileDinhKem = ithongtincauhinh.IsFileDinhKem,
+                            KichThuocKyTu = ithongtincauhinh.KichThuocKyTu,
+                            LoaiThongTin = ithongtincauhinh.LoaiThongTin,
+                            NoiDung = ithongtincauhinh.NoiDung,
+                            TenThonTin = ithongtincauhinh.TenThonTin,
+                            ThongBao = ithongtincauhinh.ThongBao,
+                            DanhSachCauHinhBuoc = ithongtincauhinh.ThongTinCauHinhBuocs.Select(x => x.KeyNode).ToArray()
+                        });
+                    }
+
 
 
                     object obj = new
@@ -120,7 +137,10 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Queries
                         DiagramNodeModels = diagramNode,
                         NhanSuIds = NhanSuIds,
                         PhongBanIds = PhongBanIds,
-                        NodeSttings = NodeSttings
+                        NodeSttings = NodeSttings,
+                        NextStepNodeModels = nextstep,
+                        NgayBatDau = quytrinh.NgayBatDau,
+                        CauHinhThongTins = CauHinhThongTins
                     };
                     return new Response<object>(obj);
                 }

@@ -118,7 +118,8 @@
                         <label class="FontDefault">
                             Cấu hình hiển thị ở bước
                         </label>
-                        <CBCheckDanhSachNode :LoadNode="_LoadNode" :DanhSachNode="_dsNode" @emit_dansachNode="handleDanhSachNode">
+                        <CBCheckDanhSachNode :LoadNode="_LoadNode" :DanhSachNode="_dsNode"
+                            @emit_dansachNode="handleDanhSachNode">
                         </CBCheckDanhSachNode>
 
                     </v-col>
@@ -152,7 +153,8 @@
                         <label class="FontDefault">
                             Kích thước ký tự
                         </label>
-                        <input type="number" v-model="_txtkichthuockytuDL" class="FontDefault" placeholder="" style="width: 100%;" />
+                        <input type="number" v-model="_txtkichthuockytuDL" class="FontDefault" placeholder=""
+                            style="width: 100%;" />
                     </v-col>
 
 
@@ -206,12 +208,15 @@ let _txtkichthuockytuDL = ref<string>("");
 let _LoadNode = ref<string[]>([]);
 
 const emit = defineEmits<{
-    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[],NhanSuId: string[],PhongBanId: number[],NoiDung:string,ThietLapMaPhieu: string,GhiChu:string
+    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[],NoiDung:string,ThietLapMaPhieu:string,GhiChu:string
     ): void;
 }>();
 
 const props = defineProps<{
     DanhSachNode: IDanhSachNode[],
+    NoiDung?: string | null,
+    ThietLapMaPhieu?: string | null,
+    GhiChu?:string|null
 }>();
 
 const _dsThongTin = ref<IDataThongTin[]>([]);
@@ -272,7 +277,7 @@ function btnCauHinhThongTin(Id: number) {
         _loaiThongTin.value = 0;
         _isFileDinhKem.value = false;
         _thongBao.value = "";
-        _txtnoidungDL.value="";
+        _txtnoidungDL.value = "";
         _txtkichthuockytuDL.value = "0";
         _selectThongTinCauHinhBuocDL.value = [];
         _LoadNode.value = [];
@@ -284,10 +289,10 @@ function btnCauHinhThongTin(Id: number) {
         _loaiThongTin.value = data_thongtin?.loaiThongTin ?? 0;
         _isFileDinhKem.value = data_thongtin?.isFileDinhKem ?? false;
         _thongBao.value = data_thongtin?.thongBao ?? "";
-        _txtnoidung.value = data_thongtin?.noiDung??"";
-        _txtkichthuockytuDL.value =  data_thongtin?.kichThuocKyTu.toString()??""
-        _selectThongTinCauHinhBuocDL.value = data_thongtin?.danhSachCauHinhBuoc??[];
-        _LoadNode.value = data_thongtin?.danhSachCauHinhBuoc??[];
+        _txtnoidung.value = data_thongtin?.noiDung ?? "";
+        _txtkichthuockytuDL.value = data_thongtin?.kichThuocKyTu.toString() ?? ""
+        _selectThongTinCauHinhBuocDL.value = data_thongtin?.danhSachCauHinhBuoc ?? [];
+        _LoadNode.value = data_thongtin?.danhSachCauHinhBuoc ?? [];
     }
 
 
@@ -297,7 +302,7 @@ const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_DanhSachCauHinh", _dsThongTin.value,nhansuId,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
+    emit("emit_DanhSachCauHinh", _dsThongTin.value, nhansuId, _phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
 };
 
 const handleDanhSachNode = (DanhsachId: string[]) => {
@@ -307,6 +312,17 @@ const handleDanhSachNode = (DanhsachId: string[]) => {
 watch(() => props.DanhSachNode, (newVal, oldVal) => {
     _dsNode.value = newVal;
 }, { deep: true });
+
+watch(() => props.NoiDung, (newVal, oldVal) => {
+    _txtnoidung.value = newVal ?? "";
+});
+watch(() => props.ThietLapMaPhieu, (newVal, oldVal) => {
+    _txtthietlapmaphieu.value = newVal ?? "";
+});
+watch(() => props.GhiChu, (newVal, oldVal) => {
+    _txtghichu.value = newVal ?? "";
+});
+
 </script>
 
 <style>

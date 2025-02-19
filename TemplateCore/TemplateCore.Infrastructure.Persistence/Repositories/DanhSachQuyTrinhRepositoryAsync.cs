@@ -43,7 +43,7 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
 
         public async Task<DanhSachQuyTrinh> GetQuyTrinhId(int QuyTrinhId)
         {
-            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.Id == QuyTrinhId).FirstOrDefaultAsync();
+            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.Id == QuyTrinhId && x.UserParentId == _authenticatedUserService.parentUserId).AsQueryable().FirstOrDefaultAsync();
             return quytrinh;
         }
     }

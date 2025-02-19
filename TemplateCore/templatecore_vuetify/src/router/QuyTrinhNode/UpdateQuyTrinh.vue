@@ -32,7 +32,7 @@
                                     Ngày bắt đầu
                                 </label>
                                 <!-- <input type="text" id="" class="FontDefault" placeholder="VD: Quy trình duyệt đơn" /> -->
-                                <Datetimepicker @emit_datetime="handDatTime"></Datetimepicker>
+                                <Datetimepicker :datetime="_datetime" @emit_datetime="handDatTime"></Datetimepicker>
                             </div>
                         </v-col>
                     </v-row>
@@ -47,8 +47,12 @@
                                 {{ title }}
                             </label>
                         </v-col>
-                        <AddCauHinhQuyTrinh :DanhSachNode="_dsNode" @emit_DanhSachCauHinh="handleDanhSachCauHinh">
-                        </AddCauHinhQuyTrinh>
+                        <UpdateCauHinhQuyTrinh :ThietLapMaPhieu="_txtthietlapmaphieu" 
+                        :NoiDung="_txtnoidung" 
+                        :DanhSachNode="_dsNode"
+                        :GhiChu="_txtghichu"
+                        @emit_DanhSachCauHinh="handleDanhSachCauHinh">
+                        </UpdateCauHinhQuyTrinh>
                     </v-row>
 
                 </div>
@@ -92,7 +96,7 @@
 
 <script lang="ts" setup>
 import { callApi, callAuthenticationAPI, convertToDate } from '@/providers/data-provider';
-import type { ApiResponse, NodeMapModel, QuyTrinhData} from "@/interface/QuyTrinh/IDanhSachQuyTrinhC2";
+import type { ApiResponse, NodeMapModel, QuyTrinhData,NextStepNodeModels} from "@/interface/QuyTrinh/IDanhSachQuyTrinhC2";
 import type { IDataThongTin } from '@/interface/QuyTrinh/IAddCauHinhQuyTrinh';
 import type { WorkflowData } from '@/interface/QuyTrinh/IDanhSachQuyTrinhById';
 
@@ -102,10 +106,10 @@ let btnHide = ref(false);
 let _txttenquytrinh = ref("");
 let _nhansuId = ref<string[]>([]);
 let _phongbanId = ref<number[]>([]);
-let _txtnoidung = "";
-let _txtthietlapmaphieu = "";
-let _txtghichu = "";
-let _datetime: Date = new Date();
+let _txtnoidung = ref("");
+let _txtthietlapmaphieu = ref("");
+let _txtghichu = ref("");
+let _datetime = ref<Date>(new Date());
 const props = defineProps<{
     id: string;
 }>();
@@ -191,8 +195,7 @@ function handleDataSent(data: {
     IDiagrams.value = data.IDiagram;
     INextSteps.value = data.INextStep;
     InodeSttings.value = data.InodeSttings;
-
-    /* Lấy danh sách node cho cấu hình lớn */
+    INextSteps.value = data.INextStep;
     _dsNode.value = data.INodeMap
 }
 async function API_AddQuyTrinh() {
@@ -235,26 +238,34 @@ function ClickAddQuyTrinh() {
     API_AddQuyTrinh();
 }
 
-const handleDanhSachCauHinh = (data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[]) => {
+const handleDanhSachCauHinh = (data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[],NoiDung:string,ThietLapMaPhieu: string,GhiChu:string) => {
     _dsThongTin.value = data;
     _phongbanId.value = PhongBanId;
     _nhansuId.value = NhanSuId;
+    _txtnoidung.value = NoiDung
+    _txtthietlapmaphieu.value = ThietLapMaPhieu;
+    _txtghichu.value = GhiChu;
 };
 
 const handDatTime = (datetime: Date) => {
-    _datetime = datetime
+    _datetime.value = datetime
 }
 
 function LoadDataDanhSach() {
     _txttenquytrinh.value = response.value?.tenQuyTrinh ?? "";
     INodeMaps.value = response.value?.nodeMapModels ?? []
     IDiagrams.value = response.value?.diagramNodeModels ?? [];
-    //INextSteps.value = response.value?.next ?? [];
+    INextSteps.value = response.value?.nextStepNodeModels ?? [];
     InodeSttings.value = response.value?.nodeSttings??[];
+    _datetime.value = response.value?.ngayBatDau??new Date;
+    _txtnoidung.value = response.value?.noiDung??"";
+    _txtthietlapmaphieu.value = response.value?.thietLapMaPhieu??"";
+    _txtghichu.value = response.value?.ghiChu??"";
+
   
 
     // console.log("----------------------------------");
-    // console.log(InodeSttings.value);
+    // console.log(INextSteps.value);
     // console.log("----------------------------------");
 }
 onMounted(async () => {

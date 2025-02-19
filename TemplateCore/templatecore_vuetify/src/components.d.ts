@@ -26,6 +26,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TimePicker: typeof import('./components/Common/TimePicker.vue')['default']
+    UpdateCauHinhQuyTrinh: typeof import('./components/QuyTrinh/UpdateCauHinhQuyTrinh.vue')['default']
     UpdateNode: typeof import('./components/QuyTrinh/UpdateNode.vue')['default']
   }
 }

@@ -1,4 +1,5 @@
 ﻿using TemplateCore.Application.Features.Account.Queries;
+using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Application.Features.AccountPermission.Queries
 {

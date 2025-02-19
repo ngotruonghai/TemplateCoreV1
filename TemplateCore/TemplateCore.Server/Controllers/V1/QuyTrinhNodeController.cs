@@ -35,10 +35,26 @@ namespace TemplateCore.Server.Controllers.V1
             return Ok(await Mediator.Send(new GetAllDanhSachQuyTrinh()));
         }
 
+        /// <summary>
+        /// Get quy trình by Id (đang chậm)
+        /// </summary>
+        /// <param name="quytrinhId"></param>
+        /// <returns></returns>
         [HttpGet("GetQuyTrinhById")]
         public async Task<IActionResult> GetQuyTrinhById(int quytrinhId)
         {
             return Ok(await Mediator.Send(new GetQuyTrinhByIdQuery() { QuytrinhId = quytrinhId }));
+        }
+
+        /// <summary>
+        /// Get quy trình by Id (tối ưu hơn)
+        /// </summary>
+        /// <param name="quytrinhId"></param>
+        /// <returns></returns>
+        [HttpGet("GetQuyTrinhById_C2")]
+        public async Task<IActionResult> GetQuyTrinhById_C2(int quytrinhId)
+        {
+            return Ok(await Mediator.Send(new GetQuyTrinhById_C2() { QuytrinhId = quytrinhId }));
         }
     }
 }

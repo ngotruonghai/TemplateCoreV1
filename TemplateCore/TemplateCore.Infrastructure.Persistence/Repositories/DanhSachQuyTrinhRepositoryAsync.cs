@@ -15,7 +15,7 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<DanhSachQuyTrinh>> GetAllDanhSachQuyTrinh()
         {
-            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.UserParentId == _authenticatedUserService.parentUserId).AsNoTracking().ToListAsync();
+            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.UserParentId == _authenticatedUserService.parentUserId && x.Status == true).AsNoTracking().ToListAsync();
 
             return quytrinh;
         }
@@ -41,9 +41,9 @@ namespace TemplateCore.Infrastructure.Persistence.Repositories
             return quytrinh;
         }
 
-        public async Task<IEnumerable<DanhSachQuyTrinh>> GetQuyTrinhId(int QuyTrinhId)
+        public async Task<DanhSachQuyTrinh> GetQuyTrinhId(int QuyTrinhId)
         {
-            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.Id == QuyTrinhId).Include(x => x.Nodes).Include(x => x.DiagramNodes).ToListAsync();
+            var quytrinh = await _danhSachQuyTrinhs.Where(x => x.Id == QuyTrinhId).FirstOrDefaultAsync();
             return quytrinh;
         }
     }

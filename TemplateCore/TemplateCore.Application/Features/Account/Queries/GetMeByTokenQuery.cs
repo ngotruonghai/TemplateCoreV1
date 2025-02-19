@@ -1,6 +1,7 @@
 ﻿using TemplateCore.Application.Features.Account.Commands;
 using TemplateCore.Application.Services;
 using TemplateCore.Domain.DTOs.Account;
+using IAuthenticatedUserService = TemplateCore.Application.Interfaces.IAuthenticatedUserService;
 
 namespace TemplateCore.Application.Features.Account.Queries
 {

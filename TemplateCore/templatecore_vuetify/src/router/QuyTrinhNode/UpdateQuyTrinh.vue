@@ -92,8 +92,9 @@
 
 <script lang="ts" setup>
 import { callApi, callAuthenticationAPI, convertToDate } from '@/providers/data-provider';
-import type { WorkflowData } from "@/interface/QuyTrinh/IDanhSachQuyTrinhById";
-import type { IDataThongTin, IDanhSachNode } from "@/interface/QuyTrinh/IAddCauHinhQuyTrinh";
+import type { ApiResponse, NodeMapModel, QuyTrinhData} from "@/interface/QuyTrinh/IDanhSachQuyTrinhC2";
+import type { IDataThongTin } from '@/interface/QuyTrinh/IAddCauHinhQuyTrinh';
+import type { WorkflowData } from '@/interface/QuyTrinh/IDanhSachQuyTrinhById';
 
 let flang = ref(0);
 let title = ref("");
@@ -155,9 +156,9 @@ const INodeMaps = ref<INodeMap[]>([]);
 const IDiagrams = ref<IDiagram[]>([]);
 const INextSteps = ref<INextStep[]>([]);
 const InodeSttings = ref<InodeSttings[]>([]);
-const _dsNode = ref<IDanhSachNode[]>([]);
+const _dsNode = ref<NodeMapModel[]>([]);
 const _dsThongTin = ref<IDataThongTin[]>([]);
-let response = ref<WorkflowData>();
+let response = ref<QuyTrinhData>();
 
 function btnTiepThep(status: boolean) {
     flang.value = flang.value + 1
@@ -221,12 +222,9 @@ async function API_AddQuyTrinh() {
 
 async function LoadDanhSachQuyTrinh() {
     try {
-        const result = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById?quytrinhId=' + props.id, 'GET', {}, { timeout: 15000 });
+        const result = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetQuyTrinhById_C2?quytrinhId=' + props.id, 'GET', {}, { timeout: 15000 });
         const data = typeof result === "string" ? JSON.parse(result) : result;
-        response.value = data.data ? (data.data as WorkflowData) : (data as WorkflowData);
-        //console.log(response.value);   
-
-
+        response.value = data.data ? (data.data as QuyTrinhData) : (data as QuyTrinhData);
 
     } catch (error) {
         console.log(error)
@@ -249,23 +247,15 @@ const handDatTime = (datetime: Date) => {
 
 function LoadDataDanhSach() {
     _txttenquytrinh.value = response.value?.tenQuyTrinh ?? "";
-    INodeMaps.value = response.value?.nodes ?? []
-    IDiagrams.value = response.value?.diagramNodes ?? [];
-    INextSteps.value = response.value?.nextSteps ?? [];
-    response.value?.nodes.forEach((node, index) => {
-        node.nodeSettings.forEach((setting, index) => {
-            InodeSttings.value.push({
-                cauHinhMailNhacNho: setting.cauHinhMailNhacNho,
-                keyNode: node.keyId,
-                ghiChu: setting.ghiChu,
-                isTaoTaskBaoCao: setting.isTaoTaskBaoCao,
-                isGuiMailPhongBanTiepNhan: setting.isGuiMailPhongBanTiepNhan,
-                isGuiMailNhacNho: setting.isGuiMailNhacNho,
-                nhanSuNodeModels: setting.nhanSuTiepNhanNodes,
-                phongBanNodeModels: setting.phongBanTiepNhanNodes
-            });
-        })
-    });
+    INodeMaps.value = response.value?.nodeMapModels ?? []
+    IDiagrams.value = response.value?.diagramNodeModels ?? [];
+    //INextSteps.value = response.value?.next ?? [];
+    InodeSttings.value = response.value?.nodeSttings??[];
+  
+
+    // console.log("----------------------------------");
+    // console.log(InodeSttings.value);
+    // console.log("----------------------------------");
 }
 onMounted(async () => {
     await LoadDanhSachQuyTrinh();

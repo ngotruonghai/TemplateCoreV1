@@ -14,3 +14,4 @@ global using TemplateCore.Application.Features.QuyTrinhNode.Commads;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
 global using TemplateCore.Domain.Entities.PhongBan;
+global using TemplateCore.Application.Interfaces;

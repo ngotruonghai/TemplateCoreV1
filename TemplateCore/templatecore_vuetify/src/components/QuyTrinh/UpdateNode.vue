@@ -1097,6 +1097,8 @@ watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep, () => 
 
     request.value.InodeSttings = newNodeSttings
 
+    console.log(newNodeSttings);
+
 
 });
 

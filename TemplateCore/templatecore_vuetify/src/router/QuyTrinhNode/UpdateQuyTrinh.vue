@@ -261,7 +261,9 @@ function LoadDataDanhSach() {
     _txtnoidung.value = response.value?.noiDung??"";
     _txtthietlapmaphieu.value = response.value?.thietLapMaPhieu??"";
     _txtghichu.value = response.value?.ghiChu??"";
-
+    _nhansuId.value = response.value?.nhanSuIds??[];
+    _phongbanId.value = response.value?.phongBanIds??[];
+    _dsThongTin.value = response.value?.cauHinhThongTins??[];
   
 
     // console.log("----------------------------------");

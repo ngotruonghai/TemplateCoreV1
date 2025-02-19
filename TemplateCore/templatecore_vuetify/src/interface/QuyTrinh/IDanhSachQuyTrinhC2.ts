@@ -18,7 +18,8 @@ export interface QuyTrinhData {
     nhanSuIds: string[];
     phongBanIds: number[];
     nodeSttings: NodeSetting[];
-    nextStepNodeModels : NextStepNodeModels[]
+    nextStepNodeModels : NextStepNodeModels[];
+    cauHinhThongTins: CauHinhThongTin[]
 }
 
 export interface NodeMapModel {
@@ -62,4 +63,15 @@ export interface NextStepNodeModels {
     actionName: string | null, // Tên Diagram
     action: number,
     typeNextStep: number
+}
+export interface CauHinhThongTin {
+    index: number;
+    tenThonTin: string | null;
+    noiDung: string | null;
+    thongBao: string | null;
+    loaiThongTin:number;
+    kichThuocKyTu:number;
+    isBatBuocnhap:boolean;
+    isFileDinhKem:boolean;
+    danhSachCauHinhBuoc: string[];
 }

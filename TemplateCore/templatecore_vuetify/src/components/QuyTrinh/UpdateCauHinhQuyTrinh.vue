@@ -216,7 +216,8 @@ const props = defineProps<{
     DanhSachNode: IDanhSachNode[],
     NoiDung?: string | null,
     ThietLapMaPhieu?: string | null,
-    GhiChu?:string|null
+    GhiChu?:string|null,
+    NhanSuId?:string[]|null
 }>();
 
 const _dsThongTin = ref<IDataThongTin[]>([]);

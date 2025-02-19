@@ -124,6 +124,14 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Queries
                         });
                     }
 
+                    if(quytrinh.NhanSuTheoDoiQuyTrinhs != null)
+                    {
+                        NhanSuIds = quytrinh.NhanSuTheoDoiQuyTrinhs.Select(x => x.UserId).ToList();
+                    }
+                    if (quytrinh.PhongBanTheoDoiQuyTrinhs != null)
+                    {
+                        PhongBanIds = quytrinh.PhongBanTheoDoiQuyTrinhs.Select(x => x.PhongbanId).ToList();
+                    }
 
 
                     object obj = new

@@ -25,7 +25,7 @@
                             class="FontDefaault">Thông tin</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in admins"
+                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.admins"
                         :key="i" :prepend-icon="icon" :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
@@ -37,7 +37,7 @@
                             class="FontDefaault">Phân quyền</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in PhanQuyen"
+                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.PhanQuyen"
                         :key="i" :prepend-icon="icon" :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
@@ -49,7 +49,7 @@
                             class="FontDefault">Quy trình</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in QuyTrinh"
+                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.QuyTrinh"
                         :key="i" :prepend-icon="icon" :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
@@ -62,7 +62,7 @@
                             class="FontDefault">Cấu hình</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in CauHinhs"
+                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.CauHinhs"
                         :key="i" :prepend-icon="icon" :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
@@ -78,9 +78,10 @@ import { LocalStorageService } from '@/providers/LocalStorageServices';
 export default {
     data: () => ({
         open: [''],
+       DanhMucs:{
         admins: [
-            ['Quản lý user đăng nhập', 'mdi-cog-outline', '/home/account'],
-            ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
+            ['Tài khoản', 'mdi-cog-outline', '/home/account'],
+            ['Phòng ban', 'mdi-plus-outline', '/home/phongban']
         ],
         CauHinhs: [
             ['Đăng xuất', 'mdi-plus-outline', '/'],
@@ -89,8 +90,9 @@ export default {
             ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],
         ],
         PhanQuyen: [
-            ['Phòng ban', 'mdi-plus-outline', '/home/phongban']
+            ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
         ],
+       },
         userName: ""
     }),
     methods: {
@@ -98,7 +100,7 @@ export default {
             if (route) {
                 if (route == "/") {
                     localStorage.clear();
-                    this.$router.push(route); 
+                    this.$router.push(route);
                 }
                 else {
                     localStorage.setItem("Url", route)
@@ -114,10 +116,10 @@ export default {
     },
     mounted() {
         this.userName = LocalStorageService.GetUserName() ?? "";
-        let nametitle = this.admins.findIndex(x => x.includes(this.$router.currentRoute.value.fullPath));
+        let nametitle = this.DanhMucs.admins.findIndex(x => x.includes(this.$router.currentRoute.value.fullPath));
 
         if (nametitle != -1) {
-            this.$emit('dataSent', this.admins[nametitle][0]);
+            this.$emit('dataSent', this.DanhMucs.admins[nametitle][0]);
 
         }
 

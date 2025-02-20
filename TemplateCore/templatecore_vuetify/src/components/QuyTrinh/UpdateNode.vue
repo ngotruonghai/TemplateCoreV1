@@ -400,9 +400,7 @@ onMounted(() => {
 });
 
 const showContextMenu = (event: MouseEvent) => {
-    event.preventDefault(); // Ngăn menu mặc định của trình duyệt
-    //const paperWidth = paper.options.width;
-    //const paperHeight = paper.options.height;
+    event.preventDefault();
     contextMenuPosition.x = event.clientX + 30;
     contextMenuPosition.y = event.clientY - 100;
     isContextMenuVisible.value = true;
@@ -737,10 +735,14 @@ const createMapNode = (type: string, nx: number, ny: number, ntennode: string, n
         y: ny
     });
     _indexNode.value++;
+    lastNode= newNode;
+    _selectedNode = null;
 };
 
-function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: string, type: number) {
-    const link = new joint.shapes.standard.Link();
+function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: string, type: number, Id:string) {
+    const link = new joint.shapes.standard.Link({
+        id: Id
+    });
     link.source({ id: startnodeiD }); // Từ node
     link.target({ id: endnodeId }); // đến node
     link.attr({
@@ -770,6 +772,7 @@ function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: st
         action: 0,
         typeNextStep: type
     })
+    _selectedNode = null;
 }
 
 const deleteNode = () => {
@@ -1092,14 +1095,11 @@ watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep, () => 
         createMapNode(node.type.toString(), node.x, node.y, node.tenNode ?? "", diagram?.tenDiagram ?? "", node.keyId ?? "");
     });
     newDiagram.forEach((diagram, index) => {
-        createMapDiagram(diagram.source ?? "", diagram.target ?? "", diagram.tenDiagram ?? "", 1)
+        createMapDiagram(diagram.source ?? "", diagram.target ?? "", diagram.tenDiagram ?? "",1,diagram.keyId??"")
     });
 
     request.value.InodeSttings = newNodeSttings
-
-    console.log(newNodeSttings);
-
-
+    request.value.INextStep = newNExtStep;
 });
 
 </script>

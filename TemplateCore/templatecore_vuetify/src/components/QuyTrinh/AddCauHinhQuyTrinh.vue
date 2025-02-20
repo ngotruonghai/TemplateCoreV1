@@ -204,6 +204,7 @@ let _isFileDinhKem = ref<boolean>(false);
 let _thongBao = ref<string>("");
 let _txtkichthuockytuDL = ref<string>("");
 let _LoadNode = ref<string[]>([]);
+let _nhansuId = ref<string[]>([]);
 
 const emit = defineEmits<{
     (event: 'emit_DanhSachCauHinh', data: IDataThongTin[],NhanSuId: string[],PhongBanId: number[],NoiDung:string,ThietLapMaPhieu: string,GhiChu:string
@@ -295,9 +296,11 @@ function btnCauHinhThongTin(Id: number) {
 
 const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
+    emit("emit_DanhSachCauHinh", _dsThongTin.value,_nhansuId.value,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_DanhSachCauHinh", _dsThongTin.value,nhansuId,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
+    _nhansuId.value = nhansuId;
+    emit("emit_DanhSachCauHinh", _dsThongTin.value,_nhansuId.value,_phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
 };
 
 const handleDanhSachNode = (DanhsachId: string[]) => {

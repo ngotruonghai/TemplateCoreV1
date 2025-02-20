@@ -27,12 +27,17 @@
                     <h3>3. Phân quyền cho phòng ban nào được tạo mã phiếu của quy trình
                     </h3>
                 </div>
-                <CBCheckPhongBan @emit_phonganId="handlePhongBan" />
+                <CBCheckPhongBanCauHinh :phognbanId="_phongbanIdMap" @emit_phonganId="handlePhongBan"
+                    @change="changeSelectPhongBan" />
 
             </v-col>
             <v-col cols="12" md="12">
                 <h4>4. Phân quyền cho nhân sự nào được tạo mã phiếu của quy trình</h4>
-                <CBCheckNhanSu :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSu>
+                <!-- <CBCheckNhanSu :ListPhongBanId="_phongbanId" @emit_nhansuId="handleNhanSu"></CBCheckNhanSu> -->
+
+                <CBCheckNhanSuCauHinh :nhansuIdMap="_nhansuIdMap" :ListPhongBanId="_phongbanId"
+                    @emit_nhansuId="handleNhanSu">
+                </CBCheckNhanSuCauHinh>
 
             </v-col>
             <v-col cols="12" md="12">
@@ -192,7 +197,6 @@
 import type { IDataThongTin, IDanhSachNode } from "@/interface/QuyTrinh/IAddCauHinhQuyTrinh";
 
 let isPanelOpen = ref(false);
-let _phongbanId = ref<number[]>([]);
 let _txtnoidung = ref("");
 let _txtthietlapmaphieu = ref("");
 let _txtghichu = ref("");
@@ -207,8 +211,15 @@ let _thongBao = ref<string>("");
 let _txtkichthuockytuDL = ref<string>("");
 let _LoadNode = ref<string[]>([]);
 
+let _phongbanIdMap = ref<number[]>([]);
+let _nhansuIdMap = ref<string[]>([]);
+
+let _phongbanId = ref<number[]>([]);
+let _nhansuId = ref<string[]>([]);
+
+
 const emit = defineEmits<{
-    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[],NoiDung:string,ThietLapMaPhieu:string,GhiChu:string
+    (event: 'emit_DanhSachCauHinh', data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[], NoiDung: string, ThietLapMaPhieu: string, GhiChu: string
     ): void;
 }>();
 
@@ -216,8 +227,10 @@ const props = defineProps<{
     DanhSachNode: IDanhSachNode[],
     NoiDung?: string | null,
     ThietLapMaPhieu?: string | null,
-    GhiChu?:string|null,
-    NhanSuId?:string[]|null
+    GhiChu?: string | null,
+    NhanSuId?: string[] | null
+    PhongBanId?: number[] | null,
+    DanhSachThongTin?:IDataThongTin[]|null
 }>();
 
 const _dsThongTin = ref<IDataThongTin[]>([]);
@@ -301,17 +314,25 @@ function btnCauHinhThongTin(Id: number) {
 
 const handlePhongBan = (phongbanId: number[]) => {
     _phongbanId.value = phongbanId;
+    emit("emit_DanhSachCauHinh", _dsThongTin.value, _nhansuId.value, _phongbanId.value, _txtnoidung.value, _txtthietlapmaphieu.value, _txtghichu.value);
 };
 const handleNhanSu = (nhansuId: string[]) => {
-    emit("emit_DanhSachCauHinh", _dsThongTin.value, nhansuId, _phongbanId.value,_txtnoidung.value,_txtthietlapmaphieu.value,_txtghichu.value);
+    _nhansuId.value = nhansuId
+    emit("emit_DanhSachCauHinh", _dsThongTin.value, _nhansuId.value, _phongbanId.value, _txtnoidung.value, _txtthietlapmaphieu.value, _txtghichu.value);
 };
 
 const handleDanhSachNode = (DanhsachId: string[]) => {
     _selectThongTinCauHinhBuocDL.value = DanhsachId;
 };
 
+function changeSelectPhongBan() {
+    _nhansuIdMap.value = [];
+}
+
 watch(() => props.DanhSachNode, (newVal, oldVal) => {
     _dsNode.value = newVal;
+    console.log("dsads");
+    console.log(newVal);
 }, { deep: true });
 
 watch(() => props.NoiDung, (newVal, oldVal) => {
@@ -322,6 +343,17 @@ watch(() => props.ThietLapMaPhieu, (newVal, oldVal) => {
 });
 watch(() => props.GhiChu, (newVal, oldVal) => {
     _txtghichu.value = newVal ?? "";
+});
+watch(() => props.PhongBanId, (newVal, oldVal) => {
+    _phongbanIdMap.value = newVal ?? [];
+    _phongbanId.value = newVal ?? [];
+});
+watch(() => props.NhanSuId, (newVal, oldVal) => {
+    _nhansuIdMap.value = newVal ?? [];
+    _nhansuId.value = newVal ?? [];
+});
+watch(() => props.DanhSachThongTin, (newVal, oldVal) => {
+    _dsThongTin.value = newVal??[];
 });
 
 </script>

@@ -14,7 +14,7 @@
         <div v-if="dropdownOpenNhanSu" class="dropdown-danhsachnode">
             <div class="dropdown-item-phongban">
                 <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
-                <label for="checkAll"><strong>Chọn tất cả</strong></label>
+                <label for="checkAll" style="margin-left: 5px;"><strong>Chọn tất cả</strong></label>
             </div>
             <div v-for="item in responseDataFiller" :key="item.index" class="dropdown-item-danhsachnode">
                 <input type="checkbox" :value="item.keyId" v-model="selectedId" @change="LoadValuesChecked()" />

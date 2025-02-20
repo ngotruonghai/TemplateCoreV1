@@ -1,7 +1,7 @@
 <template>
-    <div class="multi-select-phongbannode FontDefault">
+    <div class="multi-select-phongbancauhinh FontDefault">
         <!-- Hiển thị nút dropdown -->
-        <div class="dropdown-header-phongbannode" @click="toggleDropdown">
+        <div class="dropdown-header-phongbancauhinh" @click="toggleDropdown">
             <span :class="{ 'placeholder': selectedId.length === 0 }">
                 {{ selectedValues.length > 0
                     ? selectedValues.join(", ")
@@ -11,8 +11,8 @@
         </div>
 
         <!-- Dropdown danh sách -->
-        <div v-if="dropdownOpenNhanSu" class="dropdown-phongbannode">
-            <div class="dropdown-item-phongbannode">
+        <div v-if="dropdownOpenNhanSu" class="dropdown-phongbancauhinh">
+            <div class="dropdown-item-phongbancauhinh">
                 <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
                 <label for="checkAll"><strong>Chọn tất cả</strong></label>
             </div>
@@ -20,7 +20,7 @@
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
                 @input="filterPhongBan" />
             <div v-for="phongbannode in responseDataFillter.data" :key="phongbannode.id"
-                class="dropdown-item-phongbannode">
+                class="dropdown-item-phongbancauhinh">
                 <input type="checkbox" :value="phongbannode.id" v-model="selectedId" @change="LoadValuesChecked()" />
                 <label>{{ phongbannode.tenPhongBan }}</label>
             </div>
@@ -111,7 +111,7 @@ const toggleDropdown = () => {
 };
 
 const handleOutsideClick = (event: MouseEvent) => {
-    const dropdownElement = document.querySelector(".multi-select-phongbannode");
+    const dropdownElement = document.querySelector(".multi-select-phongbancauhinh");
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
         dropdownOpenNhanSu.value = false; // Đóng dropdown nếu click ra ngoài
     }
@@ -182,13 +182,13 @@ onUnmounted(() => {
 }
 
 /* CSS tùy chỉnh */
-.multi-select-phongbannode {
+.multi-select-phongbancauhinh {
     width: 100%;
     position: relative;
     font-family: Arial, sans-serif;
 }
 
-.dropdown-header-phongbannode {
+.dropdown-header-phongbancauhinh {
     border: 1px solid #ccc;
     padding: 8px;
     border-radius: 5px;
@@ -203,7 +203,7 @@ onUnmounted(() => {
     font-size: 12px;
 }
 
-.dropdown-phongbannode {
+.dropdown-phongbancauhinh {
     position: absolute;
     top: 100%;
     left: 0;
@@ -225,19 +225,19 @@ onUnmounted(() => {
     border-radius: 5px;
 }
 
-.dropdown-item-phongbannode {
+.dropdown-item-phongbancauhinh {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-.dropdown-item-phongbannode input[type="checkbox"] {
+.dropdown-item-phongbancauhinh input[type="checkbox"] {
     margin: 0;
     margin-right: 8px;
     cursor: pointer;
 }
 
-.dropdown-item-phongbannode label {
+.dropdown-item-phongbancauhinh label {
     margin: 0;
     cursor: pointer;
     white-space: nowrap;

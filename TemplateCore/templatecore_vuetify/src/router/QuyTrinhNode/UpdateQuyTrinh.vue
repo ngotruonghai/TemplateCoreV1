@@ -47,11 +47,9 @@
                                 {{ title }}
                             </label>
                         </v-col>
-                        <UpdateCauHinhQuyTrinh :ThietLapMaPhieu="_txtthietlapmaphieu" 
-                        :NoiDung="_txtnoidung" 
-                        :DanhSachNode="_dsNode"
-                        :GhiChu="_txtghichu"
-                        @emit_DanhSachCauHinh="handleDanhSachCauHinh">
+                        <UpdateCauHinhQuyTrinh :ThietLapMaPhieu="_txtthietlapmaphieu" :NoiDung="_txtnoidung"
+                            :DanhSachNode="_dsNode" :GhiChu="_txtghichu" :NhanSuId="_nhansuId" :PhongBanId="_phongbanId"
+                            :DanhSachThongTin="_dsThongTin" @emit_DanhSachCauHinh="handleDanhSachCauHinh">
                         </UpdateCauHinhQuyTrinh>
                     </v-row>
 
@@ -85,8 +83,7 @@
             <div v-show="flang == 0">
 
                 <UpdateNode @emit_Node='handleDataSent' :INodeMap="INodeMaps" :IDiagram="IDiagrams"
-                    :INextStep="INextSteps"
-                    :InodeSttings = "InodeSttings"></UpdateNode>
+                    :INextStep="INextSteps" :InodeSttings="InodeSttings"></UpdateNode>
 
             </div>
         </v-container>
@@ -96,7 +93,7 @@
 
 <script lang="ts" setup>
 import { callApi, callAuthenticationAPI, convertToDate } from '@/providers/data-provider';
-import type { ApiResponse, NodeMapModel, QuyTrinhData,NextStepNodeModels} from "@/interface/QuyTrinh/IDanhSachQuyTrinhC2";
+import type { ApiResponse, NodeMapModel, QuyTrinhData, NextStepNodeModels } from "@/interface/QuyTrinh/IDanhSachQuyTrinhC2";
 import type { IDataThongTin } from '@/interface/QuyTrinh/IAddCauHinhQuyTrinh';
 import type { WorkflowData } from '@/interface/QuyTrinh/IDanhSachQuyTrinhById';
 
@@ -238,7 +235,7 @@ function ClickAddQuyTrinh() {
     API_AddQuyTrinh();
 }
 
-const handleDanhSachCauHinh = (data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[],NoiDung:string,ThietLapMaPhieu: string,GhiChu:string) => {
+const handleDanhSachCauHinh = (data: IDataThongTin[], NhanSuId: string[], PhongBanId: number[], NoiDung: string, ThietLapMaPhieu: string, GhiChu: string) => {
     _dsThongTin.value = data;
     _phongbanId.value = PhongBanId;
     _nhansuId.value = NhanSuId;
@@ -253,22 +250,22 @@ const handDatTime = (datetime: Date) => {
 
 function LoadDataDanhSach() {
     _txttenquytrinh.value = response.value?.tenQuyTrinh ?? "";
-    INodeMaps.value = response.value?.nodeMapModels ?? []
+    INodeMaps.value = _dsNode.value = response.value?.nodeMapModels ?? []
     IDiagrams.value = response.value?.diagramNodeModels ?? [];
     INextSteps.value = response.value?.nextStepNodeModels ?? [];
-    InodeSttings.value = response.value?.nodeSttings??[];
-    _datetime.value = response.value?.ngayBatDau??new Date;
-    _txtnoidung.value = response.value?.noiDung??"";
-    _txtthietlapmaphieu.value = response.value?.thietLapMaPhieu??"";
-    _txtghichu.value = response.value?.ghiChu??"";
-    _nhansuId.value = response.value?.nhanSuIds??[];
-    _phongbanId.value = response.value?.phongBanIds??[];
-    _dsThongTin.value = response.value?.cauHinhThongTins??[];
-  
+    InodeSttings.value = response.value?.nodeSttings ?? [];
+    _datetime.value = response.value?.ngayBatDau ?? new Date;
+    _txtnoidung.value = response.value?.noiDung ?? "";
+    _txtthietlapmaphieu.value = response.value?.thietLapMaPhieu ?? "";
+    _txtghichu.value = response.value?.ghiChu ?? "";
+    _nhansuId.value = response.value?.nhanSuIds ?? [];
+    _phongbanId.value = response.value?.phongBanIds ?? [];
+    _dsThongTin.value = response.value?.cauHinhThongTins ?? [];
 
-    // console.log("----------------------------------");
-    // console.log(INextSteps.value);
-    // console.log("----------------------------------");
+
+    //  console.log("----------------------------------");
+    // console.log(_phongbanId.value);
+    //  console.log("----------------------------------");
 }
 onMounted(async () => {
     await LoadDanhSachQuyTrinh();

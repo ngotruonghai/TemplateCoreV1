@@ -1,7 +1,7 @@
 <template>
-    <div class="multi-select-nhansunode FontDefault">
+    <div class="multi-select-nhansucauhinh FontDefault">
         <!-- Hiển thị nút dropdown -->
-        <div class="dropdown-header-nhansunode" @click="toggleDropdown">
+        <div class="dropdown-header-nhansucauhinh" @click="toggleDropdown">
             <span :class="{ 'placeholder': selectedId.length === 0 }">
                 {{ selectedValues.length > 0
                     ? selectedValues.join(", ")
@@ -11,15 +11,15 @@
         </div>
 
         <!-- Dropdown danh sách -->
-        <div v-if="dropdownOpenNhanSu" class="dropdown-nhansunode">
+        <div v-if="dropdownOpenNhanSu" class="dropdown-nhansucauhinh">
             <div class="dropdown-item-phongban">
                 <input type="checkbox" id="checkAll" v-model="isAllSelected" @change="toggleSelectAll" />
-                <label for="checkAll" style="margin-left: 5px;"><strong>Chọn tất cả</strong></label>
+                <label for="checkAll" style="margin-left: 10px;"><strong>Chọn tất cả</strong></label>
             </div>
             <!-- Trường tìm kiếm -->
             <input type="text" v-model="searchQuery" placeholder="Tìm kiếm..." style="width: 100%;margin-bottom: 10px;"
                 @input="filterCities" />
-            <div v-for="item in responseDataFiller.data" :key="item.id" class="dropdown-item-nhansunode">
+            <div v-for="item in responseDataFiller.data" :key="item.id" class="dropdown-item-nhansucauhinh">
                 <input type="checkbox" :id="item.id" :value="item.id" v-model="selectedId"
                     @change="LoadValuesChecked()" />
 
@@ -102,7 +102,7 @@ const toggleDropdown = () => {
 
 // Xử lý click bên ngoài dropdown
 const handleOutsideClick = (event: MouseEvent) => {
-    const dropdownElement = document.querySelector(".multi-select-nhansunode");
+    const dropdownElement = document.querySelector(".multi-select-nhansucauhinh");
     if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
         dropdownOpenNhanSu.value = false; // Đóng dropdown nếu click ra ngoài
     }
@@ -190,13 +190,13 @@ watch([() => props.ListPhongBanId, () => props.nhansuIdMap], ([newListPhongBanId
 }
 
 /* CSS tùy chỉnh */
-.multi-select-nhansunode {
+.multi-select-nhansucauhinh {
     width: 100%;
     position: relative;
     font-family: Arial, sans-serif;
 }
 
-.dropdown-header-nhansunode {
+.dropdown-header-nhansucauhinh {
     border: 1px solid #ccc;
     padding: 8px;
     border-radius: 5px;
@@ -211,7 +211,7 @@ watch([() => props.ListPhongBanId, () => props.nhansuIdMap], ([newListPhongBanId
     font-size: 12px;
 }
 
-.dropdown-nhansunode {
+.dropdown-nhansucauhinh {
     position: absolute;
     top: 100%;
     left: 0;
@@ -233,19 +233,19 @@ watch([() => props.ListPhongBanId, () => props.nhansuIdMap], ([newListPhongBanId
     border-radius: 5px;
 }
 
-.dropdown-item-nhansunode {
+.dropdown-item-nhansucauhinh {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-.dropdown-item-nhansunode input[type="checkbox"] {
+.dropdown-item-nhansucauhinh input[type="checkbox"] {
     margin: 0;
     margin-right: 8px;
     cursor: pointer;
 }
 
-.dropdown-item-nhansunode label {
+.dropdown-item-nhansucauhinh label {
     margin: 0;
     cursor: pointer;
     white-space: nowrap;

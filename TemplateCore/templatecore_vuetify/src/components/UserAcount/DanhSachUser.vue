@@ -13,7 +13,8 @@
     <v-divider></v-divider>
     <v-data-table v-model:search="search"
       :filter-keys="['firstName', 'lastName', 'userName', 'email', 'lockoutEnabled']" :items="dataResponse ?? []"
-      :headers="headers" item-value="id" class="custom-table">
+      :headers="headers" item-value="id" class="custom-table" density="compact"
+      item-key="name">
       <template v-slot:header.STT>
         <div class="HeaderTable FontDefault">STT</div>
       </template>

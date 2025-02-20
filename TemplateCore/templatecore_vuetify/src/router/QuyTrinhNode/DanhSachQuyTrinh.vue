@@ -27,7 +27,11 @@
                         <v-divider></v-divider>
                         <v-data-table :items-per-page="10" v-model:search="search"
                             :filter-keys="['maQuyTrinh', 'tenQuyTrinh','userName','ngayBatDau','ngayBatDau']" :items="responseData.data" :headers="headers"
-                            item-value="id" class="custom-table">
+                            item-value="id" class="custom-table"
+                            density="compact"
+                             :loading="loading"
+      loading-text="Đang tải dữ liệu..."
+                            item-key="name">
                             <template v-slot:header.STT>
                                 <div class="HeaderTable FontDefault">STT</div>
                             </template>
@@ -35,7 +39,7 @@
                                 <div style="text-align: center; width: 20px;">{{ index + 1 }}</div>
                             </template>
 
-                            <template v-slot:header.maQuyTrinh>
+                            <template v-slot:header.maQuyTrinh :sortable = "true">
                                 <div class="HeaderTable FontDefault" style="width: 100px;">Mã quy trinh</div>
                             </template>
                             <template v-slot:item.maQuyTrinh="{ item } ">
@@ -70,7 +74,7 @@
                                 <div class="HeaderTable FontDefault" style="width: 100px;">Trạng thái</div>
                             </template>
                             <template v-slot:item.status="{ item }: { item: { status: boolean } }">
-                                <div>
+                                <div >
                                     <span v-if="item.status" class="status-badge status-active">
                                         Đã kích hoạt
                                     </span>
@@ -104,6 +108,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 let search = ref('');
+let loading =ref(false);
 
 let responseData = ref<DanhSachQuyTrinhResponse>({
     succeeded: null,
@@ -114,23 +119,25 @@ let responseData = ref<DanhSachQuyTrinhResponse>({
 });
 
 let headers = [
-    { text: 'STT', value: 'STT', sortable: true },
-    { text: 'Mã quy trình', value: 'maQuyTrinh' },
-    { text: 'Tên quy trình', value: 'tenQuyTrinh' },
-    { text: 'Người tạo', value: 'userName' },
-    { text: 'Ngày tạo', value: 'created' },
-    { text: 'Ngày bắt đầu', value: 'ngayBatDau' },
-    { text: 'Trạng thái', value: 'status' },  
-    { text: 'Nội dung', value: 'noiDung' },    
+    { text: 'STT', value: 'STT',title:"STT"},
+    { text: 'Mã quy trình', value: 'maQuyTrinh' , sortable: true, title :"Mã quy trình"},
+    { text: 'Tên quy trình', value: 'tenQuyTrinh' ,title:"Tên quy trình", sortable: true},
+    { text: 'Người tạo', value: 'userName' ,title:"Người tạo", sortable: true},
+    { text: 'Ngày tạo', value: 'created' ,title:"Ngày tạo", sortable: true},
+    { text: 'Ngày bắt đầu', value: 'ngayBatDau',title:"Ngày bắt đầu", sortable: true },
+    { text: 'Trạng thái', value: 'status',title:"Trang thái" , sortable: true},  
+    { text: 'Nội dung', value: 'noiDung',title:"Nội dung" },      
 
 ];
 
 async function LoadDanhSachQuyTrinh() {
     try {
+        loading.value=true;
         const result = await callAuthenticationAPI('/api/quanlythongtin/QuyTrinhNode/GetDanhSachQuyTinh', 'GET', {}, { timeout: 15000 });
         responseData.value = result as DanhSachQuyTrinhResponse;
+        loading.value=false;
     } catch (error) {
-
+        loading.value=false;
     }
 }
 

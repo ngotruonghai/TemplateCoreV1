@@ -1,7 +1,8 @@
-$main-color: #1e4388; // màu nền
+$main-color: #0077b5; // màu nền
 $chiil_color: #f0f8ff; // màu nên cho phần tử bên trong 
 $font_default: Arial, Helvetica, sans-serif;
 $font_size :13px;
+$fontColor_navagition: #FFFFFF; // màu chữ navagation
 
 html,
 body {
@@ -24,7 +25,7 @@ body::-webkit-scrollbar {
 
 #navigation {
     background-color: $main-color;
-    color: white;
+    color: $fontColor_navagition;
 }
 
 .ChillColor {

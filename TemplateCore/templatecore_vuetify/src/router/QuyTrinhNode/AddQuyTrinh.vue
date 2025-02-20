@@ -63,7 +63,7 @@
                     </v-col>
                     <v-col cols="12" md="6" v-show="btnHide == false">
                         <button class="btnAdd btn" v-on:click="btnTiepThep(true)" style="float: right;">
-                            Bươc tiếp theo s
+                            Bươc tiếp theo
                             <span class="icon-border">
                                 <i class="fas fa-arrow-right"></i>
                             </span>
@@ -84,7 +84,16 @@
 
             </div>
         </v-container>
-
+        <v-snackbar v-model="alert.visible" :timeout="2000" :color="alert.color">
+            <v-container>
+                <v-row>
+                    <v-col cols="1">
+                        <v-icon color="white">{{ alert.icon }}</v-icon>
+                    </v-col>
+                    <v-col cols="11" style="padding-top: 14px;">{{ alert.text }}</v-col>
+                </v-row>
+            </v-container>
+        </v-snackbar>
     </div>
 </template>
 
@@ -102,7 +111,13 @@ let _txtnoidung = ref("");
 let _txtthietlapmaphieu = ref("");
 let _txtghichu = ref("");
 let _datetime: Date = new Date();
-
+let alert = ref({
+    visible: false, // Trạng thái hiển thị snackbar
+    color: "#CD3333", // Màu snackbar khi lỗi
+    icon: "mdi-cancel", // Icon thông báo lỗi
+    title: "Login Failed", // Tiêu đề thông báo (không dùng trong ví dụ này)
+    text: "Invalid username or password. Please try again.", // Nội dung thông báo
+});
 
 interface INodeMap {
     keyId: string | null,
@@ -206,27 +221,17 @@ async function API_AddQuyTrinh() {
         }, {
             timeout: 15000
         });
+        alert.value.text="Thành công";
+        alert.value.visible = true;
+        alert.value.color = "#109011";
     } catch (error) {
-
+        alert.value.text = error as string;
+        alert.value.visible = true;
+        alert.value.color = "#CD3333";
     }
 }
 
 function ClickAddQuyTrinh() {
-    console.log({
-            tenQuyTrinh: tenquytrinh,
-            userName: localStorage.getItem("UserName"),
-            nodeMapModels: INodeMaps.value,
-            diagramNodeModels: IDiagrams.value,
-            nextStepNodeModels: INextSteps.value,
-            nhanSuIds: _nhansuId.value,
-            phongBanIds: _phongbanId.value,
-            ghiChu: _txtghichu.value,
-            thietLapMaPhieu: _txtthietlapmaphieu.value,
-            noiDung: _txtnoidung.value,
-            ngayBatDau: _datetime,
-            nodeSttings: InodeSttings.value,
-            cauHinhThongTins: _dsThongTin.value
-        });
     API_AddQuyTrinh();
 }
 

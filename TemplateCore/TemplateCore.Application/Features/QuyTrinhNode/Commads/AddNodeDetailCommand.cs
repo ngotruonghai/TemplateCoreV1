@@ -91,7 +91,7 @@ namespace TemplateCore.Application.Features.QuyTrinhNode.Commads
 
                     await _danhSachQuyTrinhRepository.AddAsync(danhsachquytrinh);
 
-                    //CheckValid();
+                    CheckValid();
 
                     List<Node> lsNode = new List<Node>();
                     List<DiagramNode> lsDiagram = new List<DiagramNode>();

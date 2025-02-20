@@ -30,7 +30,8 @@
 
               <v-divider></v-divider>
               <v-data-table v-model:search="search" :filter-keys="['maPhongBan', 'tenPhongBan']"
-                :items="responseData.data" :headers="headers" item-value="id"  class="custom-table">
+                :items="responseData.data" :headers="headers" item-value="id"  class="custom-table" density="compact"
+                item-key="name">
                 <template v-slot:header.STT>
                   <div class="HeaderTable FontDefault">STT</div>
                 </template>

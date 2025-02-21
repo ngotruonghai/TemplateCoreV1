@@ -1,8 +1,9 @@
-$main-color: #0077b5; // màu nền
-$chiil_color: #f0f8ff; // màu nên cho phần tử bên trong 
+$main-color: #d6e9f8; // màu nền
+$chiil_color: #ecf4fa; // màu nên cho phần tử bên trong 
 $font_default: Arial, Helvetica, sans-serif;
 $font_size :13px;
-$fontColor_navagition: #FFFFFF; // màu chữ navagation
+$fontColor_navagition: rgb(10, 10, 10); // màu chữ navagation
+$Color_navagition: White;
 
 html,
 body {
@@ -24,8 +25,9 @@ body::-webkit-scrollbar {
 }
 
 #navigation {
-    background-color: $main-color;
+    background-color: $Color_navagition;
     color: $fontColor_navagition;
+    font-family: $font_default ;
 }
 
 .ChillColor {
@@ -45,10 +47,6 @@ body::-webkit-scrollbar {
   /* Khoảng cách bên ngoài */
 }
 
-#TitleName {
-    background-color: white;
-    box-shadow: offset-x offset-y blur-radius spread-radius color;
-}
 
 .table {
 

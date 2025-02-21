@@ -738,9 +738,8 @@ const createMapNode = (type: string, nx: number, ny: number, ntennode: string, n
 };
 
 function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: string, type: number, Id:string) {
-    const link = new joint.shapes.standard.Link({
-        id: Id
-    });
+    debugger;
+    const link = new joint.shapes.standard.Link();
     link.source({ id: startnodeiD }); // Từ node
     link.target({ id: endnodeId }); // đến node
     link.attr({
@@ -1094,9 +1093,9 @@ watch([() => props.INodeMap, () => props.IDiagram, () => props.INextStep, () => 
     newDiagram.forEach((diagram, index) => {
         createMapDiagram(diagram.source ?? "", diagram.target ?? "", diagram.tenDiagram ?? "",1,diagram.keyId??"")
     });
-
     request.value.InodeSttings = newNodeSttings
     request.value.INextStep = newNExtStep;
+    
 });
 
 </script>

@@ -735,8 +735,6 @@ const createMapNode = (type: string, nx: number, ny: number, ntennode: string, n
         y: ny
     });
     _indexNode.value++;
-    lastNode= newNode;
-    _selectedNode = null;
 };
 
 function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: string, type: number, Id:string) {
@@ -772,7 +770,6 @@ function createMapDiagram(startnodeiD: string, endnodeId: string, actionname: st
         action: 0,
         typeNextStep: type
     })
-    _selectedNode = null;
 }
 
 const deleteNode = () => {

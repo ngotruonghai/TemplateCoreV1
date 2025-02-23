@@ -25,8 +25,9 @@
                             class="FontDefaault">Thông tin</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.admins"
-                        :key="i" :prepend-icon="icon" :value="title" class="small-text">
+                    <v-list-item v-on:click="navigateTo(route, title)"
+                        v-for="([title, icon, route], i) in DanhMucs.admins" :key="i" :prepend-icon="icon"
+                        :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
                 </v-list-group>
@@ -37,8 +38,9 @@
                             class="FontDefaault">Phân quyền</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.PhanQuyen"
-                        :key="i" :prepend-icon="icon" :value="title" class="small-text">
+                    <v-list-item v-on:click="navigateTo(route, title)"
+                        v-for="([title, icon, route], i) in DanhMucs.PhanQuyen" :key="i" :prepend-icon="icon"
+                        :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
                 </v-list-group>
@@ -49,8 +51,9 @@
                             class="FontDefault">Quy trình</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.QuyTrinh"
-                        :key="i" :prepend-icon="icon" :value="title" class="small-text">
+                    <v-list-item v-on:click="navigateTo(route, title)"
+                        v-for="([title, icon, route], i) in DanhMucs.QuyTrinh" :key="i" :prepend-icon="icon"
+                        :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
                 </v-list-group>
@@ -62,12 +65,22 @@
                             class="FontDefault">Cấu hình</v-list-item>
                     </template>
 
-                    <v-list-item v-on:click="navigateTo(route, title)" v-for="([title, icon, route], i) in DanhMucs.CauHinhs"
-                        :key="i" :prepend-icon="icon" :value="title" class="small-text">
+                    <v-list-item v-on:click="navigateTo(route, title)"
+                        v-for="([title, icon, route], i) in DanhMucs.CauHinhs" :key="i" :prepend-icon="icon"
+                        :value="title" class="small-text">
                         <div>{{ title }}</div>
                     </v-list-item>
                 </v-list-group>
+                <v-list-item class="eventclick">
+                    <v-list-item-content class="d-flex align-center">
+                        <v-icon>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr6WsCGy-o3brXcj2cmXGkHM_fE_p0gy4X8w&s"
+                                width="24" height="24" />
+                        </v-icon>
 
+                        <v-list-item-title style="padding-left: 10px;">Item title</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-card>
     </div>
@@ -78,21 +91,21 @@ import { LocalStorageService } from '@/providers/LocalStorageServices';
 export default {
     data: () => ({
         open: [''],
-       DanhMucs:{
-        admins: [
-            ['Tài khoản', 'mdi-cog-outline', '/home/account'],
-            ['Phòng ban', 'mdi-plus-outline', '/home/phongban']
-        ],
-        CauHinhs: [
-            ['Đăng xuất', 'mdi-plus-outline', '/'],
-        ],
-        QuyTrinh: [
-            ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],
-        ],
-        PhanQuyen: [
-            ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
-        ],
-       },
+        DanhMucs: {
+            admins: [
+                ['Tài khoản', 'mdi-cog-outline', '/home/account'],
+                ['Phòng ban', 'mdi-plus-outline', '/home/phongban']
+            ],
+            CauHinhs: [
+                ['Đăng xuất', 'mdi-plus-outline', '/'],
+            ],
+            QuyTrinh: [
+                ['Quy trình', 'mdi-plus-outline', '/home/danhsachquytrinh'],
+            ],
+            PhanQuyen: [
+                ['Dashboard', 'mdi-cog-outline', '/home/dashboard'],
+            ],
+        },
         userName: ""
     }),
     methods: {
@@ -134,5 +147,8 @@ export default {
 .v-avatar img {
     object-fit: cover;
     /* Đảm bảo hình ảnh không bị méo */
+}
+.eventclick:hover{
+    background-color: aqua;
 }
 </style>

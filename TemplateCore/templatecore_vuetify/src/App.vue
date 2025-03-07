@@ -10,7 +10,6 @@
 import { LocalStorageService } from '@/providers/LocalStorageServices';
 import { useRouter } from 'vue-router';
 import { callApi, callAuthenticationAPI, convertToDate } from '@/providers/data-provider';
-
 const router = useRouter();
 
 async function LoadDanhSachPhongBan() {

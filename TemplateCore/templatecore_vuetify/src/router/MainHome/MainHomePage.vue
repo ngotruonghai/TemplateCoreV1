@@ -8,9 +8,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- <v-app-bar title="" id="TitleName">
+    <v-app-bar title="" id="TitleName">
   
-    </v-app-bar> -->
+    </v-app-bar>
 
     <v-main style="height: 100%; overflow-y: auto;">
       <router-view />

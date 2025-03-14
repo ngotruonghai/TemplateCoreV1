@@ -7,7 +7,8 @@
 // Plugins
 import { registerPlugins } from '@/plugins'
 import router from './router/index'
-// import { Button } from 'ant-design-vue'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/reset.css';
 // import 'ant-design-vue/dist/antd.css'
 
 // Components
@@ -20,5 +21,5 @@ const app = createApp(App)
 
 registerPlugins(app)
 app.use(router);
-// app.use(Button);
+app.use(Antd);
 app.mount('#app')

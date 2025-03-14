@@ -25,6 +25,7 @@ declare module 'vue' {
     Datetimepicker: typeof import('./components/Common/datetimepicker.vue')['default']
     MainHome: typeof import('./components/Main/MainHome.vue')['default']
     Navigation: typeof import('./components/Main/Navigation.vue')['default']
+    NavigitionPageNew: typeof import('./components/Main/NavigitionPageNew.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TimePicker: typeof import('./components/Common/TimePicker.vue')['default']

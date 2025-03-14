@@ -8,7 +8,7 @@
         v-model:openKeys="state.openKeys"
         v-model:selectedKeys="state.selectedKeys"
         mode="inline"
-        theme="dark"
+        theme="light"
         :inline-collapsed="state.collapsed"
         :items="items"
       ></a-menu>
@@ -112,7 +112,6 @@
       ],
     },
   ]);
-  console.log("🚀 ~ items:", items)
   watch(
     () => state.openKeys,
     (_val, oldVal) => {
@@ -124,3 +123,4 @@
     state.openKeys = state.collapsed ? [] : state.preOpenKeys;
   };
   </script>
+  
